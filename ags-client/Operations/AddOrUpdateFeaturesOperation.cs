@@ -22,7 +22,7 @@ namespace ags_client.Operations
 
         public EditFeaturesResponse Execute2(AgsClient client, string servicePath, int layerId, string operation)
         {
-            //using .net WebRequest in place of restsharp
+            //uses .net WebRequest in place of restsharp
 
             string url = String.Format("{0}/{1}/{2}/{3}/{4}", client.BaseUrl, servicePath, "FeatureServer", layerId, operation);
 

@@ -5,7 +5,6 @@ using RestSharp;
 using Newtonsoft.Json;
 
 using ags_client.Types.Geometry;
-using ags_client.Types;
 
 namespace ags_client.Operations
 {

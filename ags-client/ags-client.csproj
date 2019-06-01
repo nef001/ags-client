@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
+    <Compile Include="Operations\ApplyLayerEditsOperation.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
     <Compile Include="Operations\DeleteFeaturesOperation.cs" />
     <Compile Include="Operations\EditFeaturesResponse.cs" />
