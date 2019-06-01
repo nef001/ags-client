@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 using RestSharp;
 
@@ -39,6 +36,7 @@ namespace ags_client
                 var ex = new ApplicationException(message, response.ErrorException);
                 throw ex;
             }
+
             return response.Data;
         }
 

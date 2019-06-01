@@ -50,10 +50,11 @@
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
+    <Compile Include="Operations\DeleteFeaturesOperation.cs" />
     <Compile Include="Operations\EditFeaturesResponse.cs" />
     <Compile Include="Operations\LayerQueryOperation.cs" />
     <Compile Include="Operations\LayerQueryResponse.cs" />
-    <Compile Include="Operations\UpdateFeaturesOperation.cs" />
+    <Compile Include="Operations\AddOrUpdateFeaturesOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\CodedValue.cs" />
     <Compile Include="Types\Coordinate.cs" />

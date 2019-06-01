@@ -29,7 +29,7 @@ namespace ags_client_test_console
             var response = query.Execute(client, "NDV/NDVEditing", "MapServer", 2);
 
             var features = new List<VehicleF>();
-            var updateOp = new UpdateFeaturesOperation<VehicleF, Point, VehicleA>
+            var updateOp = new AddOrUpdateFeaturesOperation<VehicleF, Point, VehicleA>
             {
                 rollbackOnFailure = true
             };
@@ -47,7 +47,7 @@ namespace ags_client_test_console
 
             updateOp.features = features;
 
-            var updateResponse = updateOp.Execute2(client, "NDV/NDVEditing", 2);
+            var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
 
             if (updateResponse != null)
             {

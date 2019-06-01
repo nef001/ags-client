@@ -11,7 +11,7 @@ using ags_client.Utility;
 
 namespace ags_client.Operations
 {
-    public class UpdateFeaturesOperation<TF, TG, TA>
+    public class AddOrUpdateFeaturesOperation<TF, TG, TA>
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
@@ -20,11 +20,11 @@ namespace ags_client.Operations
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
 
-        public EditFeaturesResponse Execute2(AgsClient client, string servicePath, int layerId)
+        public EditFeaturesResponse Execute2(AgsClient client, string servicePath, int layerId, string operation)
         {
             //using .net WebRequest in place of restsharp
 
-            string url = String.Format("{0}/{1}/{2}/{3}/updateFeatures", client.BaseUrl, servicePath, "FeatureServer", layerId);
+            string url = String.Format("{0}/{1}/{2}/{3}/{4}", client.BaseUrl, servicePath, "FeatureServer", layerId, operation);
 
             StringBuilder json = new StringBuilder("f=pjson");
             if (!String.IsNullOrEmpty(gdbVersion)) json.AppendFormat("&gdbVersion={0}", gdbVersion);
@@ -40,9 +40,11 @@ namespace ags_client.Operations
             return result;
         }
 
-        public EditFeaturesResponse Execute(AgsClient client, string servicePath, int layerId)
+        public EditFeaturesResponse Execute(AgsClient client, string servicePath, int layerId, string operation)
         {
-            var request = new RestRequest(String.Format("{0}/{1}/{2}/updateFeatures", servicePath, "FeatureServer", layerId));
+            //operation is addFeatures or updateFeatures
+
+            var request = new RestRequest(String.Format("{0}/{1}/{2}/{3}", servicePath, "FeatureServer", layerId, operation));
             request.Method = Method.POST;
 
             if (rollbackOnFailure.HasValue)
