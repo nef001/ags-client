@@ -55,7 +55,7 @@ namespace ags_client.Operations
             {
                 string jsonFeatures = JsonConvert.SerializeObject(features);
                 var length = jsonFeatures.Length;
-                Console.WriteLine("jsonFeatures length: {0}", length);
+                //Console.WriteLine("jsonFeatures length: {0}", length);
 
                 request.AddParameter("features", jsonFeatures);
             }
