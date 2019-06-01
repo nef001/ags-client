@@ -48,10 +48,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgsClient.cs" />
+    <Compile Include="Operations\BaseResponse.cs" />
+    <Compile Include="Operations\EditFeaturesResponse.cs" />
+    <Compile Include="Operations\LayerQueryOperation.cs" />
+    <Compile Include="Operations\LayerQueryResponse.cs" />
+    <Compile Include="Operations\UpdateFeaturesOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\CodedValue.cs" />
+    <Compile Include="Types\Coordinate.cs" />
+    <Compile Include="Types\Domain.cs" />
+    <Compile Include="Types\EditResult.cs" />
+    <Compile Include="Types\ErrorDetail.cs" />
+    <Compile Include="Types\ErrorResult.cs" />
+    <Compile Include="Types\Field.cs" />
+    <Compile Include="Types\Geometry\Envelope.cs" />
+    <Compile Include="Types\Geometry\GeometryHelper.cs" />
+    <Compile Include="Types\Geometry\IRestGeometry.cs" />
+    <Compile Include="Types\Geometry\MultiPoint.cs" />
+    <Compile Include="Types\Geometry\NoGeometry.cs" />
+    <Compile Include="Types\Geometry\Point.cs" />
+    <Compile Include="Types\Geometry\PointArray.cs" />
+    <Compile Include="Types\Geometry\Polygon.cs" />
+    <Compile Include="Types\Geometry\Polyline.cs" />
+    <Compile Include="Types\Geometry\SpatialReference.cs" />
+    <Compile Include="Types\IRestAttribute.cs" />
+    <Compile Include="Types\IRestFeature.cs" />
+    <Compile Include="Utility\DateTimeUnixConverter.cs" />
+    <Compile Include="Utility\HttpUtil.cs" />
+    <Compile Include="Utility\JsonNetSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

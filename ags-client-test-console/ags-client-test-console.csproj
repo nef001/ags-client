@@ -57,5 +57,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ags-client\ags-client.csproj">
+      <Project>{d7e302f9-27a4-42d7-bb0b-15cf1ef9054e}</Project>
+      <Name>ags-client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
