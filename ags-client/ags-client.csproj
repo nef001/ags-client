@@ -74,7 +74,7 @@
     <Compile Include="Types\Geometry\Polygon.cs" />
     <Compile Include="Types\Geometry\Polyline.cs" />
     <Compile Include="Types\Geometry\SpatialReference.cs" />
-    <Compile Include="Types\IRestAttribute.cs" />
+    <Compile Include="Types\IRestAttributes.cs" />
     <Compile Include="Types\IRestFeature.cs" />
     <Compile Include="Utility\DateTimeUnixConverter.cs" />
     <Compile Include="Utility\HttpUtil.cs" />

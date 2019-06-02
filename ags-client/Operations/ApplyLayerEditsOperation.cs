@@ -30,19 +30,21 @@ namespace ags_client.Operations
             var request = new RestRequest(String.Format("{0}/{1}/{2}/applyEdits", servicePath, "FeatureServer", layerId));
             request.Method = Method.POST;
 
+            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
             if ((adds != null) && (adds.Count > 0))
-                request.AddParameter("adds", JsonConvert.SerializeObject(adds));
+                request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
             if ((updates != null) && (updates.Count > 0))
-                request.AddParameter("updates", JsonConvert.SerializeObject(updates));
+                request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
             if ((deletes != null) && (deletes.Count > 0))
-                request.AddParameter("deletes", JsonConvert.SerializeObject(deletes));
+                request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
 
             if (!String.IsNullOrEmpty(gdbVersion))
                 request.AddParameter("gdbVersion", gdbVersion);
             if (rollbackOnFailure.HasValue)
-                request.AddParameter("rollbackOnFailure", rollbackOnFailure.ToString());
+                request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
             if (useGlobalIds.HasValue)
-                request.AddParameter("useGlobalIds", useGlobalIds.ToString());
+                request.AddParameter("useGlobalIds", useGlobalIds.Value ? "true" : "false");
 
 
             var result = client.Execute<EditFeaturesResponse>(request, Method.POST);
