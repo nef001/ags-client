@@ -22,7 +22,7 @@ namespace ags_client_test_console
 
             var query = new LayerQueryOperation<VehicleF, Point, VehicleA>
             {
-                where = "1=1",
+                where = "1 = 1",
                 outFields = new List<string> { "*" }
             };
 
@@ -31,7 +31,7 @@ namespace ags_client_test_console
             var features = new List<VehicleF>();
             var updateOp = new AddOrUpdateFeaturesOperation<VehicleF, Point, VehicleA>
             {
-                rollbackOnFailure = true
+                rollbackOnFailure = false
             };
 
             foreach (var f in response.features)
@@ -45,22 +45,49 @@ namespace ags_client_test_console
                 //    break;
             }
 
-            var pgr = new Pager<VehicleF>(features, 20);
-            IEnumerable<VehicleF> page;
-            while ((page = pgr.NextPage()) != null)
+            updateOp.features = features;
+
+            var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
+
+            if (updateResponse != null)
             {
-                updateOp.features = page.ToList();
-
-                var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
-
-                if (updateResponse != null)
+                if (updateResponse.error != null)
+                    Console.WriteLine("Code: {0}. {1}", updateResponse.error.code, updateResponse.error.message);
+                else
                 {
-                    if (updateResponse.error != null)
-                        Console.WriteLine("Code: {0}. {1}", updateResponse.error.code, updateResponse.error.message);
-                    else
-                        Console.WriteLine("success");
+                    Console.WriteLine("operation success");
+
+                    var errored = updateResponse.updateResults.Where(x => x.success == false).ToList();
+                    if (errored.Count > 0)
+                    {
+                        Console.WriteLine("The following {0} of {1} updates failed:");
+                        foreach ( var x in errored)
+                        {
+                            Console.WriteLine("objectid: {0}, Error code {1) {2}", x.objectId, x.error.code, x.error.description);
+                        }
+                    }
                 }
+                    
             }
+
+            //var pgr = new Pager<VehicleF>(features, 1);
+            //IEnumerable<VehicleF> page;
+            //while ((page = pgr.NextPage()) != null)
+            //{
+            //    updateOp.features = page.ToList();
+
+            //    Console.WriteLine(updateOp.features[0].attributes.objectid);
+
+            //    var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
+
+            //    if (updateResponse != null)
+            //    {
+            //        if (updateResponse.error != null)
+            //            Console.WriteLine("Code: {0}. {1}", updateResponse.error.code, updateResponse.error.message);
+            //        else
+            //            Console.WriteLine("success");
+            //    }
+            //}
 
             
 

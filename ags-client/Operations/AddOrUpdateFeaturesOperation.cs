@@ -26,16 +26,18 @@ namespace ags_client.Operations
 
             string url = String.Format("{0}/{1}/{2}/{3}/{4}", client.BaseUrl, servicePath, "FeatureServer", layerId, operation);
 
+            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
             StringBuilder json = new StringBuilder("f=pjson");
             if (!String.IsNullOrEmpty(gdbVersion)) json.AppendFormat("&gdbVersion={0}", gdbVersion);
-            if (rollbackOnFailure.HasValue) json.AppendFormat("&rollbackOnFailure={0}", rollbackOnFailure);
-            json.AppendFormat("&features={0}", JsonConvert.SerializeObject(features));
+            if (rollbackOnFailure.HasValue) json.AppendFormat("&rollbackOnFailure={0}", rollbackOnFailure.Value ? "true" : "false");
+            json.AppendFormat("&features={0}", JsonConvert.SerializeObject(features, jss));
 
             string jsonData = json.ToString();
 
             string responseString = HttpUtil.GetResponse(url, jsonData);
 
-            var result = JsonConvert.DeserializeObject<EditFeaturesResponse>(responseString, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var result = JsonConvert.DeserializeObject<EditFeaturesResponse>(responseString, jss);
 
             return result;
         }
@@ -47,18 +49,15 @@ namespace ags_client.Operations
             var request = new RestRequest(String.Format("{0}/{1}/{2}/{3}", servicePath, "FeatureServer", layerId, operation));
             request.Method = Method.POST;
 
+            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
             if (rollbackOnFailure.HasValue)
                 request.AddParameter("rollbackOnFailure", rollbackOnFailure.ToString());
             if (!String.IsNullOrEmpty(gdbVersion))
                 request.AddParameter("gdbVersion", gdbVersion);
-            if (features != null)
-            {
-                string jsonFeatures = JsonConvert.SerializeObject(features);
-                var length = jsonFeatures.Length;
-                //Console.WriteLine("jsonFeatures length: {0}", length);
-
-                request.AddParameter("features", jsonFeatures);
-            }
+            if ((features != null) && (features.Count > 0))
+                request.AddParameter("features", JsonConvert.SerializeObject(features, jss));
+            
 
             var result = client.Execute<EditFeaturesResponse>(request, Method.POST);
 

@@ -24,28 +24,24 @@ namespace ags_client.Operations
             var request = new RestRequest(String.Format("{0}/{1}/{2}/deleteFeatures", servicePath, "FeatureServer", layerId));
             request.Method = Method.POST;
 
-            if (objectids != null)
-            {
-                string jsonOids = JsonConvert.SerializeObject(objectids);
-                var length = jsonOids.Length;
-                //Console.WriteLine("jsonOids length: {0}", length);
+            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-                request.AddParameter("objectids", jsonOids);
-            }
+            if ((objectids != null) && (objectids.Count > 0))
+                request.AddParameter("objectids", JsonConvert.SerializeObject(objectids, jss));
             if (!String.IsNullOrEmpty(where))
                 request.AddParameter("where", where);
             if (geometry != null)
-                request.AddParameter("geometry", JsonConvert.SerializeObject(geometry));
+                request.AddParameter("geometry", JsonConvert.SerializeObject(geometry, jss));
             if (!String.IsNullOrEmpty(geometryType))
                 request.AddParameter("geometryType", geometryType);
             if (inSR != null)
-                request.AddParameter("inSR", JsonConvert.SerializeObject(inSR));
+                request.AddParameter("inSR", JsonConvert.SerializeObject(inSR, jss));
             if (!String.IsNullOrEmpty(spatialRel))
                 request.AddParameter("spatialRel", spatialRel);
             if (!String.IsNullOrEmpty(gdbVersion))
                 request.AddParameter("gdbVersion", gdbVersion);
             if (rollbackOnFailure.HasValue)
-                request.AddParameter("rollbackOnFailure", rollbackOnFailure.ToString());                        
+                request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
 
             var result = client.Execute<EditFeaturesResponse>(request, Method.POST);
 
