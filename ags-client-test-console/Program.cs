@@ -41,21 +41,28 @@ namespace ags_client_test_console
                 //f.geometry.x += 20000; //shift them 20 km
                 features.Add(f);
 
-                if (features.Count > 54)
-                    break;
+                //if (features.Count > 54)
+                //    break;
             }
 
-            updateOp.features = features;
-
-            var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
-
-            if (updateResponse != null)
+            var pgr = new Pager<VehicleF>(features, 20);
+            IEnumerable<VehicleF> page;
+            while ((page = pgr.NextPage()) != null)
             {
-                if (updateResponse.error != null)
-                    Console.WriteLine("Code: {0}. {1}", updateResponse.error.code, updateResponse.error.message);
-                else
-                    Console.WriteLine("success");
+                updateOp.features = page.ToList();
+
+                var updateResponse = updateOp.Execute(client, "NDV/NDVEditing", 2, "updateFeatures");
+
+                if (updateResponse != null)
+                {
+                    if (updateResponse.error != null)
+                        Console.WriteLine("Code: {0}. {1}", updateResponse.error.code, updateResponse.error.message);
+                    else
+                        Console.WriteLine("success");
+                }
             }
+
+            
 
             Console.ReadKey();
 
