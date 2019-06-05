@@ -7,7 +7,8 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Operations.GeometryOps
 {
-    public class BufferOp
+    public class BufferOp<TG>
+        where TG : IRestGeometry
     {
         public string geometryType { get; set; }
         public List<IRestGeometry> geometries { get; set; }
@@ -19,7 +20,7 @@ namespace ags_client.Operations.GeometryOps
         public bool? unionResults { get; set; }
         public bool? geodesic { get; set; }
 
-        public GeometriesResponse Execute(AgsClient client, string servicePath)
+        public GeometriesResponse<TG> Execute(AgsClient client, string servicePath)
         {
             //servicePath is typically "Utilities/Geometry"
 
@@ -47,7 +48,7 @@ namespace ags_client.Operations.GeometryOps
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
-            var result = client.Execute<GeometriesResponse>(request, Method.POST);
+            var result = client.Execute<GeometriesResponse<TG>>(request, Method.POST);
 
             return result;
         }

@@ -32,10 +32,10 @@ namespace ags_client_test_console
             var geom1 = response.features[0].geometry;
             var geom2 = response.features[1].geometry;
 
-            var projectOp = new ProjectOp
+            var projectOp = new ProjectOp<Point>
             {
-                geometries = new Geometries {
-                    geometries = response.features.Select(x => (IRestGeometry)x.geometry).ToList(),
+                geometries = new Geometries<Point> {
+                    geometries = response.features.Select(x => x.geometry).ToList(),
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
                 },
                 inSR = new SpatialReference { wkid = 28350 },
