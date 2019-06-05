@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations
+namespace ags_client.Operations.LayerOps
 {
-    public class DeleteFeaturesOperation
+    public class DeleteFeaturesOp
     {
         public List<int> objectids { get; set; }
         public string where { get; set; }

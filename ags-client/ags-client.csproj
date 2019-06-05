@@ -49,13 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
-    <Compile Include="Operations\ApplyLayerEditsOperation.cs" />
+    <Compile Include="Operations\GeometryOps\BufferResponse.cs" />
+    <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
-    <Compile Include="Operations\DeleteFeaturesOperation.cs" />
-    <Compile Include="Operations\EditFeaturesResponse.cs" />
-    <Compile Include="Operations\LayerQueryOperation.cs" />
-    <Compile Include="Operations\LayerQueryResponse.cs" />
-    <Compile Include="Operations\AddOrUpdateFeaturesOperation.cs" />
+    <Compile Include="Operations\LayerOps\DeleteFeaturesOp.cs" />
+    <Compile Include="Operations\LayerOps\EditFeaturesResponse.cs" />
+    <Compile Include="Operations\GeometryOps\BufferOp.cs" />
+    <Compile Include="Operations\LayerOps\LayerQueryOp.cs" />
+    <Compile Include="Operations\LayerOps\LayerQueryResponse.cs" />
+    <Compile Include="Operations\LayerOps\AddOrUpdateFeaturesOp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\CodedValue.cs" />
     <Compile Include="Types\Coordinate.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Types\Geometry\Polygon.cs" />
     <Compile Include="Types\Geometry\Polyline.cs" />
     <Compile Include="Types\Geometry\SpatialReference.cs" />
+    <Compile Include="Types\Geometry\Transformation.cs" />
     <Compile Include="Types\IRestAttribute.cs" />
     <Compile Include="Types\IRestFeature.cs" />
     <Compile Include="Utility\DateTimeUnixConverter.cs" />

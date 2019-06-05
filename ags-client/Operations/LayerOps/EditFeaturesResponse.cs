@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using ags_client.Types;
 
-namespace ags_client.Operations
+namespace ags_client.Operations.LayerOps
 {
     //response from operations AddFeatures, UpdateFeatures and DeleteFeatures
     public class EditFeaturesResponse : BaseResponse

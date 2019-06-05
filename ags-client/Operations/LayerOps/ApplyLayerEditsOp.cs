@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 using ags_client.Types.Geometry;
 using ags_client.Types;
 
-namespace ags_client.Operations
+namespace ags_client.Operations.LayerOps
 {
-    public class ApplyLayerEditsOperation<TF, TG, TA>
+    public class ApplyLayerEditsOp<TF, TG, TA>
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
