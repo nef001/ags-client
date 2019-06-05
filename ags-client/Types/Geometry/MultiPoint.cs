@@ -11,6 +11,8 @@ namespace ags_client.Types.Geometry
 {
     public class MultiPoint : PointArray, IRestGeometry
     {
+        public MultiPoint() { geometryType = "esriGeometryMultipoint"; }
+        public string geometryType { get; set; }
         public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("points")]

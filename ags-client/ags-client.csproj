@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
+    <Compile Include="Operations\GeometryOps\DistanceOp.cs" />
+    <Compile Include="Operations\GeometryOps\DistanceResponse.cs" />
     <Compile Include="Operations\GeometryOps\GeometriesResponse.cs" />
     <Compile Include="Operations\GeometryOps\ProjectOp.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />

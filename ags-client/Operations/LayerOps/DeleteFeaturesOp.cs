@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using RestSharp;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace ags_client.Operations.LayerOps
 {
     public class DeleteFeaturesOp
     {
-        public List<int> objectids { get; set; }
+        public List<int> objectIds { get; set; }
         public string where { get; set; }
         public IRestGeometry geometry { get; set; }
         public string geometryType { get; set; }
@@ -26,8 +27,8 @@ namespace ags_client.Operations.LayerOps
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-            if ((objectids != null) && (objectids.Count > 0))
-                request.AddParameter("objectids", JsonConvert.SerializeObject(objectids, jss));
+            if ((objectIds != null) && (objectIds.Count > 0))
+                request.AddParameter("objectIds", String.Join(",", objectIds.Select(n => n.ToString()).ToArray()));
             if (!String.IsNullOrEmpty(where))
                 request.AddParameter("where", where);
             if (geometry != null)
