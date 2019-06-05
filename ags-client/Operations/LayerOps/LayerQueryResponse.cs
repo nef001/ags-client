@@ -3,7 +3,7 @@
 using ags_client.Types;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations
+namespace ags_client.Operations.LayerOps
 {
     public class LayerQueryResponse<TF, TG, TA> : BaseResponse
         where TF : IRestFeature<TG, TA>

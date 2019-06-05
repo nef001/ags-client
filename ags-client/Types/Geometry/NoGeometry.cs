@@ -10,7 +10,7 @@ namespace ags_client.Types.Geometry
 {
     public class NoGeometry : IRestGeometry
     {
-        [JsonProperty("spatialReference")]
+        //public string geometryType { get; set; }
         public SpatialReference spatialReference { get; set; }
     }
 }
