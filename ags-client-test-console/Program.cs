@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ags_client;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Operations;
+using ags_client.Operations.LayerOps;
 using ags_client.Utility;
 
 using Newtonsoft.Json;
@@ -20,7 +20,7 @@ namespace ags_client_test_console
         {
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
-            var query = new LayerQueryOperation<VehicleF, Point, VehicleA>
+            var query = new LayerQueryOp<VehicleF, Point, VehicleA>
             {
                 where = "1=1",
                 outFields = new List<string> { "*" }
@@ -31,12 +31,12 @@ namespace ags_client_test_console
             var featuresToUpdate = new List<VehicleF>();
             var featuresToAdd = new List<VehicleF>();
 
-            var updateOp = new AddOrUpdateFeaturesOperation<VehicleF, Point, VehicleA>
+            var updateOp = new AddOrUpdateFeaturesOp<VehicleF, Point, VehicleA>
             {
                 rollbackOnFailure = false
             };
 
-            var addOp = new AddOrUpdateFeaturesOperation<VehicleF, Point, VehicleA>
+            var addOp = new AddOrUpdateFeaturesOp<VehicleF, Point, VehicleA>
             {
                 rollbackOnFailure = true
             };
