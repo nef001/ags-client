@@ -4,8 +4,9 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Operations.GeometryOps
 {
-    public class GeometriesResponse : BaseResponse
+    public class GeometriesResponse<TG> : BaseResponse
+        where TG : IRestGeometry
     {
-        public List<IRestGeometry> geometries { get; set; }
+        public List<TG> geometries { get; set; }
     }
 }

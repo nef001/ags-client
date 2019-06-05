@@ -8,16 +8,16 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Operations.GeometryOps
 {
-    public class ProjectOp
+    public class ProjectOp<TG>
+        where TG : IRestGeometry
     {
-        public string geometryType { get; set; }
-        public List<IRestGeometry> geometries { get; set; }
+        public Geometries<TG> geometries { get; set; }
         public SpatialReference inSR { get; set; }
         public SpatialReference outSR { get; set; }
         public Transformation transformation { get; set; }
         public bool? transformForward { get; set; }
 
-        public GeometriesResponse Execute(AgsClient client, string servicePath)
+        public GeometriesResponse<TG> Execute(AgsClient client, string servicePath)
         {
             //servicePath is typically "Utilities/Geometry"
 
@@ -26,20 +26,18 @@ namespace ags_client.Operations.GeometryOps
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-            if (!String.IsNullOrEmpty(geometryType))
-                request.AddParameter("geometryType", geometryType);
-            if ((geometries != null) && (geometries.Count > 0))
+            if (geometries != null)
                 request.AddParameter("geometries", JsonConvert.SerializeObject(geometries, jss));
             if (inSR != null)
-                request.AddParameter("inSR", JsonConvert.SerializeObject(inSR, jss));
+                request.AddParameter("inSR", inSR.wkid);
             if (outSR != null)
-                request.AddParameter("outSR", JsonConvert.SerializeObject(outSR, jss));
+                request.AddParameter("outSR", outSR.wkid);
             if (transformation != null)
                 request.AddParameter("transformation", JsonConvert.SerializeObject(transformation, jss));
             if (transformForward.HasValue)
                 request.AddParameter("transformForward", transformForward.Value ? "true" : "false");
 
-            var result = client.Execute<GeometriesResponse>(request, Method.POST);
+            var result = client.Execute<GeometriesResponse<TG>>(request, Method.POST);
 
             return result;
         }

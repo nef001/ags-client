@@ -8,6 +8,7 @@ using ags_client;
 using ags_client.Types;
 using ags_client.Types.Geometry;
 using ags_client.Operations.LayerOps;
+using ags_client.Operations.GeometryOps;
 using ags_client.Utility;
 
 using Newtonsoft.Json;
@@ -22,22 +23,41 @@ namespace ags_client_test_console
 
             var query = new LayerQueryOp<VehicleF, Point, VehicleA>
             {
-                where = "objectid>430889",
+                where = "objectid <= 10",
                 outFields = new List<string> { "*" }
             };
 
             var response = query.Execute(client, "NDV/NDVEditing", "MapServer", 2);
 
-            var deleteOp = new DeleteFeaturesOp()
+            var geom1 = response.features[0].geometry;
+            var geom2 = response.features[1].geometry;
+
+            var projectOp = new ProjectOp
             {
-                rollbackOnFailure = true
+                geometries = new Geometries {
+                    geometries = response.features.Select(x => (IRestGeometry)x.geometry).ToList(),
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+                },
+                inSR = new SpatialReference { wkid = 28350 },
+                outSR = new SpatialReference {wkid = 4326 }
             };
 
-            deleteOp.objectIds = response.features.Select(x=>x.attributes.objectid).ToList();
-
-            var deleteResponse = deleteOp.Execute(client, "NDV/NDVEditing", 2);
-            if (deleteResponse != null)
+            var geomResponse = projectOp.Execute(client, "Utilities/Geometry");
+            if (geomResponse != null)
             { }
+
+
+
+            //var deleteOp = new DeleteFeaturesOp()
+            //{
+            //    rollbackOnFailure = true
+            //};
+
+            //deleteOp.objectIds = response.features.Select(x=>x.attributes.objectid).ToList();
+
+            //var deleteResponse = deleteOp.Execute(client, "NDV/NDVEditing", 2);
+            //if (deleteResponse != null)
+            //{ }
 
             //var featuresToUpdate = new List<VehicleF>();
             //var featuresToAdd = new List<VehicleF>();

@@ -70,6 +70,7 @@
     <Compile Include="Types\ErrorResult.cs" />
     <Compile Include="Types\Field.cs" />
     <Compile Include="Types\Geometry\Envelope.cs" />
+    <Compile Include="Types\Geometry\Geometries.cs" />
     <Compile Include="Types\Geometry\GeometryHelper.cs" />
     <Compile Include="Types\Geometry\IRestGeometry.cs" />
     <Compile Include="Types\Geometry\MultiPoint.cs" />

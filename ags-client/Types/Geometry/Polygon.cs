@@ -13,8 +13,8 @@ namespace ags_client.Types.Geometry
 
     public class Polygon : IRestGeometry
     {
-        public Polygon() { geometryType = "esriGeometryPolygon"; }
-        public string geometryType { get; set; }
+        //public Polygon() { geometryType = "esriGeometryPolygon"; }
+        //public string geometryType { get; set; }
         public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("rings")]
