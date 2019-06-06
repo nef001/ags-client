@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using RestSharp;
 using Newtonsoft.Json;
@@ -10,18 +11,19 @@ namespace ags_client.Operations.GeometryOps
     public class BufferOp<TG>
         where TG : IRestGeometry
     {
-        public string geometryType { get; set; }
-        public List<IRestGeometry> geometries { get; set; }
+        public Geometries<TG> geometries { get; set; }
         public SpatialReference inSR { get; set; }
         public SpatialReference outSR { get; set; }
         public SpatialReference bufferSR { get; set; }
         public List<double> distances { get; set; }
-        public string unit { get; set; }
+        public int? unit { get; set; } /* See esriSRUnitType Constants and esriSRUnit2Type Constants */
         public bool? unionResults { get; set; }
         public bool? geodesic { get; set; }
 
-        public GeometriesResponse<TG> Execute(AgsClient client, string servicePath)
+        public GeometriesResponse<Polygon> Execute(AgsClient client, string servicePath)
         {
+            //nb Polygon is always the return type of a buffer op
+
             //servicePath is typically "Utilities/Geometry"
 
             var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "buffer"));
@@ -29,26 +31,24 @@ namespace ags_client.Operations.GeometryOps
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-            if (!String.IsNullOrEmpty(geometryType))
-                request.AddParameter("geometryType", geometryType);
-            if ((geometries != null) && (geometries.Count > 0))
+            if (geometries != null)
                 request.AddParameter("geometries", JsonConvert.SerializeObject(geometries, jss));
             if (inSR != null)
-                request.AddParameter("inSR", JsonConvert.SerializeObject(inSR, jss));
+                request.AddParameter("inSR", inSR.wkid);
             if (outSR != null)
-                request.AddParameter("outSR", JsonConvert.SerializeObject(outSR, jss));
+                request.AddParameter("outSR", outSR.wkid);
             if (bufferSR != null)
-                request.AddParameter("bufferSR", JsonConvert.SerializeObject(bufferSR, jss));
+                request.AddParameter("bufferSR", bufferSR.wkid);
             if ((distances != null) && (distances.Count > 0))
-                request.AddParameter("distances", JsonConvert.SerializeObject(distances, jss));
-            if (!String.IsNullOrEmpty(unit))
+                request.AddParameter("distances", String.Join(",", distances.Select(n => n.ToString()).ToArray()));
+            if (unit.HasValue)
                 request.AddParameter("unit", unit);
             if (unionResults.HasValue)
                 request.AddParameter("unionResults", unionResults.Value ? "true" : "false");
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
-            var result = client.Execute<GeometriesResponse<TG>>(request, Method.POST);
+            var result = client.Execute<GeometriesResponse<Polygon>>(request, Method.POST);
 
             return result;
         }

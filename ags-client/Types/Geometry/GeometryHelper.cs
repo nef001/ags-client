@@ -32,34 +32,31 @@ namespace ags_client.Types.Geometry
             }
         }
 
-        public static GeometryTypes GetGeometryType(this string geometryTypeName)
-        {
-            switch (geometryTypeName)
-            {
-                case POINT_GEOMETRY: { return GeometryTypes.Point; }
-                case MULTIPOINT_GEOMETRY: { return GeometryTypes.Multipoint; }
-                case POLYLINE_GEOMETRY: { return GeometryTypes.Polyline; }
-                case POLYGON_GEOMETRY: { return GeometryTypes.Polygon; }
-                case ENVELOPE_GEOMETRY: { return GeometryTypes.Envelope; }
-                default: { return GeometryTypes.Point; }
-            }
-        }
+        //public static GeometryTypes GetGeometryType(this string geometryTypeName)
+        //{
+        //    switch (geometryTypeName)
+        //    {
+        //        case POINT_GEOMETRY: { return GeometryTypes.Point; }
+        //        case MULTIPOINT_GEOMETRY: { return GeometryTypes.Multipoint; }
+        //        case POLYLINE_GEOMETRY: { return GeometryTypes.Polyline; }
+        //        case POLYGON_GEOMETRY: { return GeometryTypes.Polygon; }
+        //        case ENVELOPE_GEOMETRY: { return GeometryTypes.Envelope; }
+        //        default: { return GeometryTypes.Point; }
+        //    }
+        //}
 
-        public static Type GetRestGeometryType(string esriGeometryType)
-        {
-            if (String.IsNullOrWhiteSpace(esriGeometryType))
-                return typeof(NoGeometry);
+        //public static Type GetRestGeometryType(string esriGeometryType)
+        //{
+        //    switch (esriGeometryType)
+        //    {
+        //        case "esriGeometryPoint": return typeof(Point);
+        //        case "esriGeometryMultiPoint": return typeof(MultiPoint);
+        //        case "esriGeometryPolyline": return typeof(Polyline);
+        //        case "esriGeometryPolygon": return typeof(Polygon);
+        //        case "esriGeometryEnvelope": return typeof(Envelope);
+        //        default: throw new Exception("Unsupported geometryType: " + esriGeometryType);
+        //    }
 
-            switch (esriGeometryType)
-            {
-                case "esriGeometryPoint": return typeof(Point);
-                case "esriGeometryMultiPoint": return typeof(MultiPoint);
-                case "esriGeometryPolyline": return typeof(Polyline);
-                case "esriGeometryPolygon": return typeof(Polygon);
-                case "esriGeometryEnvelope": return typeof(Envelope);
-                default: throw new Exception("Unsupported geometryType: " + esriGeometryType);
-            }
-
-        }
+        //}
     }
 }

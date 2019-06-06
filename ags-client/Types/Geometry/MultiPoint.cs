@@ -13,7 +13,7 @@ namespace ags_client.Types.Geometry
     {
         //public MultiPoint() { geometryType = "esriGeometryMultipoint"; }
         //public string geometryType { get; set; }
-        public SpatialReference spatialReference { get; set; }
+        //public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("points")]
         private double[][] _pointsArray;

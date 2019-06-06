@@ -15,7 +15,7 @@ namespace ags_client.Types.Geometry
     {
         //public Polyline() { geometryType = "esriGeometryPolyline"; }
         //public string geometryType { get; set; }
-        public SpatialReference spatialReference { get; set; }
+        //public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("paths")]
         private double[][][] _pathsArray;

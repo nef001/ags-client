@@ -19,6 +19,7 @@ namespace ags_client_test_console
     {
         static void Main(string[] args)
         {
+
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
             var query = new LayerQueryOp<VehicleF, Point, VehicleA>
@@ -42,11 +43,59 @@ namespace ags_client_test_console
                 outSR = new SpatialReference {wkid = 4326 }
             };
 
-            var geomResponse = projectOp.Execute(client, "Utilities/Geometry");
-            if (geomResponse != null)
+            var projectResponse = projectOp.Execute(client, "Utilities/Geometry");
+            if (projectResponse != null)
+            { }
+
+            var bufferOp = new BufferOp<Point>
+            {
+                geometries = new Geometries<Point>
+                {
+                    geometries = response.features.Select(x => x.geometry).ToList(),
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+                },
+                inSR = new SpatialReference { wkid = 28350 },
+                distances = new List<double> { 10.1, 20.67 }, //each input geom gets buffered by each distance
+                unit = 9001, //esriSRUnit_Meter
+                unionResults = false,
+                geodesic = false
+            };
+
+            var bufferResponse = bufferOp.Execute(client, "Utilities/Geometry");
+            if (bufferResponse != null)
             { }
 
 
+            var areasAndLengthsOp = new AreasAndLengthsOp
+            {
+                polygons = bufferResponse.geometries,
+                sr = new SpatialReference { wkid = 28350 },
+                calculationType = "planar"
+            };
+            var areasAndLengthsResponse = areasAndLengthsOp.Execute(client, "Utilities/Geometry");
+            if (areasAndLengthsResponse != null)
+            { }
+
+            var distanceOp = new DistanceOp<Geometry<Point>, Point, Geometry<Point>, Point>
+            {
+                geometry1 = new Geometry<Point>
+                {
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+                    geometry = response.features[0].geometry
+                },
+                geometry2 = new Geometry<Point>
+                {
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+                    geometry = response.features[1].geometry
+                },
+                sr = new SpatialReference { wkid = 28350 },
+                distanceUnit = 9001, //esriSRUnit_Meter
+                geodesic = false
+            };
+
+            var distanceResponse = distanceOp.Execute(client, "Utilities/Geometry");
+            if (distanceResponse != null)
+            { }
 
             //var deleteOp = new DeleteFeaturesOp()
             //{

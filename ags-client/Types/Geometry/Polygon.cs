@@ -15,7 +15,7 @@ namespace ags_client.Types.Geometry
     {
         //public Polygon() { geometryType = "esriGeometryPolygon"; }
         //public string geometryType { get; set; }
-        public SpatialReference spatialReference { get; set; }
+        //public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("rings")]
         private double[][][] _ringsArray;

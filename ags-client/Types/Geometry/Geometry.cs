@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ags_client.Types.Geometry
 {
-    public interface IRestGeometry
+    public class Geometry<TG>
+        where TG : IRestGeometry
     {
-        //string geometryType { get; set; }
-        //SpatialReference spatialReference { get; set; }
+        public string geometryType { get; set; }
+        public TG geometry { get; set; }
     }
 }
