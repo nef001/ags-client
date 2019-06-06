@@ -19,7 +19,6 @@ namespace ags_client_test_console
     {
         static void Main(string[] args)
         {
-
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
             var query = new LayerQueryOp<VehicleF, Point, VehicleA>
@@ -96,6 +95,20 @@ namespace ags_client_test_console
             var distanceResponse = distanceOp.Execute(client, "Utilities/Geometry");
             if (distanceResponse != null)
             { }
+
+            var convexHullOp = new ConvexHullOp<Point>
+            {
+                geometries = new Geometries<Point>
+                {
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+                    geometries = new List<Point> { response.features[0].geometry, response.features[1].geometry, response.features[2].geometry }
+                },
+                sr = new SpatialReference { wkid = 28350 }
+            };
+            var convexHullResponse = convexHullOp.Execute(client, "Utilities/Geometry");
+            if (convexHullResponse != null)
+            { }
+
 
             //var deleteOp = new DeleteFeaturesOp()
             //{

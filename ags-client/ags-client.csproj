@@ -51,6 +51,10 @@
     <Compile Include="AgsClient.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsResponse.cs" />
+    <Compile Include="Operations\GeometryOps\AutoCompleteOp.cs" />
+    <Compile Include="Operations\GeometryOps\AutoCompleteResponse.cs" />
+    <Compile Include="Operations\GeometryOps\ConvexHullOp.cs" />
+    <Compile Include="Operations\GeometryOps\ConvexHullResponse.cs" />
     <Compile Include="Operations\GeometryOps\DistanceOp.cs" />
     <Compile Include="Operations\GeometryOps\DistanceResponse.cs" />
     <Compile Include="Operations\GeometryOps\GeometriesResponse.cs" />
