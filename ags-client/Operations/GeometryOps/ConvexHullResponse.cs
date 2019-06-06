@@ -10,10 +10,12 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 
 namespace ags_client.Operations.GeometryOps
 {
+    [JsonConverter(typeof(ConvexHullResponseConverter))]
     public class ConvexHullResponse : BaseResponse
     {
         public string geometryType { get; set; }
@@ -33,21 +35,23 @@ namespace ags_client.Operations.GeometryOps
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
-            Node node = new Node();
-            node.vr = (string)jo["vr"];
-            if (node.vr == "PN")
+            ConvexHullResponse result = new ConvexHullResponse();
+            result.geometryType = (string)jo["geometryType"];
+            switch (result.geometryType)
             {
-                node.Value = jo["Value"].ToObject<List<PnItem>>(serializer);
+                case "esriGeometryPoint":
+                    result.geometry = jo["geometry"].ToObject<Point>();
+                    break;
+                case "esriGeometryPolyline":
+                    result.geometry = jo["geometry"].ToObject<Polyline>();
+                    break;
+                case "esriGeometryPolygon":
+                    result.geometry = jo["geometry"].ToObject<Polygon>();
+                    break;
+                default:
+                    break;
             }
-            else if (node.vr == "SQ")
-            {
-                node.Value = jo["Value"].ToObject<List<Dictionary<string, Node>>>(serializer);
-            }
-            else
-            {
-                node.Value = jo["Value"].ToObject<List<string>>(serializer);
-            }
-            return node;
+            return result;
         }
 
         public override bool CanWrite
