@@ -13,11 +13,11 @@ namespace ags_client.Types.Geometry
 
     public static class GeometryHelper
     {
-        private const string POINT_GEOMETRY = "esriGeometryPoint";
-        private const string MULTIPOINT_GEOMETRY = "esriGeometryMultipoint";
-        private const string POLYLINE_GEOMETRY = "esriGeometryPolyline";
-        private const string POLYGON_GEOMETRY = "esriGeometryPolygon";
-        private const string ENVELOPE_GEOMETRY = "esriGeometryEnvelope";
+        public const string POINT_GEOMETRY = "esriGeometryPoint";
+        public const string MULTIPOINT_GEOMETRY = "esriGeometryMultipoint";
+        public const string POLYLINE_GEOMETRY = "esriGeometryPolyline";
+        public const string POLYGON_GEOMETRY = "esriGeometryPolygon";
+        public const string ENVELOPE_GEOMETRY = "esriGeometryEnvelope";
 
         public static string GetGeometryTypeName(this GeometryTypes geometryType)
         {

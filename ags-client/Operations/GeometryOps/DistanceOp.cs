@@ -7,14 +7,12 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Operations.GeometryOps
 {
-    public class DistanceOp<TGM1, TG1, TGM2, TG2>
-        where TGM1 : Geometry<TG1>
-        where TGM2 : Geometry<TG2>
+    public class DistanceOp<TG1, TG2>
         where TG1 : IRestGeometry
         where TG2 : IRestGeometry
     {
-        public TGM1 geometry1 { get; set; }
-        public TGM2 geometry2 { get; set; }
+        public Geometry<TG1> geometry1 { get; set; }
+        public Geometry<TG2> geometry2 { get; set; }
         public SpatialReference sr { get; set; }
         public int? distanceUnit { get; set; }
         public bool? geodesic { get; set; }

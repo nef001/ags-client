@@ -52,6 +52,7 @@
     <Compile Include="JsonConverters\ConvexHullResponseConverter.cs" />
     <Compile Include="JsonConverters\CutResponseConverter.cs" />
     <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
+    <Compile Include="JsonConverters\GGeometryConverter.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsResponse.cs" />
     <Compile Include="Operations\GeometryOps\AutoCompleteOp.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Types\Geometry\Geometries.cs" />
     <Compile Include="Types\Geometry\Geometry.cs" />
     <Compile Include="Types\Geometry\GeometryHelper.cs" />
+    <Compile Include="Types\Geometry\GGeometry.cs" />
     <Compile Include="Types\Geometry\ICutTarget.cs" />
     <Compile Include="Types\Geometry\IRestGeometry.cs" />
     <Compile Include="Types\Geometry\MultiPoint.cs" />

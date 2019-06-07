@@ -76,7 +76,7 @@ namespace ags_client_test_console
             if (areasAndLengthsResponse != null)
             { }
 
-            var distanceOp = new DistanceOp<Geometry<Point>, Point, Geometry<Point>, Point>
+            var distanceOp = new DistanceOp<Point, Point>
             {
                 geometry1 = new Geometry<Point>
                 {
