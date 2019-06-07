@@ -20,7 +20,7 @@ namespace ags_client.Operations.GeometryOps
         public bool? unionResults { get; set; }
         public bool? geodesic { get; set; }
 
-        public GeometriesResponse<Polygon> Execute(AgsClient client, string servicePath)
+        public BufferResponse<Polygon> Execute(AgsClient client, string servicePath)
         {
             //nb Polygon is always the return type of a buffer op
 
@@ -48,7 +48,7 @@ namespace ags_client.Operations.GeometryOps
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
-            var result = client.Execute<GeometriesResponse<Polygon>>(request, Method.POST);
+            var result = client.Execute<BufferResponse<Polygon>>(request, Method.POST);
 
             return result;
         }

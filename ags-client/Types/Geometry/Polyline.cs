@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace ags_client.Types.Geometry
 {
 
-    public class Polyline : IRestGeometry
+    public class Polyline : IRestGeometry, ICutTarget
     {
         //public Polyline() { geometryType = "esriGeometryPolyline"; }
         //public string geometryType { get; set; }

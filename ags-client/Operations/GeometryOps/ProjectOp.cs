@@ -17,7 +17,7 @@ namespace ags_client.Operations.GeometryOps
         public Transformation transformation { get; set; }
         public bool? transformForward { get; set; }
 
-        public GeometriesResponse<TG> Execute(AgsClient client, string servicePath)
+        public ProjectResponse<TG> Execute(AgsClient client, string servicePath)
         {
             //servicePath is typically "Utilities/Geometry"
 
@@ -37,7 +37,7 @@ namespace ags_client.Operations.GeometryOps
             if (transformForward.HasValue)
                 request.AddParameter("transformForward", transformForward.Value ? "true" : "false");
 
-            var result = client.Execute<GeometriesResponse<TG>>(request, Method.POST);
+            var result = client.Execute<ProjectResponse<TG>>(request, Method.POST);
 
             return result;
         }

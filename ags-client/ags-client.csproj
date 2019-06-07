@@ -49,16 +49,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
+    <Compile Include="JsonConverters\ConvexHullResponseConverter.cs" />
+    <Compile Include="JsonConverters\CutResponseConverter.cs" />
+    <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsResponse.cs" />
     <Compile Include="Operations\GeometryOps\AutoCompleteOp.cs" />
     <Compile Include="Operations\GeometryOps\AutoCompleteResponse.cs" />
     <Compile Include="Operations\GeometryOps\ConvexHullOp.cs" />
     <Compile Include="Operations\GeometryOps\ConvexHullResponse.cs" />
+    <Compile Include="Operations\GeometryOps\CutOp.cs" />
+    <Compile Include="Operations\GeometryOps\CutResponse.cs" />
+    <Compile Include="Operations\GeometryOps\DensifyOp.cs" />
+    <Compile Include="Operations\GeometryOps\DensifyResponse.cs" />
     <Compile Include="Operations\GeometryOps\DistanceOp.cs" />
     <Compile Include="Operations\GeometryOps\DistanceResponse.cs" />
-    <Compile Include="Operations\GeometryOps\GeometriesResponse.cs" />
+    <Compile Include="Operations\GeometryOps\BufferResponse.cs" />
     <Compile Include="Operations\GeometryOps\ProjectOp.cs" />
+    <Compile Include="Operations\GeometryOps\ProjectResponse.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
     <Compile Include="Operations\LayerOps\DeleteFeaturesOp.cs" />
@@ -79,6 +87,7 @@
     <Compile Include="Types\Geometry\Geometries.cs" />
     <Compile Include="Types\Geometry\Geometry.cs" />
     <Compile Include="Types\Geometry\GeometryHelper.cs" />
+    <Compile Include="Types\Geometry\ICutTarget.cs" />
     <Compile Include="Types\Geometry\IRestGeometry.cs" />
     <Compile Include="Types\Geometry\MultiPoint.cs" />
     <Compile Include="Types\Geometry\Point.cs" />
@@ -89,7 +98,7 @@
     <Compile Include="Types\Geometry\Transformation.cs" />
     <Compile Include="Types\IRestAttributes.cs" />
     <Compile Include="Types\IRestFeature.cs" />
-    <Compile Include="Utility\DateTimeUnixConverter.cs" />
+    <Compile Include="JsonConverters\DateTimeUnixConverter.cs" />
     <Compile Include="Utility\HttpUtil.cs" />
     <Compile Include="Utility\JsonNetSerializer.cs" />
     <Compile Include="Utility\Pager.cs" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace ags_client.Utility
+namespace ags_client.JsonConverters
 {
     /* ArcGIS REST API formats datetime values in json as milliseconds since the Unix epoch 1/1/1970.
        This custom converter can be used to convert back and forth.

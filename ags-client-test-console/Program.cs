@@ -9,6 +9,7 @@ using ags_client.Types;
 using ags_client.Types.Geometry;
 using ags_client.Operations.LayerOps;
 using ags_client.Operations.GeometryOps;
+using ags_client.JsonConverters;
 using ags_client.Utility;
 
 using Newtonsoft.Json;
