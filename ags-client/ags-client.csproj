@@ -63,6 +63,7 @@
     <Compile Include="Operations\GeometryOps\CutResponse.cs" />
     <Compile Include="Operations\GeometryOps\DensifyOp.cs" />
     <Compile Include="Operations\GeometryOps\DensifyResponse.cs" />
+    <Compile Include="Operations\GeometryOps\DifferenceOp.cs" />
     <Compile Include="Operations\GeometryOps\DistanceOp.cs" />
     <Compile Include="Operations\GeometryOps\DistanceResponse.cs" />
     <Compile Include="Operations\GeometryOps\BufferResponse.cs" />

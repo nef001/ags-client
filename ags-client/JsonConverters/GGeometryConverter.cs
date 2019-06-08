@@ -57,6 +57,8 @@ namespace ags_client.JsonConverters
 
         public override void WriteJson(JsonWriter writer, GGeometry value, JsonSerializer serializer)
         {
+            if (value == null)
+                return;
             JObject jObj = new JObject();
             if (!String.IsNullOrWhiteSpace(value.geometryType))
             {
