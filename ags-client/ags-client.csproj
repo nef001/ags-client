@@ -62,6 +62,9 @@
     <Compile Include="Operations\GeometryOps\DifferenceOp.cs" />
     <Compile Include="Operations\GeometryOps\DistanceOp.cs" />
     <Compile Include="Operations\GeometryOps\GeneraliseOp.cs" />
+    <Compile Include="Operations\GeometryOps\IntersectOp.cs" />
+    <Compile Include="Operations\GeometryOps\LabelPointsOp.cs" />
+    <Compile Include="Operations\GeometryOps\LengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\ProjectOp.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
