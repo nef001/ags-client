@@ -53,4 +53,10 @@ namespace ags_client.Operations.GeometryOps
             return result;
         }
     }
+
+    public class BufferResponse<TG> : BaseResponse
+        where TG : IRestGeometry
+    {
+        public List<TG> geometries { get; set; }
+    }
 }

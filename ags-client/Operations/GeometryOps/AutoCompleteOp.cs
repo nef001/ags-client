@@ -38,4 +38,11 @@ namespace ags_client.Operations.GeometryOps
             return result;
         }
     }
+
+    public class AutoCompleteResponse : BaseResponse
+    {
+        public List<Polygon> geometries { get; set; } //polygons
+        public SpatialReference spatialReference { get; set; }
+
+    }
 }

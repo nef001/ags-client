@@ -42,4 +42,9 @@ namespace ags_client.Operations.GeometryOps
             return result;
         }
     }
+
+    public class DistanceResponse : BaseResponse
+    {
+        public double distance { get; set; }
+    }
 }

@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using RestSharp;
 using Newtonsoft.Json;
+
 using ags_client.Types.Geometry;
+using ags_client.JsonConverters;
 
 namespace ags_client.Operations.GeometryOps
 {
     public class CutOp<TG>
-        where TG : ICutTarget
+        where TG : IRestGeometry
     {
         public Polyline cutter { get; set; }
         public Geometries<TG> target { get; set; }
@@ -33,5 +36,13 @@ namespace ags_client.Operations.GeometryOps
 
             return result;
         }
+    }
+
+    [JsonConverter(typeof(CutResponseConverter))]
+    public class CutResponse : BaseResponse
+    {
+        public string geometryType { get; set; }
+        public List<IRestGeometry> geometries { get; set; }
+        public List<int> cutIndexes { get; set; }
     }
 }

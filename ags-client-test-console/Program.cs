@@ -40,7 +40,7 @@ namespace ags_client_test_console
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
                 },
                 inSR = new SpatialReference { wkid = 28350 },
-                outSR = new SpatialReference {wkid = 4326 }
+                outSR = new SpatialReference { wkid = 4326 }
             };
 
             var projectResponse = projectOp.Execute(client, "Utilities/Geometry");
@@ -110,6 +110,32 @@ namespace ags_client_test_console
             if (convexHullResponse != null)
             { }
 
+            var q = new LayerQueryOp<CommonF<Polygon>, Polygon, CommonAttributes>
+            {
+                where = "pin in (1322607,11652291, 1322609)",
+                outFields = new List<string> { "*" }
+            };
+
+            var qresponse = q.Execute(client, "Misc/MirnDiscovery", "MapServer", 1); //WA_CAD_POLY
+
+            var diffOp = new DifferenceOp<Polygon, Polygon>
+            {
+                geometries = new Geometries<Polygon>
+                {
+                    geometries = qresponse.features.Select(x => x.geometry).ToList(),
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
+                },
+                geometry = new Geometry<Polygon>
+                {
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
+                    geometry = qresponse.features[0].geometry
+                },
+                sr = new SpatialReference { wkid = 28350 }
+            };
+
+            var diffResponse = diffOp.Execute(client, "Utilities/Geometry");
+            if (diffResponse != null)
+            { }
 
             //var deleteOp = new DeleteFeaturesOp()
             //{
@@ -264,5 +290,6 @@ namespace ags_client_test_console
         public DateTime? date_time { get; set; }
         public string description { get; set; }
         public string type_descr { get; set; }
+        
     }
 }

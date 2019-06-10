@@ -5,10 +5,10 @@ using ags_client.JsonConverters;
 
 using Newtonsoft.Json;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Types.Geometry
 {
-    [JsonConverter(typeof(DensifyResponseConverter))]
-    public class DensifyResponse : BaseResponse
+    [JsonConverter(typeof(GGeometriesConverter))]
+    public class GGeometries
     {
         public string geometryType { get; set; }
         public List<IRestGeometry> geometries { get; set; }

@@ -45,4 +45,10 @@ namespace ags_client.Operations.GeometryOps
         }
 
     }
+
+    public class AreasAndLengthsResponse : BaseResponse
+    {
+        public List<double> areas { get; set; }
+        public List<double> lengths { get; set; }
+    }
 }

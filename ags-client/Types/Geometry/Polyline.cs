@@ -11,12 +11,8 @@ using Newtonsoft.Json;
 namespace ags_client.Types.Geometry
 {
 
-    public class Polyline : IRestGeometry, ICutTarget
+    public class Polyline : IRestGeometry
     {
-        //public Polyline() { geometryType = "esriGeometryPolyline"; }
-        //public string geometryType { get; set; }
-        //public SpatialReference spatialReference { get; set; }
-
         [JsonProperty("paths")]
         private double[][][] _pathsArray;
 
