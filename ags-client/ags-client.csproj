@@ -67,6 +67,9 @@
     <Compile Include="Operations\GeometryOps\LengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\OffsetOp.cs" />
     <Compile Include="Operations\GeometryOps\ProjectOp.cs" />
+    <Compile Include="Operations\GeometryOps\RelationOp.cs" />
+    <Compile Include="Operations\GeometryOps\ReshapeOp.cs" />
+    <Compile Include="Operations\GeometryOps\SimplifyOp.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
     <Compile Include="Operations\LayerOps\DeleteFeaturesOp.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="Types\Geometry\Geometries.cs" />
     <Compile Include="Types\Geometry\Geometry.cs" />
     <Compile Include="Types\Geometry\GeometryHelper.cs" />
+    <Compile Include="Types\Geometry\GeometryRelation.cs" />
     <Compile Include="Types\Geometry\GGeometries.cs" />
     <Compile Include="Types\Geometry\GGeometry.cs" />
     <Compile Include="Types\Geometry\IRestGeometry.cs" />
