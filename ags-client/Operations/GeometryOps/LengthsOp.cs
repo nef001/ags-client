@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ags_client.Types.Geometry;
 using RestSharp;
@@ -26,7 +23,7 @@ namespace ags_client.Operations.GeometryOps
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
             if (polylines != null)
-                request.AddParameter("polygons", JsonConvert.SerializeObject(polylines, jss));
+                request.AddParameter("polylines", JsonConvert.SerializeObject(polylines, jss));
 
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));

@@ -70,6 +70,8 @@
     <Compile Include="Operations\GeometryOps\RelationOp.cs" />
     <Compile Include="Operations\GeometryOps\ReshapeOp.cs" />
     <Compile Include="Operations\GeometryOps\SimplifyOp.cs" />
+    <Compile Include="Operations\GeometryOps\TrimExtendOp.cs" />
+    <Compile Include="Operations\GeometryOps\UnionOp.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
     <Compile Include="Operations\BaseResponse.cs" />
     <Compile Include="Operations\LayerOps\DeleteFeaturesOp.cs" />
