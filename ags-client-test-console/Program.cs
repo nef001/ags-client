@@ -22,6 +22,10 @@ namespace ags_client_test_console
         {
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
+            var cat = new Catalog();
+
+            int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
+
             var query = new LayerQueryOp<VehicleF, Point, VehicleA>
             {
                 where = "objectid <= 10",

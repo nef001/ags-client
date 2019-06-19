@@ -49,11 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
+    <Compile Include="Catalog.cs" />
     <Compile Include="JsonConverters\ConvexHullResponseConverter.cs" />
     <Compile Include="JsonConverters\CutResponseConverter.cs" />
     <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
     <Compile Include="JsonConverters\GGeometriesConverter.cs" />
     <Compile Include="JsonConverters\GGeometryConverter.cs" />
+    <Compile Include="Operations\CatalogOps\LayersResponse.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\AutoCompleteOp.cs" />
     <Compile Include="Operations\GeometryOps\ConvexHullOp.cs" />
@@ -108,6 +110,8 @@
     <Compile Include="Types\IRestAttributes.cs" />
     <Compile Include="Types\IRestFeature.cs" />
     <Compile Include="JsonConverters\DateTimeUnixConverter.cs" />
+    <Compile Include="Types\Layer.cs" />
+    <Compile Include="Types\Table.cs" />
     <Compile Include="Utility\HttpUtil.cs" />
     <Compile Include="Utility\JsonNetSerializer.cs" />
     <Compile Include="Utility\Pager.cs" />
