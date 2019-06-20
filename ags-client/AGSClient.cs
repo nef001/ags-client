@@ -8,6 +8,7 @@ using ags_client.Operations;
 using ags_client.Utility;
 using ags_client.Types;
 using ags_client.Types.Geometry;
+using ags_client.Types.Catalog;
 
 namespace ags_client
 
@@ -39,6 +40,7 @@ namespace ags_client
 
             return response.Data;
         }
+
 
 
 

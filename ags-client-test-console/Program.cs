@@ -11,6 +11,7 @@ using ags_client.Operations.LayerOps;
 using ags_client.Operations.GeometryOps;
 using ags_client.JsonConverters;
 using ags_client.Utility;
+using ags_client.Types.Catalog;
 
 using Newtonsoft.Json;
 
@@ -22,9 +23,11 @@ namespace ags_client_test_console
         {
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
-            var cat = new Catalog();
+            var cat = new Catalog(client, "");
 
-            int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
+
+
+            //int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
 
             var query = new LayerQueryOp<VehicleF, Point, VehicleA>
             {
