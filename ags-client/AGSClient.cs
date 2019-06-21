@@ -8,7 +8,6 @@ using ags_client.Operations;
 using ags_client.Utility;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Types.Catalog;
 
 namespace ags_client
 
@@ -30,7 +29,7 @@ namespace ags_client
             request.AddParameter("f", "json"); // used on every request
 
             var response = _client.Execute<T>(request, httpMethod);
-
+            
             if (response.ErrorException != null)
             {
                 const string message = "Error retrieving response.  Check inner details for more info.";

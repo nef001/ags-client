@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
-    <Compile Include="Catalog.cs" />
+    <Compile Include="BaseResponse.cs" />
     <Compile Include="JsonConverters\ConvexHullResponseConverter.cs" />
     <Compile Include="JsonConverters\CutResponseConverter.cs" />
     <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
@@ -83,8 +83,12 @@
     <Compile Include="Operations\LayerOps\LayerQueryResponse.cs" />
     <Compile Include="Operations\LayerOps\AddOrUpdateFeaturesOp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Types\Catalog\Catalog.cs" />
-    <Compile Include="Types\Catalog\Service.cs" />
+    <Compile Include="Requests\BaseRequest.cs" />
+    <Compile Include="Requests\CatalogRequest.cs" />
+    <Compile Include="Requests\GeometryServiceRequest.cs" />
+    <Compile Include="Resources\CatalogResource.cs" />
+    <Compile Include="Resources\GeometryServiceResource.cs" />
+    <Compile Include="Resources\MapServiceResource.cs" />
     <Compile Include="Types\CodedValue.cs" />
     <Compile Include="Types\CommonAttributes.cs" />
     <Compile Include="Types\CommonF.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Types\IRestFeature.cs" />
     <Compile Include="JsonConverters\DateTimeUnixConverter.cs" />
     <Compile Include="Types\Layer.cs" />
+    <Compile Include="Types\Service.cs" />
     <Compile Include="Types\Table.cs" />
     <Compile Include="Utility\HttpUtil.cs" />
     <Compile Include="Utility\JsonNetSerializer.cs" />
