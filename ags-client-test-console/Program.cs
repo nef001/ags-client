@@ -12,6 +12,8 @@ using ags_client.Operations.GeometryOps;
 using ags_client.JsonConverters;
 using ags_client.Utility;
 using ags_client.Requests;
+using ags_client.Requests.MapService;
+using ags_client.Requests.GeometryService;
 
 using Newtonsoft.Json;
 

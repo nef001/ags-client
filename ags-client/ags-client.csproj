@@ -75,7 +75,6 @@
     <Compile Include="Operations\GeometryOps\TrimExtendOp.cs" />
     <Compile Include="Operations\GeometryOps\UnionOp.cs" />
     <Compile Include="Operations\LayerOps\ApplyLayerEditsOp.cs" />
-    <Compile Include="Operations\BaseResponse.cs" />
     <Compile Include="Operations\LayerOps\DeleteFeaturesOp.cs" />
     <Compile Include="Operations\LayerOps\EditFeaturesResponse.cs" />
     <Compile Include="Operations\GeometryOps\BufferOp.cs" />
@@ -85,9 +84,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\BaseRequest.cs" />
     <Compile Include="Requests\CatalogRequest.cs" />
-    <Compile Include="Requests\GeometryServiceRequest.cs" />
+    <Compile Include="Requests\FeatureService\FeatureServiceRequest.cs" />
+    <Compile Include="Requests\GeometryService\GeometryServiceRequest.cs" />
+    <Compile Include="Requests\MapService\LayerOrTableRequest.cs" />
+    <Compile Include="Requests\MapService\LayerQueryRequest.cs" />
+    <Compile Include="Requests\MapService\LayersRequest.cs" />
+    <Compile Include="Requests\MapService\MapServiceRequest.cs" />
     <Compile Include="Resources\CatalogResource.cs" />
+    <Compile Include="Resources\FeatureService\FeatureServiceResource.cs" />
     <Compile Include="Resources\GeometryServiceResource.cs" />
+    <Compile Include="Resources\LayerOrTableResource.cs" />
+    <Compile Include="Resources\LayersResource.cs" />
     <Compile Include="Resources\MapServiceResource.cs" />
     <Compile Include="Types\CodedValue.cs" />
     <Compile Include="Types\CommonAttributes.cs" />

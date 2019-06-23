@@ -30,11 +30,10 @@ namespace ags_client.Requests
             var request = new RestRequest(_folder);
             request.Method = Method.GET;
 
-            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-            if (outSR != null)
-                request.AddParameter("outSR", outSR.wkid);
             if (!String.IsNullOrWhiteSpace(option))
                 request.AddParameter("option", option);
+            if (outSR != null)
+                request.AddParameter("outSR", outSR.wkid);
 
             var result = client.Execute<CatalogResource>(request, Method.GET);
             result.resourcePath = _folder;

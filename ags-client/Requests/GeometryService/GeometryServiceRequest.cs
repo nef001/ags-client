@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 using RestSharp;
 using Newtonsoft.Json;
-
-using ags_client.Types.Geometry;
 using ags_client.Resources;
 
-namespace ags_client.Requests
+namespace ags_client.Requests.GeometryService
 {
     public class GeometryServiceRequest : BaseRequest
     {
@@ -21,7 +19,7 @@ namespace ags_client.Requests
             _serviceName = serviceName;
         }
 
-        public GeometryServiceResource Execute(AgsClient client, CatalogResource parent) //parent is typically the Utility folder
+        public GeometryServiceResource Execute(AgsClient client, CatalogResource parent) //parent is typically the Utilities folder
         {
             string resourcePath = String.Format("{0}/{1}/GeometryServer", parent.resourcePath, _serviceName);
             return Execute(client, resourcePath);
@@ -31,8 +29,6 @@ namespace ags_client.Requests
         {
             var request = new RestRequest(resourcePath);
             request.Method = Method.GET;
-
-            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
             var result = client.Execute<GeometryServiceResource>(request, Method.GET);
             result.resourcePath = resourcePath;
