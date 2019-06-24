@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
 using ags_client.Resources;
+using ags_client.Resources.GeometryService;
 
 namespace ags_client.Requests.GeometryService
 {

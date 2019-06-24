@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using ags_client.Types;
 
-namespace ags_client.Resources
+namespace ags_client.Resources.MapService
 {
     public class MapServiceResource : BaseResponse
     {

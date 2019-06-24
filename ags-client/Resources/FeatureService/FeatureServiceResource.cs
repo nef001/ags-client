@@ -22,8 +22,16 @@ namespace ags_client.Resources.FeatureService
         public string description { get; set; }
         public string copyrightText { get; set; }
         public SpatialReference spatialReference { get; set; }
+        public Envelope initialExtent { get; set; }
+        public Envelope fullExtent { get; set; }
+        public bool? allowGeometryUpdates { get; set; }
+        public string units { get; set; }
+        public EditorTrackingInfo editorTrackingInfo { get; set; }
+        public DocumentInfo documentInfo { get; set; }
         public List<Layer> layers { get; set; }
         public List<Table> tables { get; set; }
+        public bool? enableZDefaults { get; set; }
+        public double? zDefault { get; set; }
     }
 }
 

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using RestSharp;
-using Newtonsoft.Json;
-using ags_client.Resources;
-using ags_client.Types;
-using ags_client.Types.Geometry;
+using ags_client.Resources.MapService;
 
 namespace ags_client.Requests.MapService
 {
@@ -31,12 +24,12 @@ namespace ags_client.Requests.MapService
 
         public LayerOrTableResource Execute(AgsClient client, string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
 
-            var result = client.Execute<LayerOrTableResource>(request, Method.POST);
+            var result = client.Execute<LayerOrTableResource>(request, Method.GET);
             result.resourcePath = resourcePath;
 
             return result;

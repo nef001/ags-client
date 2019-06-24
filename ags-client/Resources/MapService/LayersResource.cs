@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using ags_client.Types;
 
-namespace ags_client.Resources
+namespace ags_client.Resources.MapService
 {
     public class LayersResource : BaseResponse
     {

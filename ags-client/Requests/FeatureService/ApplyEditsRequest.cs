@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 using RestSharp;
 using Newtonsoft.Json;
-
-using ags_client.Types.Geometry;
+using ags_client.Resources.FeatureService;
 using ags_client.Types;
+using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.LayerOps
+namespace ags_client.Requests.FeatureService
 {
-    public class ApplyLayerEditsOp<TF, TG, TA>
+    public class ApplyEditsRequest<TF, TG, TA>
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
@@ -24,11 +24,15 @@ namespace ags_client.Operations.LayerOps
         public bool? rollbackOnFailure { get; set; }
         public bool? useGlobalIds { get; set; }
 
-
-        public EditFeaturesResponse Execute(AgsClient client, string servicePath, int layerId)
+        public EditFeaturesResource Execute(AgsClient client, LayerResource<TA> parent)
         {
-            var request = new RestRequest(String.Format("{0}/{1}/{2}/applyEdits", servicePath, "FeatureServer", layerId));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/applyEdits", parent.resourcePath);
+            return Execute(client, resourcePath);
+        }
+
+        public EditFeaturesResource Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -46,13 +50,9 @@ namespace ags_client.Operations.LayerOps
             if (useGlobalIds.HasValue)
                 request.AddParameter("useGlobalIds", useGlobalIds.Value ? "true" : "false");
 
-
-            var result = client.Execute<EditFeaturesResponse>(request, Method.POST);
+            var result = client.Execute<EditFeaturesResource>(request, Method.POST);
 
             return result;
         }
-
-
-
     }
 }

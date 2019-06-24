@@ -4,19 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using RestSharp;
-using Newtonsoft.Json;
-
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Resources.FeatureService;
 
-namespace ags_client.Requests.MapService
+
+namespace ags_client.Resources.FeatureService
 {
-    public class LayerQueryRequest<TF, TG, TA> : BaseRequest
+    public class FeatureResource<TF, TG, TA> : BaseResponse
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
     {
+        public TF feature { get; set; }
     }
 }

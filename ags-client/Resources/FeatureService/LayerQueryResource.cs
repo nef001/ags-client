@@ -3,9 +3,9 @@
 using ags_client.Types;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.LayerOps
+namespace ags_client.Resources.FeatureService
 {
-    public class LayerQueryResponse<TF, TG, TA> : BaseResponse
+    public class LayerQueryResource<TF, TG, TA> : BaseResponse
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using ags_client;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Operations.LayerOps;
 using ags_client.Operations.GeometryOps;
 using ags_client.JsonConverters;
 using ags_client.Utility;
 using ags_client.Requests;
 using ags_client.Requests.MapService;
 using ags_client.Requests.GeometryService;
+using ags_client.Requests.FeatureService;
 
 using Newtonsoft.Json;
 
@@ -33,24 +33,40 @@ namespace ags_client_test_console
 
             var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "Utilities/Geometry/GeometryServer");
 
+            var cat3 = new CatalogRequest("NDV").Execute(client);
+
+            var fs = new FeatureServiceRequest("NDVEditing").Execute(client, cat3);
+
+            var flayer = new LayerRequest<VehicleA>(2).Execute(client, fs);
+
+            var flayerquery = new LayerQueryRequest<VehicleF, Point, VehicleA>()
+            {
+                where = "objectid <= 10",
+                outFields = "*"
+            };
+            var r = flayerquery.Execute(client, flayer);
+
+            var feat = new FeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
+
+
 
             //int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
 
-            var query = new LayerQueryOp<VehicleF, Point, VehicleA>
-            {
-                where = "objectid <= 10",
-                outFields = new List<string> { "*" }
-            };
+            //var query = new LayerQueryOp<VehicleF, Point, VehicleA>
+            //{
+            //    where = "objectid <= 10",
+            //    outFields = new List<string> { "*" }
+            //};
 
-            var response = query.Execute(client, "NDV/NDVEditing", "MapServer", 2);
+            //var response = query.Execute(client, "NDV/NDVEditing", "MapServer", 2);
 
-            var geom1 = response.features[0].geometry;
-            var geom2 = response.features[1].geometry;
+            var geom1 = r.features[0].geometry;
+            var geom2 = r.features[1].geometry;
 
             var projectOp = new ProjectOp<Point>
             {
                 geometries = new Geometries<Point> {
-                    geometries = response.features.Select(x => x.geometry).ToList(),
+                    geometries = r.features.Select(x => x.geometry).ToList(),
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
                 },
                 inSR = new SpatialReference { wkid = 28350 },
@@ -65,7 +81,7 @@ namespace ags_client_test_console
             {
                 geometries = new Geometries<Point>
                 {
-                    geometries = response.features.Select(x => x.geometry).ToList(),
+                    geometries = r.features.Select(x => x.geometry).ToList(),
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
                 },
                 inSR = new SpatialReference { wkid = 28350 },
@@ -95,12 +111,12 @@ namespace ags_client_test_console
                 geometry1 = new Geometry<Point>
                 {
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometry = response.features[0].geometry
+                    geometry = r.features[0].geometry
                 },
                 geometry2 = new Geometry<Point>
                 {
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometry = response.features[1].geometry
+                    geometry = r.features[1].geometry
                 },
                 sr = new SpatialReference { wkid = 28350 },
                 distanceUnit = 9001, //esriSRUnit_Meter
@@ -116,7 +132,7 @@ namespace ags_client_test_console
                 geometries = new Geometries<Point>
                 {
                     geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometries = new List<Point> { response.features[0].geometry, response.features[1].geometry, response.features[2].geometry }
+                    geometries = new List<Point> { r.features[0].geometry, r.features[1].geometry, r.features[2].geometry }
                 },
                 sr = new SpatialReference { wkid = 28350 }
             };
@@ -124,32 +140,32 @@ namespace ags_client_test_console
             if (convexHullResponse != null)
             { }
 
-            var q = new LayerQueryOp<CommonF<Polygon>, Polygon, CommonAttributes>
-            {
-                where = "pin in (1322607,11652291, 1322609)",
-                outFields = new List<string> { "*" }
-            };
+            //var q = new LayerQueryOp<CommonF<Polygon>, Polygon, CommonAttributes>
+            //{
+            //    where = "pin in (1322607,11652291, 1322609)",
+            //    outFields = new List<string> { "*" }
+            //};
 
-            var qresponse = q.Execute(client, "Misc/MirnDiscovery", "MapServer", 1); //WA_CAD_POLY
+            //var qresponse = q.Execute(client, "Misc/MirnDiscovery", "MapServer", 1); //WA_CAD_POLY
 
-            var diffOp = new DifferenceOp<Polygon, Polygon>
-            {
-                geometries = new Geometries<Polygon>
-                {
-                    geometries = qresponse.features.Select(x => x.geometry).ToList(),
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
-                },
-                geometry = new Geometry<Polygon>
-                {
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
-                    geometry = qresponse.features[0].geometry
-                },
-                sr = new SpatialReference { wkid = 28350 }
-            };
+            //var diffOp = new DifferenceOp<Polygon, Polygon>
+            //{
+            //    geometries = new Geometries<Polygon>
+            //    {
+            //        geometries = qresponse.features.Select(x => x.geometry).ToList(),
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
+            //    },
+            //    geometry = new Geometry<Polygon>
+            //    {
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Polygon),
+            //        geometry = qresponse.features[0].geometry
+            //    },
+            //    sr = new SpatialReference { wkid = 28350 }
+            //};
 
-            var diffResponse = diffOp.Execute(client, "Utilities/Geometry");
-            if (diffResponse != null)
-            { }
+            //var diffResponse = diffOp.Execute(client, "Utilities/Geometry");
+            //if (diffResponse != null)
+            //{ }
 
             //var deleteOp = new DeleteFeaturesOp()
             //{
