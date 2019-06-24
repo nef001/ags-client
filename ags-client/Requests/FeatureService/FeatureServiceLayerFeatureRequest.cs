@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 using RestSharp;
 using ags_client.Resources.FeatureService;
+using ags_client.Resources.Common;
 using ags_client.Types;
 using ags_client.Types.Geometry;
 
 namespace ags_client.Requests.FeatureService
 {
-    public class FeatureRequest<TF, TG, TA> : BaseRequest
+    public class FeatureServiceLayerFeatureRequest<TF, TG, TA> : BaseRequest
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
@@ -22,18 +23,18 @@ namespace ags_client.Requests.FeatureService
         public bool? returnM { get; set; }
         public string gdbVersion { get; set; }
 
-        public FeatureRequest(int objectId)
+        public FeatureServiceLayerFeatureRequest(int objectId)
         {
             _objectId = objectId;
         }
 
-        public FeatureResource<TF, TG, TA> Execute(AgsClient client, LayerResource<TA> parent)
+        public FeatureResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _objectId);
-            return Execute(client, resourcePath);
+            return (FeatureResource < TF, TG, TA > )Execute(client, resourcePath);
         }
 
-        public FeatureResource<TF, TG, TA> Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.GET };
 

@@ -24,13 +24,13 @@ namespace ags_client.Requests.FeatureService
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
 
-        public EditFeaturesResource Execute(AgsClient client, LayerResource<TA> parent)
+        public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = String.Format("{0}/deleteFeatures", parent.resourcePath);
-            return Execute(client, resourcePath);
+            return (EditFeaturesResource)Execute(client, resourcePath);
         }
 
-        public EditFeaturesResource Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 

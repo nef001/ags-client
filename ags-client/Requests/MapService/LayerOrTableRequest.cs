@@ -19,10 +19,10 @@ namespace ags_client.Requests.MapService
         public LayerOrTableResource Execute(AgsClient client, MapServiceResource parent) //parent may be the root catalog or a folder catalog
         {
             string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerOrTableId);
-            return Execute(client, resourcePath);
+            return (LayerOrTableResource)Execute(client, resourcePath);
         }
 
-        public LayerOrTableResource Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.GET };
 

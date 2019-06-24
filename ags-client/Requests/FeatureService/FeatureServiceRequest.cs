@@ -26,10 +26,10 @@ namespace ags_client.Requests.FeatureService
         public FeatureServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
             string resourcePath = String.Format("{0}/{1}/FeatureServer", parent.resourcePath, _serviceName);
-            return Execute(client, resourcePath);
+            return (FeatureServiceResource)Execute(client, resourcePath);
         }
 
-        public FeatureServiceResource Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
         {
             var request = new RestRequest(resourcePath) { Method = Method.GET };
 

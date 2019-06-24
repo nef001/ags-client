@@ -55,7 +55,6 @@
     <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
     <Compile Include="JsonConverters\GGeometriesConverter.cs" />
     <Compile Include="JsonConverters\GGeometryConverter.cs" />
-    <Compile Include="Operations\CatalogOps\LayersResponse.cs" />
     <Compile Include="Operations\GeometryOps\AreasAndLengthsOp.cs" />
     <Compile Include="Operations\GeometryOps\AutoCompleteOp.cs" />
     <Compile Include="Operations\GeometryOps\ConvexHullOp.cs" />
@@ -81,10 +80,10 @@
     <Compile Include="Requests\FeatureService\AddFeaturesRequest.cs" />
     <Compile Include="Requests\FeatureService\ApplyEditsRequest.cs" />
     <Compile Include="Requests\FeatureService\DeleteFeaturesRequest.cs" />
-    <Compile Include="Requests\FeatureService\FeatureRequest.cs" />
+    <Compile Include="Requests\FeatureService\FeatureServiceLayerFeatureRequest.cs" />
     <Compile Include="Requests\FeatureService\FeatureServiceRequest.cs" />
-    <Compile Include="Requests\FeatureService\LayerQueryRequest.cs" />
-    <Compile Include="Requests\FeatureService\LayerRequest.cs" />
+    <Compile Include="Requests\FeatureService\FeatureServiceLayerQueryRequest.cs" />
+    <Compile Include="Requests\FeatureService\FeatureServiceLayerRequest.cs" />
     <Compile Include="Requests\FeatureService\UpdateFeaturesRequest.cs" />
     <Compile Include="Requests\GeometryService\GeometryServiceRequest.cs" />
     <Compile Include="Requests\MapService\LayerOrTableRequest.cs" />
@@ -93,10 +92,10 @@
     <Compile Include="Requests\MapService\MapServiceRequest.cs" />
     <Compile Include="Resources\CatalogResource.cs" />
     <Compile Include="Resources\FeatureService\EditFeaturesResource.cs" />
-    <Compile Include="Resources\FeatureService\FeatureResource.cs" />
+    <Compile Include="Resources\Common\FeatureResource.cs" />
     <Compile Include="Resources\FeatureService\FeatureServiceResource.cs" />
-    <Compile Include="Resources\FeatureService\LayerQueryResource.cs" />
-    <Compile Include="Resources\FeatureService\LayerResource.cs" />
+    <Compile Include="Resources\Common\LayerQueryResource.cs" />
+    <Compile Include="Resources\FeatureService\FeatureServiceLayerResource.cs" />
     <Compile Include="Resources\GeometryService\GeometryServiceResource.cs" />
     <Compile Include="Resources\MapService\LayerOrTableResource.cs" />
     <Compile Include="Resources\MapService\LayersResource.cs" />

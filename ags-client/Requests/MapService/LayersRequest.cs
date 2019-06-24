@@ -15,10 +15,10 @@ namespace ags_client.Requests.MapService
         public LayersResource Execute(AgsClient client, MapServiceResource parent) //parent may be the root catalog or a folder catalog
         {
             string resourcePath = String.Format("{0}/layers", parent.resourcePath);
-            return Execute(client, resourcePath);
+            return (LayersResource)Execute(client, resourcePath);
         }
 
-        public LayersResource Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 

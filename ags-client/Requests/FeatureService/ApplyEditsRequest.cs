@@ -12,7 +12,7 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Requests.FeatureService
 {
-    public class ApplyEditsRequest<TF, TG, TA>
+    public class ApplyEditsRequest<TF, TG, TA> : BaseRequest
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
@@ -24,13 +24,13 @@ namespace ags_client.Requests.FeatureService
         public bool? rollbackOnFailure { get; set; }
         public bool? useGlobalIds { get; set; }
 
-        public EditFeaturesResource Execute(AgsClient client, LayerResource<TA> parent)
+        public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = String.Format("{0}/applyEdits", parent.resourcePath);
-            return Execute(client, resourcePath);
+            return (EditFeaturesResource)Execute(client, resourcePath);
         }
 
-        public EditFeaturesResource Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 

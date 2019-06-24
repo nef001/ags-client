@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using RestSharp;
-using Newtonsoft.Json;
 using ags_client.Resources;
+using ags_client.Resources.MapService;
 using ags_client.Types.Geometry;
 
 namespace ags_client.Requests.MapService
@@ -27,10 +23,10 @@ namespace ags_client.Requests.MapService
         public MapServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
             string resourcePath = String.Format("{0}/{1}/MapServer", parent.resourcePath, _serviceName);
-            return Execute(client, resourcePath);
+            return (MapServiceResource)Execute(client, resourcePath);
         }
 
-        public MapServiceResource Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
         { 
             var request = new RestRequest(resourcePath) { Method = Method.GET };
 

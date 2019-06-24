@@ -9,7 +9,7 @@ using ags_client.Types.Geometry;
 
 namespace ags_client.Resources.FeatureService
 {
-    public class LayerResource<TA> : BaseResponse
+    public class FeatureServiceLayerResource<TA> : BaseResponse
         where TA : IRestAttributes
     {
         public string currentVersion { get; set; }

@@ -10,32 +10,32 @@ using ags_client.Types;
 
 namespace ags_client.Requests.FeatureService
 {
-    public class LayerRequest<TA> : BaseRequest
+    public class FeatureServiceLayerRequest<TA> : BaseRequest
         where TA : IRestAttributes
     {
         private int _layerId;
 
         public bool? returnUpdates { get; set; }
 
-        public LayerRequest(int layerId)
+        public FeatureServiceLayerRequest(int layerId)
         {
             _layerId = layerId;
         }
 
-        public LayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent) //parent may be the root catalog or a folder catalog
+        public FeatureServiceLayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent) //parent may be the root catalog or a folder catalog
         {
             string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerId);
-            return Execute(client, resourcePath);
+            return (FeatureServiceLayerResource < TA > )Execute(client, resourcePath);
         }
 
-        public LayerResource<TA> Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
 
-            var result = client.Execute<LayerResource<TA>>(request, Method.POST);
+            var result = client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
             result.resourcePath = resourcePath;
 
             return result;

@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using ags_client.Types;
 using ags_client.Types.Geometry;
 using ags_client.Resources.FeatureService;
+using ags_client.Resources.Common;
 
 namespace ags_client.Requests.FeatureService
 { 
-    public class LayerQueryRequest<TF, TG, TA> : BaseRequest
+    public class FeatureServiceLayerQueryRequest<TF, TG, TA> : BaseRequest
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
         where TA : IRestAttributes
@@ -43,13 +44,13 @@ namespace ags_client.Requests.FeatureService
 
         
 
-        public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, LayerResource<TA> parent)
+        public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = String.Format("{0}/query", parent.resourcePath);
-            return Execute(client, resourcePath);
+            return (LayerQueryResource < TF, TG, TA > )Execute(client, resourcePath);
         }
 
-        public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, string resourcePath)
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 

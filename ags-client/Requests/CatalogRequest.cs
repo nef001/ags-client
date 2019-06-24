@@ -27,8 +27,13 @@ namespace ags_client.Requests
 
         public CatalogResource Execute(AgsClient client)
         {
-            var request = new RestRequest(_folder);
-            request.Method = Method.GET;
+            string resourcePath = (_folder == null) ? String.Empty : _folder;
+            return (CatalogResource)Execute(client, resourcePath);
+        }
+
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
 
             if (!String.IsNullOrWhiteSpace(option))
                 request.AddParameter("option", option);

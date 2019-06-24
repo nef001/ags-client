@@ -37,16 +37,16 @@ namespace ags_client_test_console
 
             var fs = new FeatureServiceRequest("NDVEditing").Execute(client, cat3);
 
-            var flayer = new LayerRequest<VehicleA>(2).Execute(client, fs);
+            var flayer = new FeatureServiceLayerRequest<VehicleA>(2).Execute(client, fs);
 
-            var flayerquery = new LayerQueryRequest<VehicleF, Point, VehicleA>()
+            var flayerquery = new FeatureServiceLayerQueryRequest<VehicleF, Point, VehicleA>()
             {
                 where = "objectid <= 10",
                 outFields = "*"
             };
             var r = flayerquery.Execute(client, flayer);
 
-            var feat = new FeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
+            var feat = new FeatureServiceLayerFeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
 
 
 
