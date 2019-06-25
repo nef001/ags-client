@@ -1,13 +1,12 @@
 ﻿using System;
-
 using RestSharp;
 using Newtonsoft.Json;
-
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class DistanceOp<TG1, TG2>
+    public class DistanceRequest<TG1, TG2> : BaseRequest
         where TG1 : IRestGeometry
         where TG2 : IRestGeometry
     {
@@ -17,12 +16,14 @@ namespace ags_client.Operations.GeometryOps
         public int? distanceUnit { get; set; }
         public bool? geodesic { get; set; }
 
-        public DistanceResponse Execute(AgsClient client, string servicePath)
+        public DistanceResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "distance"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/difference", parent.resourcePath);
+            return (DistanceResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -37,14 +38,9 @@ namespace ags_client.Operations.GeometryOps
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
-            var result = client.Execute<DistanceResponse>(request, Method.POST);
+            var result = client.Execute<DistanceResource>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class DistanceResponse : BaseResponse
-    {
-        public double distance { get; set; }
     }
 }

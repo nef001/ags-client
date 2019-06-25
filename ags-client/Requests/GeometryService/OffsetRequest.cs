@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using ags_client.Types.Geometry;
 using RestSharp;
 using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
+using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+
+namespace ags_client.Requests.GeometryService
 {
-    public class OffsetOp<TG>
+    public class OffsetRequest<TG> : BaseRequest
         where TG : IRestGeometry
     {
         public Geometries<TG> geometries { get; set; }
@@ -18,10 +18,14 @@ namespace ags_client.Operations.GeometryOps
         public double? bevelRatio { get; set; }
         public bool? simplifyResult { get; set; }
 
-        public OffsetOpResponse<TG> Execute(AgsClient client, string servicePath)
+        public OffsetResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "offset"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/offset", parent.resourcePath);
+            return (OffsetResource<TG>)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -46,16 +50,9 @@ namespace ags_client.Operations.GeometryOps
             if (simplifyResult.HasValue)
                 request.AddParameter("simplifyResult", simplifyResult.Value ? "true" : "false");
 
-            var result = client.Execute<OffsetOpResponse<TG>>(request, Method.POST);
+            var result = client.Execute<OffsetResource<TG>>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class OffsetOpResponse<TG> : BaseResponse
-        where TG: IRestGeometry
-    {
-        public string geometryType { get; set; }
-        public List<TG> geometries { get; set; }
     }
 }

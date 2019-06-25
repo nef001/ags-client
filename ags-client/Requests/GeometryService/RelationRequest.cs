@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using ags_client.Types.Geometry;
 using RestSharp;
 using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
+using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+
+namespace ags_client.Requests.GeometryService
 {
-    public class RelationOp<TG1, TG2>
+    public class RelationRequest<TG1, TG2> : BaseRequest
         where TG1 : IRestGeometry
         where TG2 : IRestGeometry
     {
@@ -17,10 +18,14 @@ namespace ags_client.Operations.GeometryOps
         public string relation { get; set; }
         public string relationParam { get; set; }
 
-        public RelationOpResponse Execute(AgsClient client, string servicePath)
+        public RelationResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "relation"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/relation", parent.resourcePath);
+            return (RelationResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -35,14 +40,9 @@ namespace ags_client.Operations.GeometryOps
             if (!String.IsNullOrWhiteSpace(relationParam))
                 request.AddParameter("relationParam", relationParam);
 
-            var result = client.Execute<RelationOpResponse>(request, Method.POST);
+            var result = client.Execute<RelationResource>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class RelationOpResponse : BaseResponse
-    {
-        public List<GeometryRelation> relations { get; set; }
     }
 }

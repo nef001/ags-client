@@ -1,13 +1,6 @@
 ﻿using System;
-
-
 using RestSharp;
-
-
-using ags_client.Operations;
 using ags_client.Utility;
-using ags_client.Types;
-using ags_client.Types.Geometry;
 
 namespace ags_client
 

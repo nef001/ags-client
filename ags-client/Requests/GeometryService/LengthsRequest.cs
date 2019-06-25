@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using ags_client.Types.Geometry;
 using RestSharp;
 using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
+using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class LengthsOp
+    public class LengthsRequest : BaseRequest
     {
         public List<Polyline> polylines { get; set; }
         public SpatialReference sr { get; set; }
@@ -15,10 +15,14 @@ namespace ags_client.Operations.GeometryOps
         public bool? geodesic { get; set; }
         public string calculationType { get; set; } //planar, geodesic or preserveShape
 
-        public LengthsOpResponse Execute(AgsClient client, string servicePath)
+        public LengthsResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "lengths"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/lengths", parent.resourcePath);
+            return (LengthsResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -37,14 +41,9 @@ namespace ags_client.Operations.GeometryOps
             if (!String.IsNullOrWhiteSpace(calculationType))
                 request.AddParameter("calculationType", calculationType);
 
-            var result = client.Execute<LengthsOpResponse>(request, Method.POST);
+            var result = client.Execute<LengthsResource>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class LengthsOpResponse : BaseResponse
-    {
-        public List<double> lengths { get; set; }
     }
 }

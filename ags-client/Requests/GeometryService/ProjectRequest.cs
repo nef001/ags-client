@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using RestSharp;
 using Newtonsoft.Json;
-
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class ProjectOp<TG>
+    public class ProjectRequest<TG> : BaseRequest
         where TG : IRestGeometry
     {
         public Geometries<TG> geometries { get; set; }
@@ -17,12 +16,14 @@ namespace ags_client.Operations.GeometryOps
         public Transformation transformation { get; set; }
         public bool? transformForward { get; set; }
 
-        public ProjectResponse<TG> Execute(AgsClient client, string servicePath)
+        public ProjectResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "project"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/project", parent.resourcePath);
+            return (ProjectResource<TG>)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -37,15 +38,9 @@ namespace ags_client.Operations.GeometryOps
             if (transformForward.HasValue)
                 request.AddParameter("transformForward", transformForward.Value ? "true" : "false");
 
-            var result = client.Execute<ProjectResponse<TG>>(request, Method.POST);
+            var result = client.Execute<ProjectResource<TG>>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class ProjectResponse<TG> : BaseResponse
-        where TG : IRestGeometry
-    {
-        public List<TG> geometries { get; set; }
     }
 }

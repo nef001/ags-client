@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using RestSharp;
 using Newtonsoft.Json;
-
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class IntersectOp<TG1, TG2>
+    public class IntersectRequest<TG1, TG2> : BaseRequest
         where TG1 : IRestGeometry
         where TG2 : IRestGeometry
     {
@@ -19,12 +14,14 @@ namespace ags_client.Operations.GeometryOps
         public Geometry<TG2> geometry { get; set; }
         public SpatialReference sr { get; set; } //wkid of input geometries
 
-        public IntersectResponse<TG1> Execute(AgsClient client, string servicePath)
+        public IntersectResource<TG1> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "intersect"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/intersect", parent.resourcePath);
+            return (IntersectResource<TG1>)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -35,17 +32,9 @@ namespace ags_client.Operations.GeometryOps
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));
 
-
-            var result = client.Execute<IntersectResponse<TG1>>(request, Method.POST);
+            var result = client.Execute<IntersectResource<TG1>>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class IntersectResponse<TG> : BaseResponse
-        where TG : IRestGeometry
-    {
-        public string geometryType { get; set; }
-        public List<TG> geometries { get; set; }
     }
 }

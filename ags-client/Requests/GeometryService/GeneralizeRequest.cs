@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using RestSharp;
 using Newtonsoft.Json;
-
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class GeneralizeOp<TG>
+    public class GeneralizeRequest<TG> : BaseRequest
         where TG : IRestGeometry
     {
         public Geometries<TG> geometries { get; set; } //polyline or polygon
@@ -19,12 +14,14 @@ namespace ags_client.Operations.GeometryOps
         public double? maxDeviation { get; set; }
         public int? deviationUnit { get; set; }
 
-        public GeneralizeResponse<TG> Execute(AgsClient client, string servicePath)
+        public GeneralizeResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "generalize"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/generalize", parent.resourcePath);
+            return (GeneralizeResource<TG>)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -37,16 +34,9 @@ namespace ags_client.Operations.GeometryOps
             if (deviationUnit.HasValue)
                 request.AddParameter("deviationUnit", deviationUnit);
 
-            var result = client.Execute<GeneralizeResponse<TG>>(request, Method.POST);
+            var result = client.Execute<GeneralizeResource<TG>>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class GeneralizeResponse<TG> : BaseResponse
-        where TG : IRestGeometry
-    {
-        public string geometryType { get; set; }
-        public List<TG> geometries { get; set; }
     }
 }

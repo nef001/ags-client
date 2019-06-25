@@ -1,0 +1,39 @@
+﻿using System;
+using RestSharp;
+using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
+using ags_client.Types.Geometry;
+
+namespace ags_client.Requests.GeometryService
+{
+    public class CutRequest<TG> : BaseRequest
+        where TG : IRestGeometry
+    {
+        public Polyline cutter { get; set; }
+        public Geometries<TG> target { get; set; }
+        public SpatialReference sr { get; set; }
+
+        public CutResource Execute(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/cut", parent.resourcePath);
+            return (CutResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
+
+            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
+            if (cutter != null)
+                request.AddParameter("cutter", JsonConvert.SerializeObject(cutter, jss));
+            if (target != null)
+                request.AddParameter("target", JsonConvert.SerializeObject(target, jss));
+            if (sr != null)
+                request.AddParameter("sr", sr.wkid);
+
+            var result = client.Execute<CutResource>(request, Method.POST);
+
+            return result;
+        }
+    }
+}

@@ -8,6 +8,7 @@ using ags_client.Types;
 using ags_client.Types.Geometry;
 using ags_client.Resources.FeatureService;
 using ags_client.Resources.Common;
+using ags_client.JsonConverters;
 
 namespace ags_client.Requests.FeatureService
 { 
@@ -24,7 +25,8 @@ namespace ags_client.Requests.FeatureService
         public string spatialRel { get; set; }
         public string relationParam { get; set; }
         public DateTime? timeInstant { get; set; }
-        public TimeSpan? timeExtent { get; set; }
+        public DateTime? startTime { get; set; }
+        public DateTime? endTime { get; set; }
         public string outFields { get; set; }
         public bool? returnGeometry { get; set; }
         public double? maxAllowableOffset { get; set; }
@@ -71,7 +73,18 @@ namespace ags_client.Requests.FeatureService
             if (!String.IsNullOrEmpty(relationParam))
                 request.AddParameter("relationParam", relationParam);
 
-            //time
+            if (timeInstant.HasValue)
+                request.AddParameter("time", JsonConvert.SerializeObject(timeInstant, new DateTimeUnixConverter()));
+            else
+            {
+                if (startTime.HasValue && endTime.HasValue)
+                {
+                    var converter = new DateTimeUnixConverter();
+                    string timeExtent = String.Format("{0}, {1}", JsonConvert.SerializeObject(startTime, converter), JsonConvert.SerializeObject(endTime, converter));
+                    request.AddParameter("time", timeExtent);
+                }
+            }
+
             if (!String.IsNullOrEmpty(outFields))
                 request.AddParameter("outFields", outFields);
             if (returnGeometry.HasValue)

@@ -4,25 +4,25 @@ using System.Collections.Generic;
 
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Operations.GeometryOps;
+using ags_client.Resources.GeometryService;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ags_client.JsonConverters
 {
-    public class CutResponseConverter : JsonConverter
+    public class CutResourceConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(CutResponse));
+            return (objectType == typeof(CutResource));
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jObj = JObject.Load(reader);
 
-            var result = new CutResponse();
+            var result = new CutResource();
             if (jObj.ContainsKey("error"))
             {
                 result.error = jObj["error"].ToObject<ErrorDetail>();

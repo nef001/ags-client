@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using ags_client;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Operations.GeometryOps;
 using ags_client.JsonConverters;
 using ags_client.Utility;
 using ags_client.Requests;
@@ -60,85 +59,85 @@ namespace ags_client_test_console
 
             //var response = query.Execute(client, "NDV/NDVEditing", "MapServer", 2);
 
-            var geom1 = r.features[0].geometry;
-            var geom2 = r.features[1].geometry;
+            //var geom1 = r.features[0].geometry;
+            //var geom2 = r.features[1].geometry;
 
-            var projectOp = new ProjectOp<Point>
-            {
-                geometries = new Geometries<Point> {
-                    geometries = r.features.Select(x => x.geometry).ToList(),
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
-                },
-                inSR = new SpatialReference { wkid = 28350 },
-                outSR = new SpatialReference { wkid = 4326 }
-            };
+            //var projectOp = new ProjectOp<Point>
+            //{
+            //    geometries = new Geometries<Point> {
+            //        geometries = r.features.Select(x => x.geometry).ToList(),
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+            //    },
+            //    inSR = new SpatialReference { wkid = 28350 },
+            //    outSR = new SpatialReference { wkid = 4326 }
+            //};
 
-            var projectResponse = projectOp.Execute(client, "Utilities/Geometry");
-            if (projectResponse != null)
-            { }
+            //var projectResponse = projectOp.Execute(client, "Utilities/Geometry");
+            //if (projectResponse != null)
+            //{ }
 
-            var bufferOp = new BufferOp<Point>
-            {
-                geometries = new Geometries<Point>
-                {
-                    geometries = r.features.Select(x => x.geometry).ToList(),
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
-                },
-                inSR = new SpatialReference { wkid = 28350 },
-                distances = new List<double> { 10.1, 20.67 }, //each input geom gets buffered by each distance
-                unit = 9001, //esriSRUnit_Meter
-                unionResults = false,
-                geodesic = false
-            };
+            //var bufferOp = new BufferOp<Point>
+            //{
+            //    geometries = new Geometries<Point>
+            //    {
+            //        geometries = r.features.Select(x => x.geometry).ToList(),
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+            //    },
+            //    inSR = new SpatialReference { wkid = 28350 },
+            //    distances = new List<double> { 10.1, 20.67 }, //each input geom gets buffered by each distance
+            //    unit = 9001, //esriSRUnit_Meter
+            //    unionResults = false,
+            //    geodesic = false
+            //};
 
-            var bufferResponse = bufferOp.Execute(client, "Utilities/Geometry");
-            if (bufferResponse != null)
-            { }
+            //var bufferResponse = bufferOp.Execute(client, "Utilities/Geometry");
+            //if (bufferResponse != null)
+            //{ }
 
 
-            var areasAndLengthsOp = new AreasAndLengthsOp
-            {
-                polygons = bufferResponse.geometries,
-                sr = new SpatialReference { wkid = 28350 },
-                calculationType = "planar"
-            };
-            var areasAndLengthsResponse = areasAndLengthsOp.Execute(client, "Utilities/Geometry");
-            if (areasAndLengthsResponse != null)
-            { }
+            //var areasAndLengthsOp = new AreasAndLengthsOp
+            //{
+            //    polygons = bufferResponse.geometries,
+            //    sr = new SpatialReference { wkid = 28350 },
+            //    calculationType = "planar"
+            //};
+            //var areasAndLengthsResponse = areasAndLengthsOp.Execute(client, "Utilities/Geometry");
+            //if (areasAndLengthsResponse != null)
+            //{ }
 
-            var distanceOp = new DistanceOp<Point, Point>
-            {
-                geometry1 = new Geometry<Point>
-                {
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometry = r.features[0].geometry
-                },
-                geometry2 = new Geometry<Point>
-                {
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometry = r.features[1].geometry
-                },
-                sr = new SpatialReference { wkid = 28350 },
-                distanceUnit = 9001, //esriSRUnit_Meter
-                geodesic = false
-            };
+            //var distanceOp = new DistanceOp<Point, Point>
+            //{
+            //    geometry1 = new Geometry<Point>
+            //    {
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+            //        geometry = r.features[0].geometry
+            //    },
+            //    geometry2 = new Geometry<Point>
+            //    {
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+            //        geometry = r.features[1].geometry
+            //    },
+            //    sr = new SpatialReference { wkid = 28350 },
+            //    distanceUnit = 9001, //esriSRUnit_Meter
+            //    geodesic = false
+            //};
 
-            var distanceResponse = distanceOp.Execute(client, "Utilities/Geometry");
-            if (distanceResponse != null)
-            { }
+            //var distanceResponse = distanceOp.Execute(client, "Utilities/Geometry");
+            //if (distanceResponse != null)
+            //{ }
 
-            var convexHullOp = new ConvexHullOp<Point>
-            {
-                geometries = new Geometries<Point>
-                {
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
-                    geometries = new List<Point> { r.features[0].geometry, r.features[1].geometry, r.features[2].geometry }
-                },
-                sr = new SpatialReference { wkid = 28350 }
-            };
-            var convexHullResponse = convexHullOp.Execute(client, "Utilities/Geometry");
-            if (convexHullResponse != null)
-            { }
+            //var convexHullOp = new ConvexHullOp<Point>
+            //{
+            //    geometries = new Geometries<Point>
+            //    {
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point),
+            //        geometries = new List<Point> { r.features[0].geometry, r.features[1].geometry, r.features[2].geometry }
+            //    },
+            //    sr = new SpatialReference { wkid = 28350 }
+            //};
+            //var convexHullResponse = convexHullOp.Execute(client, "Utilities/Geometry");
+            //if (convexHullResponse != null)
+            //{ }
 
             //var q = new LayerQueryOp<CommonF<Polygon>, Polygon, CommonAttributes>
             //{

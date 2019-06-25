@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using RestSharp;
 using Newtonsoft.Json;
-
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class DensifyOp<TG>
+    public class DensifyRequest<TG>:BaseRequest
         where TG : IRestGeometry
     {
         public Geometries<TG> geometries { get; set; } //polyline or polygon
@@ -20,12 +15,14 @@ namespace ags_client.Operations.GeometryOps
         public bool? geodesic { get; set; }
         public int? lengthUnit { get; set; }
 
-        public DensifyResponse<TG> Execute(AgsClient client, string servicePath)
+        public DensifyResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "densify"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/densify", parent.resourcePath);
+            return (DensifyResource<TG>)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -40,16 +37,9 @@ namespace ags_client.Operations.GeometryOps
             if (lengthUnit.HasValue)
                 request.AddParameter("lengthUnit", lengthUnit);
 
-            var result = client.Execute<DensifyResponse<TG>>(request, Method.POST);
+            var result = client.Execute<DensifyResource<TG>>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class DensifyResponse<TG> : BaseResponse
-        where TG : IRestGeometry
-    {
-        public string geometryType { get; set; }
-        public List<TG> geometries { get; set; }
     }
 }

@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using RestSharp;
 using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class AutoCompleteOp
+    public class AutoCompleteRequest : BaseRequest
     {
         public List<Polygon> polygons { get; set; }
         public List<Polyline> polylines { get; set; }
         public SpatialReference sr { get; set; }
 
-        public AutoCompleteResponse Execute(AgsClient client, string servicePath)
+        public AutoCompleteResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "autoComplete"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/autoComplete", parent.resourcePath);
+            return (AutoCompleteResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -31,18 +31,10 @@ namespace ags_client.Operations.GeometryOps
                 request.AddParameter("polylines", JsonConvert.SerializeObject(polylines, jss));
             if (sr != null)
                 request.AddParameter("sr", sr.wkid);
-            
 
-            var result = client.Execute<AutoCompleteResponse>(request, Method.POST);
+            var result = client.Execute<AutoCompleteResource>(request, Method.POST);
 
             return result;
         }
-    }
-
-    public class AutoCompleteResponse : BaseResponse
-    {
-        public List<Polygon> geometries { get; set; } //polygons
-        public SpatialReference spatialReference { get; set; }
-
     }
 }

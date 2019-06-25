@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 using RestSharp;
 using Newtonsoft.Json;
+using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
 
-namespace ags_client.Operations.GeometryOps
+namespace ags_client.Requests.GeometryService
 {
-    public class AreasAndLengthsOp
+    public class AreasAndLengthsRequest : BaseRequest
     {
         public List<Polygon> polygons { get; set; }
         public SpatialReference sr { get; set; }
@@ -19,12 +16,14 @@ namespace ags_client.Operations.GeometryOps
         public string areaUnit { get; set; }
         public string calculationType { get; set; }
 
-        public AreasAndLengthsResponse Execute(AgsClient client, string servicePath)
+        public AreasAndLengthsResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            //servicePath is typically "Utilities/Geometry"
-
-            var request = new RestRequest(String.Format("{0}/{1}/{2}", servicePath, "GeometryServer", "areasAndLengths"));
-            request.Method = Method.POST;
+            string resourcePath = String.Format("{0}/areasAndLengths", parent.resourcePath);
+            return (AreasAndLengthsResource)Execute(client, resourcePath);
+        }
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -39,16 +38,9 @@ namespace ags_client.Operations.GeometryOps
             if (!String.IsNullOrWhiteSpace(calculationType))
                 request.AddParameter("calculationType", calculationType);
 
-            var result = client.Execute<AreasAndLengthsResponse>(request, Method.POST);
+            var result = client.Execute<AreasAndLengthsResource>(request, Method.POST);
 
             return result;
         }
-
-    }
-
-    public class AreasAndLengthsResponse : BaseResponse
-    {
-        public List<double> areas { get; set; }
-        public List<double> lengths { get; set; }
     }
 }
