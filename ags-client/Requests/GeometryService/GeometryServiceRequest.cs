@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using RestSharp;
 using ags_client.Resources;
@@ -23,12 +24,17 @@ namespace ags_client.Requests.GeometryService
 
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - typically Utilities/Geometry/GeometryServer 
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
-
+            var request = createRequest(resourcePath);
             var result = client.Execute<GeometryServiceResource>(request, Method.GET);
             result.resourcePath = resourcePath;
 
             return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            return request;
         }
     }
 }

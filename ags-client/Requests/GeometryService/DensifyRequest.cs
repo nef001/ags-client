@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
 using ags_client.Resources.GeometryService;
@@ -22,6 +23,14 @@ namespace ags_client.Requests.GeometryService
         }
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<DensifyResource<TG>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
@@ -37,9 +46,7 @@ namespace ags_client.Requests.GeometryService
             if (lengthUnit.HasValue)
                 request.AddParameter("lengthUnit", lengthUnit);
 
-            var result = client.Execute<DensifyResource<TG>>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

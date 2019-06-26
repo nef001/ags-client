@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using RestSharp;
 using Newtonsoft.Json;
@@ -21,6 +22,14 @@ namespace ags_client.Requests.GeometryService
         }
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<AutoCompleteResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
@@ -32,9 +41,7 @@ namespace ags_client.Requests.GeometryService
             if (sr != null)
                 request.AddParameter("sr", sr.wkid);
 
-            var result = client.Execute<AutoCompleteResource>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

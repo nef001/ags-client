@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using RestSharp;
 using Newtonsoft.Json;
@@ -28,6 +29,14 @@ namespace ags_client.Requests.GeometryService
         }
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<BufferResource<Polygon>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
@@ -49,9 +58,7 @@ namespace ags_client.Requests.GeometryService
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
-            var result = client.Execute<BufferResource<Polygon>>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }
