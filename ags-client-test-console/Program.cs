@@ -20,7 +20,7 @@ namespace ags_client_test_console
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
@@ -47,7 +47,25 @@ namespace ags_client_test_console
 
             var feat = new FeatureServiceLayerFeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
 
+            var geom = r.features[0].geometry;
 
+            var projectReq = new ProjectRequest<Point>()
+            {
+                geometries = new Geometries<Point>
+                {
+                    geometries = r.features.Select(x => x.geometry).ToList(),
+                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+                },
+                inSR = new SpatialReference { wkid = 28350 },
+                outSR = new SpatialReference { wkid = 4326 }
+            };
+
+            var z = await projectReq.ExecuteAsync(client, gs);
+
+            if (z != null)
+            {
+
+            }
 
             //int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
 

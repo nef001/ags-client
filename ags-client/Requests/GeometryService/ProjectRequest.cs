@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
 using ags_client.Resources.GeometryService;
@@ -21,7 +23,21 @@ namespace ags_client.Requests.GeometryService
             string resourcePath = String.Format("{0}/project", parent.resourcePath);
             return (ProjectResource<TG>)Execute(client, resourcePath);
         }
+        public async Task<ProjectResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/project", parent.resourcePath);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<ProjectResource<TG>>(request, Method.POST);
+        }
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<ProjectResource<TG>>(request, Method.POST);
+
+            return result;
+        }
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -38,9 +54,11 @@ namespace ags_client.Requests.GeometryService
             if (transformForward.HasValue)
                 request.AddParameter("transformForward", transformForward.Value ? "true" : "false");
 
-            var result = client.Execute<ProjectResource<TG>>(request, Method.POST);
-
-            return result;
+            return request;
         }
+
+        
+
+        
     }
 }
