@@ -19,12 +19,31 @@ namespace ags_client.Requests.GeometryService
         public double? bevelRatio { get; set; }
         public bool? simplifyResult { get; set; }
 
+        const string resource = "offset";
+
         public OffsetResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/offset", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (OffsetResource<TG>)Execute(client, resourcePath);
         }
+
+        public async Task<OffsetResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<OffsetResource<TG>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<OffsetResource<TG>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -51,9 +70,7 @@ namespace ags_client.Requests.GeometryService
             if (simplifyResult.HasValue)
                 request.AddParameter("simplifyResult", simplifyResult.Value ? "true" : "false");
 
-            var result = client.Execute<OffsetResource<TG>>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

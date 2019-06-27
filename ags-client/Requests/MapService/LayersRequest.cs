@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
 using ags_client.Resources.MapService;
@@ -12,13 +12,31 @@ namespace ags_client.Requests.MapService
     {
         public List<Layer> dynamicLayers { get; set; }
 
+        const string resource = "layers";
+
         public LayersResource Execute(AgsClient client, MapServiceResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/layers", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (LayersResource)Execute(client, resourcePath);
         }
 
+        public async Task<LayersResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<LayersResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<LayersResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -27,10 +45,7 @@ namespace ags_client.Requests.MapService
             if ((dynamicLayers != null) && (dynamicLayers.Count > 0))
                 request.AddParameter("dynamicLayers", JsonConvert.SerializeObject(dynamicLayers, jss));
 
-            var result = client.Execute<LayersResource>(request, Method.POST);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

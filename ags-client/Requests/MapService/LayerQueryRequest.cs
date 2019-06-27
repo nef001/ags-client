@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
 
@@ -42,14 +42,32 @@ namespace ags_client.Requests.MapService
         public string gdbVersion { get; set; }
         public bool? returnDistinctValues { get; set; }
 
+        const string resource = "query";
+
         public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, LayerOrTableResource parent)
         {
-            string resourcePath = String.Format("{0}/query", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (LayerQueryResource<TF, TG, TA>)Execute(client, resourcePath);
 
         }
 
+        public async Task<LayerQueryResource<TF, TG, TA>> ExecuteAsync(AgsClient client, LayerOrTableResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -97,7 +115,7 @@ namespace ags_client.Requests.MapService
             if (returnIdsOnly.HasValue)
                 request.AddParameter("returnIdsOnly", returnIdsOnly.Value ? "true" : "false");
             if (!String.IsNullOrWhiteSpace(orderByFields))
-                request.AddParameter("orderByFields", orderByFields);            
+                request.AddParameter("orderByFields", orderByFields);
             if (outStatistics != null)
                 request.AddParameter("outStatistics", JsonConvert.SerializeObject(outStatistics, jss));
             if (!String.IsNullOrWhiteSpace(groupByFieldsForStatistics))
@@ -110,10 +128,8 @@ namespace ags_client.Requests.MapService
                 request.AddParameter("gdbVersion", gdbVersion);
             if (returnDistinctValues.HasValue)
                 request.AddParameter("returnDistinctValues", returnDistinctValues.Value ? "true" : "false");
-            var result = client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
-            result.resourcePath = resourcePath;
 
-            return result;
+            return request;
         }
     }
 }

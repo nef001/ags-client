@@ -34,9 +34,25 @@ namespace ags_client.Requests.FeatureService
             return (FeatureResource < TF, TG, TA > )Execute(client, resourcePath);
         }
 
+        public async Task<FeatureResource<TF, TG, TA>> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _objectId);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<FeatureResource<TF, TG, TA>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            var request = createRequest(resourcePath);
+            var result = client.Execute<FeatureResource<TF, TG, TA>>(request, Method.GET);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnZ.HasValue)
                 request.AddParameter("returnZ", returnZ.Value ? "true" : "false");
@@ -45,10 +61,7 @@ namespace ags_client.Requests.FeatureService
             if (!String.IsNullOrWhiteSpace(gdbVersion))
                 request.AddParameter("gdbVersion", gdbVersion);
 
-            var result = client.Execute<FeatureResource<TF, TG, TA>>(request, Method.GET);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

@@ -14,11 +14,22 @@ namespace ags_client.Requests.GeometryService
         public Geometries<TG> target { get; set; }
         public SpatialReference sr { get; set; }
 
+        const string resource = "cut";
+
         public CutResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/cut", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (CutResource)Execute(client, resourcePath);
         }
+
+        public async Task<CutResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<CutResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);

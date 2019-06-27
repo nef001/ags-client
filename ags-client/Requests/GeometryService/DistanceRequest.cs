@@ -17,11 +17,22 @@ namespace ags_client.Requests.GeometryService
         public int? distanceUnit { get; set; }
         public bool? geodesic { get; set; }
 
+        const string resource = "distance";
+
         public DistanceResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/difference", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (DistanceResource)Execute(client, resourcePath);
         }
+
+        public async Task<DistanceResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<DistanceResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);

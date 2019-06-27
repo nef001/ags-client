@@ -15,12 +15,31 @@ namespace ags_client.Requests.GeometryService
         public SpatialReference sr { get; set; }
         public int? extendHow { get; set; }
 
+        const string resource = "trimExtend";
+
         public TrimExtendResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/trimExtend", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (TrimExtendResource)Execute(client, resourcePath);
         }
+
+        public async Task<TrimExtendResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<TrimExtendResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<TrimExtendResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -35,9 +54,7 @@ namespace ags_client.Requests.GeometryService
             if (extendHow.HasValue)
                 request.AddParameter("extendHow", extendHow);
 
-            var result = client.Execute<TrimExtendResource>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

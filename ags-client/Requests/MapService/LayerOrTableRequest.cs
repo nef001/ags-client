@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using RestSharp;
 using ags_client.Resources.MapService;
 
@@ -22,17 +22,30 @@ namespace ags_client.Requests.MapService
             return (LayerOrTableResource)Execute(client, resourcePath);
         }
 
+        public async Task<LayerOrTableResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerOrTableId);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<LayerOrTableResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            var request = createRequest(resourcePath);
+            var result = client.Execute<LayerOrTableResource>(request, Method.GET);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
 
-            var result = client.Execute<LayerOrTableResource>(request, Method.GET);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

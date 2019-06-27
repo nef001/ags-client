@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using RestSharp;
 using ags_client.Resources;
 using ags_client.Resources.MapService;
@@ -15,6 +15,8 @@ namespace ags_client.Requests.MapService
         public string option { get; set; }
         public SpatialReference outSR { get; set; }
 
+        const string resource = "MapServer";
+
         public MapServiceRequest(string serviceName)
         {
             _serviceName = serviceName;
@@ -22,13 +24,27 @@ namespace ags_client.Requests.MapService
 
         public MapServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}/MapServer", parent.resourcePath, _serviceName);
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             return (MapServiceResource)Execute(client, resourcePath);
         }
 
+        public async Task<MapServiceResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<MapServiceResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
-        { 
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+        {
+            var request = createRequest(resourcePath);
+            return client.Execute<MapServiceResource>(request, Method.GET);
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
@@ -36,11 +52,8 @@ namespace ags_client.Requests.MapService
                 request.AddParameter("option", option);
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
-            
-            var result = client.Execute<MapServiceResource>(request, Method.GET);
-            result.resourcePath = resourcePath;
 
-            return result;
+            return request;
         }
     }
 }

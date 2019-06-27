@@ -24,13 +24,31 @@ namespace ags_client.Requests.FeatureService
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
 
+        const string resource = "deleteFeatures";
+
         public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/deleteFeatures", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (EditFeaturesResource)Execute(client, resourcePath);
         }
 
+        public async Task<EditFeaturesResource> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<EditFeaturesResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<EditFeaturesResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -53,9 +71,7 @@ namespace ags_client.Requests.FeatureService
             if (rollbackOnFailure.HasValue)
                 request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
 
-            var result = client.Execute<EditFeaturesResource>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

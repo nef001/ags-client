@@ -15,11 +15,22 @@ namespace ags_client.Requests.GeometryService
         public Geometry<TG2> geometry { get; set; }
         public SpatialReference sr { get; set; } //wkid of input geometries
 
+        const string resource = "difference";
+
         public DifferenceResource<TG1> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/difference", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (DifferenceResource<TG1>)Execute(client, resourcePath);
         }
+
+        public async Task<DifferenceResource<TG1>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<DifferenceResource<TG1>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);

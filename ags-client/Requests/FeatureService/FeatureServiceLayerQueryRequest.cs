@@ -42,18 +42,34 @@ namespace ags_client.Requests.FeatureService
         public List<Statistic> outStatistics { get; set; }
         public bool? returnZ { get; set; }
         public bool? returnM { get; set; }
-        
 
 
-        
+        const string resource = "query";
+
 
         public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/query", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (LayerQueryResource < TF, TG, TA > )Execute(client, resourcePath);
         }
 
+        public async Task<LayerQueryResource<TF, TG, TA>> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -115,10 +131,7 @@ namespace ags_client.Requests.FeatureService
             if (returnM.HasValue)
                 request.AddParameter("returnM", returnM.Value ? "true" : "false");
 
-            var result = client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

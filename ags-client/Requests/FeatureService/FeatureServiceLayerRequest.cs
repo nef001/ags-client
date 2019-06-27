@@ -14,7 +14,6 @@ namespace ags_client.Requests.FeatureService
         where TA : IRestAttributes
     {
         private int _layerId;
-
         public bool? returnUpdates { get; set; }
 
         public FeatureServiceLayerRequest(int layerId)
@@ -28,17 +27,30 @@ namespace ags_client.Requests.FeatureService
             return (FeatureServiceLayerResource < TA > )Execute(client, resourcePath);
         }
 
+        public async Task<FeatureServiceLayerResource<TA>> ExecuteAsync(AgsClient client, FeatureServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerId);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<FeatureServiceLayerResource<TA>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
 
-            var result = client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

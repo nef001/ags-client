@@ -13,12 +13,31 @@ namespace ags_client.Requests.GeometryService
         public Geometries<TG> geometries { get; set; }
         public SpatialReference sr { get; set; }
 
+        const string resource = "reshape";
+
         public SimplifyResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/reshape", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (SimplifyResource<TG>)Execute(client, resourcePath);
         }
+
+        public async Task<SimplifyResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<SimplifyResource<TG>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<SimplifyResource<TG>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -29,9 +48,7 @@ namespace ags_client.Requests.GeometryService
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));
 
-            var result = client.Execute<SimplifyResource<TG>>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

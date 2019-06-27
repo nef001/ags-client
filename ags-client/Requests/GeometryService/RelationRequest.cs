@@ -19,12 +19,31 @@ namespace ags_client.Requests.GeometryService
         public string relation { get; set; }
         public string relationParam { get; set; }
 
+        const string resource = "relation";
+
         public RelationResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/relation", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (RelationResource)Execute(client, resourcePath);
         }
+
+        public async Task<RelationResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<RelationResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<RelationResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -41,9 +60,7 @@ namespace ags_client.Requests.GeometryService
             if (!String.IsNullOrWhiteSpace(relationParam))
                 request.AddParameter("relationParam", relationParam);
 
-            var result = client.Execute<RelationResource>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

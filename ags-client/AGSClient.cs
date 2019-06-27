@@ -23,16 +23,23 @@ namespace ags_client
         {
             request.AddParameter("f", "json"); // used on every request
 
-            var response = _client.Execute<T>(request, httpMethod);
+            var restResponse = _client.Execute<T>(request, httpMethod);
+
+            if (restResponse != null)
+            {
+                var br = restResponse.Data as BaseResponse;
+                if (br != null)
+                    br.resourcePath = request.Resource;
+            }
             
-            if (response.ErrorException != null)
+            if (restResponse.ErrorException != null)
             {
                 const string message = "Error retrieving response.  Check inner details for more info.";
-                var ex = new ApplicationException(message, response.ErrorException);
+                var ex = new ApplicationException(message, restResponse.ErrorException);
                 throw ex;
             }
 
-            return response.Data;
+            return restResponse.Data;
         }
 
         public async Task<T> ExecuteAsync<T>(RestRequest request, Method httpMethod) where T : new()
@@ -40,6 +47,13 @@ namespace ags_client
             request.AddParameter("f", "json"); // used on every request
 
             var restResponse = await _client.ExecuteTaskAsync<T>(request, httpMethod);
+
+            if (restResponse != null)
+            {
+                var br = restResponse.Data as BaseResponse;
+                if (br != null)
+                    br.resourcePath = request.Resource;
+            }
 
             if (restResponse.ErrorException != null)
             {

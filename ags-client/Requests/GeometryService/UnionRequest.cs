@@ -14,12 +14,31 @@ namespace ags_client.Requests.GeometryService
         public Geometries<TG> geometries { get; set; }
         public SpatialReference sr { get; set; }
 
+        const string resource = "union";
+
         public UnionResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/union", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (UnionResource<TG>)Execute(client, resourcePath);
         }
+
+        public async Task<UnionResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<UnionResource<TG>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<UnionResource<TG>>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
@@ -30,9 +49,7 @@ namespace ags_client.Requests.GeometryService
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));
 
-            var result = client.Execute<UnionResource<TG>>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

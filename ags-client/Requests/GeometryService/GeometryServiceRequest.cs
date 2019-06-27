@@ -11,6 +11,8 @@ namespace ags_client.Requests.GeometryService
     {
         private string _serviceName;
 
+        const string resource = "GeometryServer";
+
         public GeometryServiceRequest(string serviceName) //typically Geometry
         {
             _serviceName = serviceName;
@@ -18,15 +20,22 @@ namespace ags_client.Requests.GeometryService
 
         public GeometryServiceResource Execute(AgsClient client, CatalogResource parent) //parent is typically the Utilities folder
         {
-            string resourcePath = String.Format("{0}/{1}/GeometryServer", parent.resourcePath, _serviceName);
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             return (GeometryServiceResource)Execute(client, resourcePath);
+        }
+
+        public async Task<GeometryServiceResource> ExecuteAsync(AgsClient client, CatalogResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<GeometryServiceResource>(request, Method.POST);
         }
 
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - typically Utilities/Geometry/GeometryServer 
         {
             var request = createRequest(resourcePath);
             var result = client.Execute<GeometryServiceResource>(request, Method.GET);
-            result.resourcePath = resourcePath;
 
             return result;
         }

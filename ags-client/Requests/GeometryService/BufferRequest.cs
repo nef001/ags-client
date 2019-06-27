@@ -22,11 +22,22 @@ namespace ags_client.Requests.GeometryService
         public bool? unionResults { get; set; }
         public bool? geodesic { get; set; }
 
+        const string resource = "buffer";
+
         public BufferResource<Polygon> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/buffer", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (BufferResource<Polygon>)Execute(client, resourcePath);
         }
+
+        public async Task<BufferResource<Polygon>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<BufferResource<Polygon>>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);

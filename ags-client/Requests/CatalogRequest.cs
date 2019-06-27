@@ -31,21 +31,32 @@ namespace ags_client.Requests
             return (CatalogResource)Execute(client, resourcePath);
         }
 
+        public async Task<CatalogResource> ExecuteAsync(AgsClient client)
+        {
+            string resourcePath = (_folder == null) ? String.Empty : _folder;
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<CatalogResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            var request = createRequest(resourcePath);
+            return client.Execute<CatalogResource>(request, Method.GET);
+        }
+
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (!String.IsNullOrWhiteSpace(option))
                 request.AddParameter("option", option);
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
 
-            var result = client.Execute<CatalogResource>(request, Method.GET);
-            result.resourcePath = _folder;
-
-            return result;
+            return request;
         }
-
 
 
     }

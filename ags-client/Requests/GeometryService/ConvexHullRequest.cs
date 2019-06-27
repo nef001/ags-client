@@ -13,11 +13,22 @@ namespace ags_client.Requests.GeometryService
         public Geometries<TG> geometries { get; set; }
         public SpatialReference sr { get; set; }
 
+        const string resource = "convexHull";
+
         public ConvexHullResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/convexHull", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (ConvexHullResource)Execute(client, resourcePath);
         }
+
+        public async Task<ConvexHullResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<ConvexHullResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);

@@ -16,19 +16,35 @@ namespace ags_client.Requests.GeometryService
         public bool? geodesic { get; set; }
         public string calculationType { get; set; } //planar, geodesic or preserveShape
 
+        const string resource = "lengths";
+
         public LengthsResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/lengths", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (LengthsResource)Execute(client, resourcePath);
         }
+
+        public async Task<LengthsResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<LengthsResource>(request, Method.POST);
+        }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
+        {
+            var request = createRequest(resourcePath);
+            var result = client.Execute<LengthsResource>(request, Method.POST);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-
-            if (polylines != null)
-                request.AddParameter("polylines", JsonConvert.SerializeObject(polylines, jss));
 
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));
@@ -42,9 +58,7 @@ namespace ags_client.Requests.GeometryService
             if (!String.IsNullOrWhiteSpace(calculationType))
                 request.AddParameter("calculationType", calculationType);
 
-            var result = client.Execute<LengthsResource>(request, Method.POST);
-
-            return result;
+            return request;
         }
     }
 }

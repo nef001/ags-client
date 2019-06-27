@@ -18,6 +18,8 @@ namespace ags_client.Requests.FeatureService
         public string option { get; set; }
         public SpatialReference outSR { get; set; }
 
+        const string resource = "FeatureServer";
+
         public FeatureServiceRequest(string serviceName)
         {
             _serviceName = serviceName;
@@ -25,23 +27,36 @@ namespace ags_client.Requests.FeatureService
 
         public FeatureServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}/FeatureServer", parent.resourcePath, _serviceName);
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             return (FeatureServiceResource)Execute(client, resourcePath);
+        }
+
+        public async Task<FeatureServiceResource> ExecuteAsync(AgsClient client, FeatureServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<FeatureServiceResource>(request, Method.POST);
         }
 
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            var request = createRequest(resourcePath);
+            var result = client.Execute<FeatureServiceResource>(request, Method.GET);
+
+            return result;
+        }
+
+        private RestRequest createRequest(string resourcePath)
+        {
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (!String.IsNullOrWhiteSpace(option))
                 request.AddParameter("option", option);
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
 
-            var result = client.Execute<FeatureServiceResource>(request, Method.GET);
-            result.resourcePath = resourcePath;
-
-            return result;
+            return request;
         }
     }
 }

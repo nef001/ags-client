@@ -17,10 +17,19 @@ namespace ags_client.Requests.GeometryService
         public string areaUnit { get; set; }
         public string calculationType { get; set; }
 
+        const string resource = "areasAndLengths";
+
         public AreasAndLengthsResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/areasAndLengths", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (AreasAndLengthsResource)Execute(client, resourcePath);
+        }
+        public async Task<AreasAndLengthsResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
+        {
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            var request = createRequest(resourcePath);
+
+            return await client.ExecuteAsync<AreasAndLengthsResource>(request, Method.POST);
         }
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {

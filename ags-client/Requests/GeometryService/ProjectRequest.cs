@@ -16,18 +16,22 @@ namespace ags_client.Requests.GeometryService
         public Transformation transformation { get; set; }
         public bool? transformForward { get; set; }
 
+        const string resource = "project";
+
         public ProjectResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/project", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             return (ProjectResource<TG>)Execute(client, resourcePath);
         }
+
         public async Task<ProjectResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/project", parent.resourcePath);
+            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<ProjectResource<TG>>(request, Method.POST);
         }
+
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
@@ -35,6 +39,7 @@ namespace ags_client.Requests.GeometryService
 
             return result;
         }
+
         private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
