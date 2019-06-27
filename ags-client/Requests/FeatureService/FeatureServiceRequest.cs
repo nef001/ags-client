@@ -42,9 +42,7 @@ namespace ags_client.Requests.FeatureService
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<FeatureServiceResource>(request, Method.GET);
-
-            return result;
+            return client.Execute<FeatureServiceResource>(request, Method.GET);
         }
 
         private RestRequest createRequest(string resourcePath)

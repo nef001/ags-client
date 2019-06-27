@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using RestSharp;
@@ -43,9 +42,7 @@ namespace ags_client.Requests.FeatureService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<EditFeaturesResource>(request, Method.POST);
-
-            return result;
+            return client.Execute<EditFeaturesResource>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)

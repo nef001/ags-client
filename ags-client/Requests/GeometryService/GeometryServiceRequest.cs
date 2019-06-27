@@ -29,20 +29,18 @@ namespace ags_client.Requests.GeometryService
             string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             var request = createRequest(resourcePath);
 
-            return await client.ExecuteAsync<GeometryServiceResource>(request, Method.POST);
+            return await client.ExecuteAsync<GeometryServiceResource>(request, Method.GET);
         }
 
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - typically Utilities/Geometry/GeometryServer 
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<GeometryServiceResource>(request, Method.GET);
-
-            return result;
+            return client.Execute<GeometryServiceResource>(request, Method.GET);
         }
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
             return request;
         }
     }

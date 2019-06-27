@@ -62,9 +62,7 @@ namespace ags_client.Requests.MapService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
-
-            return result;
+            return client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)

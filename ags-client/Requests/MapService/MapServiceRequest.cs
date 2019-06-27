@@ -33,7 +33,7 @@ namespace ags_client.Requests.MapService
             string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             var request = createRequest(resourcePath);
 
-            return await client.ExecuteAsync<MapServiceResource>(request, Method.POST);
+            return await client.ExecuteAsync<MapServiceResource>(request, Method.GET);
         }
 
         public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
@@ -44,7 +44,7 @@ namespace ags_client.Requests.MapService
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
 
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");

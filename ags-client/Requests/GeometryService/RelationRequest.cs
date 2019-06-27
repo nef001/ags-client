@@ -38,9 +38,7 @@ namespace ags_client.Requests.GeometryService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<RelationResource>(request, Method.POST);
-
-            return result;
+            return client.Execute<RelationResource>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)

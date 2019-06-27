@@ -38,9 +38,7 @@ namespace ags_client.Requests.FeatureService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
-
-            return result;
+            return client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)

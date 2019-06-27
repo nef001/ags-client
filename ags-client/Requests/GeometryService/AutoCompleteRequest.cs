@@ -34,9 +34,7 @@ namespace ags_client.Requests.GeometryService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            var result = client.Execute<AutoCompleteResource>(request, Method.POST);
-
-            return result;
+            return client.Execute<AutoCompleteResource>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)

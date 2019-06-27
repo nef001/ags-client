@@ -29,7 +29,7 @@ namespace ags_client.Requests
             string resourcePath = (_folder == null) ? String.Empty : _folder;
             var request = createRequest(resourcePath);
 
-            return await client.ExecuteAsync<CatalogResource>(request, Method.POST);
+            return await client.ExecuteAsync<CatalogResource>(request, Method.GET);
         }
 
         public override BaseResponse Execute(AgsClient client, string resourcePath)
@@ -41,7 +41,7 @@ namespace ags_client.Requests
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
 
             if (!String.IsNullOrWhiteSpace(option))
                 request.AddParameter("option", option);
