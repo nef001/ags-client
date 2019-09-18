@@ -36,7 +36,7 @@ namespace ags_client.Requests.MapService
             return await client.ExecuteAsync<MapServiceResource>(request, Method.GET);
         }
 
-        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. /services/<Folder>/<service>/MapServer 
         {
             var request = createRequest(resourcePath);
             return client.Execute<MapServiceResource>(request, Method.GET);

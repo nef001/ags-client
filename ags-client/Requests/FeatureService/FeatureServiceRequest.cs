@@ -31,7 +31,7 @@ namespace ags_client.Requests.FeatureService
             return (FeatureServiceResource)Execute(client, resourcePath);
         }
 
-        public async Task<FeatureServiceResource> ExecuteAsync(AgsClient client, FeatureServiceResource parent)
+        public async Task<FeatureServiceResource> ExecuteAsync(AgsClient client, CatalogResource parent)
         {
             string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
             var request = createRequest(resourcePath);
@@ -39,7 +39,7 @@ namespace ags_client.Requests.FeatureService
             return await client.ExecuteAsync<FeatureServiceResource>(request, Method.POST);
         }
 
-        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. <Folder>/<service>/MapServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. services/<Folder>/<service>/MapServer 
         {
             var request = createRequest(resourcePath);
             return client.Execute<FeatureServiceResource>(request, Method.GET);

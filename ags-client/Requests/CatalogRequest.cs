@@ -20,14 +20,18 @@ namespace ags_client.Requests
 
         public CatalogResource Execute(AgsClient client)
         {
-            string resourcePath = (_folder == null) ? String.Empty : _folder;
+            string resourcePath = "rest/services";
+            if (!String.IsNullOrWhiteSpace(_folder))
+                resourcePath = String.Format("{0}/{1}", resourcePath, _folder);
             return (CatalogResource)Execute(client, resourcePath);
         }
 
         public async Task<CatalogResource> ExecuteAsync(AgsClient client)
         {
-            string resourcePath = (_folder == null) ? String.Empty : _folder;
-            var request = createRequest(resourcePath);
+            string resourcePath = "rest/services";
+            if (!String.IsNullOrWhiteSpace(_folder))
+                resourcePath = String.Format("{0}/{1}", resourcePath, _folder);
+            RestRequest request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<CatalogResource>(request, Method.GET);
         }

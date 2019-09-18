@@ -66,6 +66,7 @@
     <Compile Include="Requests\FeatureService\FeatureServiceLayerQueryRequest.cs" />
     <Compile Include="Requests\FeatureService\FeatureServiceLayerRequest.cs" />
     <Compile Include="Requests\FeatureService\UpdateFeaturesRequest.cs" />
+    <Compile Include="Requests\GenerateTokenRequest.cs" />
     <Compile Include="Requests\GeometryService\AreasAndLengthsRequest.cs" />
     <Compile Include="Requests\GeometryService\AutoCompleteRequest.cs" />
     <Compile Include="Requests\GeometryService\BufferRequest.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Requests\GeometryService\SimplifyRequest.cs" />
     <Compile Include="Requests\GeometryService\TrimExtendRequest.cs" />
     <Compile Include="Requests\GeometryService\UnionRequest.cs" />
+    <Compile Include="Requests\ServerInfoRequest.cs" />
+    <Compile Include="Resources\GenerateTokenResource.cs" />
     <Compile Include="Resources\GeometryService\DifferenceResource.cs" />
     <Compile Include="Resources\GeometryService\DistanceResource.cs" />
     <Compile Include="Resources\GeometryService\TrimExtendResource.cs" />
@@ -119,6 +122,9 @@
     <Compile Include="Resources\MapService\LayerOrTableResource.cs" />
     <Compile Include="Resources\MapService\LayersResource.cs" />
     <Compile Include="Resources\MapService\MapServiceResource.cs" />
+    <Compile Include="Resources\ServerInfoResource.cs" />
+    <Compile Include="Types\AccessToken.cs" />
+    <Compile Include="Types\AuthInfo.cs" />
     <Compile Include="Types\CodedValue.cs" />
     <Compile Include="Types\CommonAttributes.cs" />
     <Compile Include="Types\CommonF.cs" />

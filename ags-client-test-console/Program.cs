@@ -22,21 +22,36 @@ namespace ags_client_test_console
     {
         static async Task Main(string[] args)
         {
-            var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest/services");
 
-            var cat = new CatalogRequest(null).Execute(client);
+            //var client1 = new AgsClient("https://services6.arcgis.com/Rk2K8r6JYyT3wj2u/arcgis/rest/services");
+
+            //string clientID = "370eoZTXBXNX06uo";
+            //string clientSecret = "065c9b6291e9466882f60df8f5d6eeb8";
+
+            //client1.RefreshToken("https://www.arcgis.com/sharing/rest/oauth2/token", clientID, clientSecret);
+
+            //var cat = new CatalogRequest(null).Execute(client1);
+
+            //var fs = new FeatureServiceRequest("srcgdb").Execute(client1, cat);
+
+            #region local
+            var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest");
+
+            var serverInfo = new ServerInfoRequest().Execute(client);
+
+            var cat1 = new CatalogRequest(null).Execute(client);
 
             var cat2 = new CatalogRequest("Utilities").Execute(client);
 
             var gs = new GeometryServiceRequest("Geometry").Execute(client, cat2);
 
-            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "Utilities/Geometry/GeometryServer");
+            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "/services/Utilities/Geometry/GeometryServer");
 
             var cat3 = new CatalogRequest("NDV").Execute(client);
 
-            var fs = new FeatureServiceRequest("NDVEditing").Execute(client, cat3);
+            var fs1 = new FeatureServiceRequest("NDVEditing").Execute(client, cat3);
 
-            var flayer = new FeatureServiceLayerRequest<VehicleA>(2).Execute(client, fs);
+            var flayer = new FeatureServiceLayerRequest<VehicleA>(2).Execute(client, fs1);
 
             var flayerquery = new FeatureServiceLayerQueryRequest<VehicleF, Point, VehicleA>()
             {
@@ -45,27 +60,27 @@ namespace ags_client_test_console
             };
             var r = flayerquery.Execute(client, flayer);
 
-            var feat = new FeatureServiceLayerFeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
+            //var feat = new FeatureServiceLayerFeatureRequest<VehicleF, Point, VehicleA>(10).Execute(client, flayer);
 
-            var geom = r.features[0].geometry;
+            //var geom = r.features[0].geometry;
 
-            var projectReq = new ProjectRequest<Point>()
-            {
-                geometries = new Geometries<Point>
-                {
-                    geometries = r.features.Select(x => x.geometry).ToList(),
-                    geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
-                },
-                inSR = new SpatialReference { wkid = 28350 },
-                outSR = new SpatialReference { wkid = 4326 }
-            };
+            //var projectReq = new ProjectRequest<Point>()
+            //{
+            //    geometries = new Geometries<Point>
+            //    {
+            //        geometries = r.features.Select(x => x.geometry).ToList(),
+            //        geometryType = GeometryHelper.GetGeometryTypeName(GeometryTypes.Point)
+            //    },
+            //    inSR = new SpatialReference { wkid = 28350 },
+            //    outSR = new SpatialReference { wkid = 4326 }
+            //};
 
-            var z = await projectReq.ExecuteAsync(client, gs);
+            //var z = await projectReq.ExecuteAsync(client, gs);
 
-            if (z != null)
-            {
+            //if (z != null)
+            //{
 
-            }
+            //}
 
             //int All_Vehicles_layerId = cat.GetServiceLayerId(client, "NDV/NDVEditing/MapServer", "All Vehicles");
 
@@ -314,7 +329,7 @@ namespace ags_client_test_console
                 }
             }*/
 
-
+            #endregion
 
             Console.ReadKey();
 

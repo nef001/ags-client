@@ -1,4 +1,9 @@
-﻿using System;
+﻿/* Not used.
+ * Changed project to use RestSharp.RestClient
+ * 
+ * 
+ * 
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -49,3 +54,9 @@ namespace ags_client.Utility
         
     }
 }
+
+*
+* 
+* 
+* 
+*/
