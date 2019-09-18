@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RestSharp;
-using ags_client.Types.Geometry;
 using ags_client.Resources;
 
 
@@ -40,7 +39,29 @@ namespace ags_client.Requests
 
         private RestRequest createRequest(string resourcePath)
         {
-            return new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
+
+            if (!String.IsNullOrWhiteSpace(username))
+                request.AddParameter("username", username);
+            if (!String.IsNullOrWhiteSpace(password))
+                request.AddParameter("password", password);
+            if (!String.IsNullOrWhiteSpace(client))
+            {
+                request.AddParameter("client", client);
+                switch (client)
+                {
+                    case "referer":
+                        request.AddParameter("referer", referer);
+                        break;
+                    case "ip":
+                        request.AddParameter("ip", ip);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            request.AddParameter("expiration", expiration);
+            return request;
         }
     }
 }
