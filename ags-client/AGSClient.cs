@@ -21,6 +21,8 @@ namespace ags_client
         bool useToken = false;
         string tokenServiceUrl;
         readonly string client_id_type = "requestip";
+        readonly string referer = null;
+        readonly string ip = null;
         readonly int token_request_expiration_minutes = 60;
 
         public string BaseUrl { get; private set; }
@@ -60,8 +62,11 @@ namespace ags_client
                 if ((serverInfo.authInfo != null) && (serverInfo.authInfo.isTokenBasedSecurity))
                 {
                     tokenServiceUrl = serverInfo.authInfo.tokenServicesUrl;
-                    refreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
-                    useToken = true;
+                    if (!String.IsNullOrWhiteSpace(tokenServiceUrl))
+                    {
+                        refreshToken(credentials, client_id_type, referer, ip, token_request_expiration_minutes);
+                        useToken = true;
+                    }
 
                 }
             }
@@ -69,14 +74,14 @@ namespace ags_client
 
         }
 
-        public AgsClient(string baseUrl)
-        {
-            BaseUrl = baseUrl; // example base url is "http://agatstgis1.int.atco.com.au/arcgis/rest"
-            restSharpClient = new RestClient(BaseUrl).UseSerializer(() => new JsonNetSerializer());
-            restSharpClient.AddDefaultHeader("Content-Type", "application/json");
+        //public AgsClient(string baseUrl)
+        //{
+        //    BaseUrl = baseUrl; // example base url is "http://agatstgis1.int.atco.com.au/arcgis/rest"
+        //    restSharpClient = new RestClient(BaseUrl).UseSerializer(() => new JsonNetSerializer());
+        //    restSharpClient.AddDefaultHeader("Content-Type", "application/json");
 
-            ServerInfo = new ServerInfoRequest().Execute(this);
-        }
+        //    ServerInfo = new ServerInfoRequest().Execute(this);
+        //}
 
 
 
@@ -224,7 +229,7 @@ namespace ags_client
             if (token.expires.HasValue)
             {
                 TimeSpan ts = DateTime.Now - token.expires.Value;
-                if (ts.TotalSeconds <= 0)
+                if (ts.TotalSeconds <= 1)
                     refreshToken(credentials, client, referer, ip, expiration);
             }
            

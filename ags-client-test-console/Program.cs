@@ -47,7 +47,7 @@ namespace ags_client_test_console
 
             var gs = new GeometryServiceRequest("Geometry").Execute(client, cat2);
 
-            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "/services/Utilities/Geometry/GeometryServer");
+            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "/rest/services/Utilities/Geometry/GeometryServer");
 
             var cat3 = new CatalogRequest("NDV").Execute(client);
 
