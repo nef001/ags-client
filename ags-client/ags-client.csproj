@@ -129,6 +129,7 @@
     <Compile Include="Types\CommonAttributes.cs" />
     <Compile Include="Types\CommonF.cs" />
     <Compile Include="Types\Coordinate.cs" />
+    <Compile Include="Types\Credentials.cs" />
     <Compile Include="Types\DocumentInfo.cs" />
     <Compile Include="Types\Domain.cs" />
     <Compile Include="Types\DrawingInfo.cs" />

@@ -35,7 +35,9 @@ namespace ags_client_test_console
             //var fs = new FeatureServiceRequest("srcgdb").Execute(client1, cat);
 
             #region local
-            var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest");
+            //var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest");
+
+            var client = new AgsClient("agatstgis1.int.atco.com.au", "arcgis", 6080, false, "agm_test", "agm_test123");
 
             var serverInfo = new ServerInfoRequest().Execute(client);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using RestSharp;
@@ -13,23 +14,66 @@ namespace ags_client
 {
     public class AgsClient
     {
-        readonly IRestClient _client;
+        readonly IRestClient restSharpClient;
 
-        //string token = "yuLxFjVmAOCs9Sm--nHSierZSTRVzmBsjLk4kQC2peMBkyWvK64qgIElT7fIHs0pcHcs__WD6mqJZxNJjYV3NgEAWJJnhwqMYqCLd0nhinrMXAcmqwhocyZFHJcrioo72x2gQUWaaXDKxZPP6ShEYg..";
-
-
-        private AccessToken _accessToken;
+        private Credentials credentials { get; set; }
+        private GenerateTokenResource token;
+        bool useToken = false;
+        string tokenServiceUrl;
+        readonly string client_id_type = "requestip";
+        readonly int token_request_expiration_minutes = 60;
 
         public string BaseUrl { get; private set; }
 
         public ServerInfoResource ServerInfo { get; private set; }
 
+        //anonymous connection to server using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, null, null)
+        //user connection to server using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, username, pwd)
+        //user connection to server using https ("agatstgis1.int.atco.com.au", "arcgis", 6443, true, username, pwd)
+
+        //anonymous connection via webadaptor http  ("agatstgis1.int.atco.com.au", "arcgis", null, false, null, null)
+        //user connection via webadaptor using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, username, pwd)
+        //user connection via webadaptor using https ("agatstgis1.int.atco.com.au", "arcgis", null, true, username, pwd) <-port not specified
+        public AgsClient(string host, string instance, int? port, bool useSSL, string username, string password)
+        {
+            bool anonymous = String.IsNullOrWhiteSpace(username);
+
+            var builder = new UriBuilder()
+            {
+                Scheme = useSSL ? "https" : "http",
+                Host = host,
+                Port = port ?? port.Value,
+                Path = instance,
+            };
+
+            Uri baseUrl = builder.Uri;
+
+            restSharpClient = new RestClient(baseUrl).UseSerializer(() => new JsonNetSerializer());
+            restSharpClient.AddDefaultHeader("Content-Type", "application/json");
+
+            if (!anonymous) // try to get a token
+            {
+                credentials = new Credentials { username = username, password = password };
+
+                //1. check if token based security available
+                ServerInfoResource serverInfo = new ServerInfoRequest().Execute(this);
+                if ((serverInfo.authInfo != null) && (serverInfo.authInfo.isTokenBasedSecurity))
+                {
+                    tokenServiceUrl = serverInfo.authInfo.tokenServicesUrl;
+                    refreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
+                    useToken = true;
+
+                }
+            }
+
+
+        }
 
         public AgsClient(string baseUrl)
         {
             BaseUrl = baseUrl; // example base url is "http://agatstgis1.int.atco.com.au/arcgis/rest"
-            _client = new RestClient(BaseUrl).UseSerializer(() => new JsonNetSerializer());
-            _client.AddDefaultHeader("Content-Type", "application/json");
+            restSharpClient = new RestClient(BaseUrl).UseSerializer(() => new JsonNetSerializer());
+            restSharpClient.AddDefaultHeader("Content-Type", "application/json");
 
             ServerInfo = new ServerInfoRequest().Execute(this);
         }
@@ -68,11 +112,13 @@ namespace ags_client
 
             request.AddParameter("f", "json"); // used on every request
 
-            if (_accessToken != null)
-                request.AddParameter("token", _accessToken.access_token, ParameterType.QueryString);
+            if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
+            {
+                checkAndRefreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
+                request.AddParameter("token", token.token, ParameterType.QueryString);
+            }
 
-
-            var restResponse = _client.Execute<T>(request, httpMethod);
+            var restResponse = restSharpClient.Execute<T>(request, httpMethod);
 
             if (restResponse != null)
             {
@@ -95,7 +141,13 @@ namespace ags_client
         {
             request.AddParameter("f", "json"); // used on every request
 
-            var restResponse = await _client.ExecuteTaskAsync<T>(request, httpMethod);
+            if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
+            {
+                checkAndRefreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
+                request.AddParameter("token", token.token, ParameterType.QueryString);
+            }
+
+            var restResponse = await restSharpClient.ExecuteTaskAsync<T>(request, httpMethod);
 
             if (restResponse != null)
             {
@@ -115,7 +167,68 @@ namespace ags_client
         }
 
         
+        private void refreshToken(Credentials credentials, string client_type, string referer, string ip, int expiration)
+        {
+            var request = new RestRequest("generateToken") { Method = Method.GET };
+            request.AddParameter("f", "json");
+            if (!String.IsNullOrWhiteSpace(credentials.username))
+                request.AddParameter("username", credentials.username);
+            if (!String.IsNullOrWhiteSpace(credentials.password))
+                request.AddParameter("password", credentials.password);
+            if (!String.IsNullOrWhiteSpace(client_type))
+            {
+                request.AddParameter("client", client_type);
+                switch (client_type)
+                {
+                    case "referer":
+                        request.AddParameter("referer", referer);
+                        break;
+                    case "ip":
+                        request.AddParameter("ip", ip);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            request.AddParameter("expiration", expiration);
 
+            IRestClient client = new RestClient(tokenServiceUrl).UseSerializer(() => new JsonNetSerializer());
+            client.AddDefaultHeader("Content-Type", "application/json");
+            
+            var restResponse = client.Execute<GenerateTokenResource>(request, Method.GET);
+
+            if (restResponse != null)
+            {
+                var br = restResponse.Data as BaseResponse;
+                if (br != null)
+                    br.resourcePath = request.Resource;
+
+                token = (GenerateTokenResource)br;
+            }
+
+            if (restResponse.ErrorException != null)
+            {
+                const string message = "Error retrieving response.  Check inner details for more info.";
+                var ex = new ApplicationException(message, restResponse.ErrorException);
+                throw ex;
+            }
+        }
+
+        private void checkAndRefreshToken(Credentials credentials, string client, string referer, string ip, int expiration)
+        {
+            if (token == null)
+            {
+                return;
+            }
+
+            if (token.expires.HasValue)
+            {
+                TimeSpan ts = DateTime.Now - token.expires.Value;
+                if (ts.TotalSeconds <= 0)
+                    refreshToken(credentials, client, referer, ip, expiration);
+            }
+           
+        }
 
     }
 }

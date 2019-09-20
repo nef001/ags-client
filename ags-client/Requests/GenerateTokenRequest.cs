@@ -15,6 +15,16 @@ namespace ags_client.Requests
         public string ip { get; set; }
         public int expiration { get; set; } //in minutes
 
+        public GenerateTokenRequest(string username, string password, string client, string referer, string ip, int expiration)
+        {
+            this.username = username;
+            this.password = password;
+            this.client = client;
+            this.referer = referer;
+            this.ip = ip;
+            this.expiration = expiration;
+        }
+
         public GenerateTokenResource Execute(AgsClient client)
         {
             // https://agatstgis1.int.atco.com.au/arcgis/tokens/generateToken
