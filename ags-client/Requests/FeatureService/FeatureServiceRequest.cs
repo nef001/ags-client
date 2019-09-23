@@ -39,7 +39,7 @@ namespace ags_client.Requests.FeatureService
             return await client.ExecuteAsync<FeatureServiceResource>(request, Method.POST);
         }
 
-        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. services/<Folder>/<service>/MapServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - i.e. rest/services/<Folder>/<service>/MapServer 
         {
             var request = createRequest(resourcePath);
             return client.Execute<FeatureServiceResource>(request, Method.GET);

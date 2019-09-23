@@ -37,7 +37,12 @@ namespace ags_client_test_console
             #region local
             //var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest");
 
-            var client = new AgsClient("agatstgis1.int.atco.com.au", "arcgis", 6080, false, "agm_test", "agm_test123");
+
+            //System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+            Ssl.EnableTrustedHosts();
+
+            var client = new AgsClient("agatstgis1.int.atco.com.au", "arcgis", 6443, true, "agm_test", "agm_test123");
 
             var serverInfo = new ServerInfoRequest().Execute(client);
 
@@ -47,7 +52,7 @@ namespace ags_client_test_console
 
             var gs = new GeometryServiceRequest("Geometry").Execute(client, cat2);
 
-            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "/services/Utilities/Geometry/GeometryServer");
+            var gs2 = new GeometryServiceRequest("Geometry").Execute(client, "rest/services/Utilities/Geometry/GeometryServer");
 
             var cat3 = new CatalogRequest("NDV").Execute(client);
 

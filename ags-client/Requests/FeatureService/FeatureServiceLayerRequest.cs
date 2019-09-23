@@ -21,7 +21,7 @@ namespace ags_client.Requests.FeatureService
             _layerId = layerId;
         }
 
-        public FeatureServiceLayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent) //parent may be the root catalog or a folder catalog
+        public FeatureServiceLayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent)
         {
             string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerId);
             return (FeatureServiceLayerResource < TA > )Execute(client, resourcePath);
@@ -38,7 +38,7 @@ namespace ags_client.Requests.FeatureService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            return client.Execute<FeatureServiceLayerResource<TA>>(request, Method.POST);
+            return client.Execute<FeatureServiceLayerResource<TA>>(request, Method.GET);
         }
 
         private RestRequest createRequest(string resourcePath)
@@ -46,7 +46,7 @@ namespace ags_client.Requests.FeatureService
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             if (returnUpdates.HasValue)
-                request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
+                request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false", ParameterType.GetOrPost);
 
             return request;
         }

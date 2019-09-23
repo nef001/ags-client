@@ -65,57 +65,19 @@ namespace ags_client
 
                 }
             }
-
-
         }
-
-        public AgsClient(string baseUrl)
-        {
-            BaseUrl = baseUrl; // example base url is "http://agatstgis1.int.atco.com.au/arcgis/rest"
-            restSharpClient = new RestClient(BaseUrl).UseSerializer(() => new JsonNetSerializer());
-            restSharpClient.AddDefaultHeader("Content-Type", "application/json");
-
-            ServerInfo = new ServerInfoRequest().Execute(this);
-        }
-
-
-
-        //public void RefreshToken(string tokenUrl, string clientID, string clientSecret)
-        //{
-        //    // https://www.arcgis.com/sharing/rest/oauth2/token
-
-        //    var client = new RestClient(tokenUrl).UseSerializer(() => new JsonNetSerializer());
-        //    client.AddDefaultHeader("Content-Type", "application/x-www-form-urlencoded");
-        //    //client.Authenticator = new HttpBasicAuthenticator(clientID, clientSecret);
-        //    var request = new RestRequest() { Method = Method.POST };
-        //    request.AddHeader("Accept", "application/json");
-        //    request.AddParameter("f", "json");
-        //    request.AddParameter("client_id", clientID);
-        //    request.AddParameter("client_secret", clientSecret);
-        //    request.AddParameter("grant_type", "client_credentials");
-        //    request.AddParameter("expiration", 20160);
-        //    var response = client.Execute<AccessToken>(request);
-        //    if (response.ErrorException != null)
-        //    {
-        //        const string message = "Error retrieving response.  Check inner details for more info.";
-        //        var ex = new ApplicationException(message, response.ErrorException);
-        //        throw ex;
-        //    }
-        //    _accessToken = response.Data;
-        //}
-
-        
 
         public T Execute<T>(RestRequest request, Method httpMethod) where T : new()
         {
+            //request.JsonSerializer = new JsonNetSerializer();
             request.AddHeader("Accept", "application/json");
 
-            request.AddParameter("f", "json"); // used on every request
+            request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
 
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
                 checkAndRefreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
-                request.AddParameter("token", token.token, ParameterType.QueryString);
+                request.AddParameter("token", token.token, ParameterType.GetOrPost);
             }
 
             var restResponse = restSharpClient.Execute<T>(request, httpMethod);
@@ -139,7 +101,7 @@ namespace ags_client
 
         public async Task<T> ExecuteAsync<T>(RestRequest request, Method httpMethod) where T : new()
         {
-            request.AddParameter("f", "json"); // used on every request
+            request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
 
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
@@ -169,33 +131,36 @@ namespace ags_client
         
         private void refreshToken(Credentials credentials, string client_type, string referer, string ip, int expiration)
         {
-            var request = new RestRequest("generateToken") { Method = Method.GET };
-            request.AddParameter("f", "json");
+            var request = new RestRequest("generateToken"); // { Method = Method.POST };
+            request.JsonSerializer = new JsonNetSerializer();
+
+            request.AddParameter("f", "json", ParameterType.QueryString);
+
             if (!String.IsNullOrWhiteSpace(credentials.username))
-                request.AddParameter("username", credentials.username);
+                request.AddParameter("username", credentials.username, ParameterType.GetOrPost);
             if (!String.IsNullOrWhiteSpace(credentials.password))
-                request.AddParameter("password", credentials.password);
+                request.AddParameter("password", credentials.password, ParameterType.GetOrPost);
             if (!String.IsNullOrWhiteSpace(client_type))
             {
-                request.AddParameter("client", client_type);
+                request.AddParameter("client", client_type, ParameterType.GetOrPost);
                 switch (client_type)
                 {
                     case "referer":
-                        request.AddParameter("referer", referer);
+                        request.AddParameter("referer", referer, ParameterType.GetOrPost);
                         break;
                     case "ip":
-                        request.AddParameter("ip", ip);
+                        request.AddParameter("ip", ip, ParameterType.GetOrPost);
                         break;
                     default:
                         break;
                 }
             }
-            request.AddParameter("expiration", expiration);
+            request.AddParameter("expiration", expiration, ParameterType.GetOrPost);
 
             IRestClient client = new RestClient(tokenServiceUrl).UseSerializer(() => new JsonNetSerializer());
             client.AddDefaultHeader("Content-Type", "application/json");
-            
-            var restResponse = client.Execute<GenerateTokenResource>(request, Method.GET);
+
+            var restResponse = client.Execute<GenerateTokenResource>(request);
 
             if (restResponse != null)
             {
@@ -223,7 +188,7 @@ namespace ags_client
 
             if (token.expires.HasValue)
             {
-                TimeSpan ts = DateTime.Now - token.expires.Value;
+                TimeSpan ts = token.expires.Value - DateTime.Now.ToUniversalTime();
                 if (ts.TotalSeconds <= 0)
                     refreshToken(credentials, client, referer, ip, expiration);
             }

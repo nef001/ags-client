@@ -32,7 +32,7 @@ namespace ags_client.Requests.GeometryService
             return await client.ExecuteAsync<GeometryServiceResource>(request, Method.GET);
         }
 
-        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - typically Utilities/Geometry/GeometryServer 
+        public override BaseResponse Execute(AgsClient client, string resourcePath) //this overload takes the absolute path - typically rest/services/Utilities/Geometry/GeometryServer 
         {
             var request = createRequest(resourcePath);
             return client.Execute<GeometryServiceResource>(request, Method.GET);
