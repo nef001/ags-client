@@ -22,24 +22,6 @@ namespace ags_client_test_console
     {
         static async Task Main(string[] args)
         {
-
-            //var client1 = new AgsClient("https://services6.arcgis.com/Rk2K8r6JYyT3wj2u/arcgis/rest/services");
-
-            //string clientID = "370eoZTXBXNX06uo";
-            //string clientSecret = "065c9b6291e9466882f60df8f5d6eeb8";
-
-            //client1.RefreshToken("https://www.arcgis.com/sharing/rest/oauth2/token", clientID, clientSecret);
-
-            //var cat = new CatalogRequest(null).Execute(client1);
-
-            //var fs = new FeatureServiceRequest("srcgdb").Execute(client1, cat);
-
-            #region local
-            //var client = new AgsClient("http://agatstgis1.int.atco.com.au/arcgis/rest");
-
-
-            //System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
             Ssl.EnableTrustedHosts();
 
             var client = new AgsClient("agatstgis1.int.atco.com.au", "arcgis", 6443, true, "agm_test", "agm_test123");
@@ -336,7 +318,7 @@ namespace ags_client_test_console
                 }
             }*/
 
-            #endregion
+
 
             Console.ReadKey();
 
