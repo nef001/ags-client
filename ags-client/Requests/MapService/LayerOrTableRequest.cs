@@ -43,6 +43,8 @@ namespace ags_client.Requests.MapService
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false");
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

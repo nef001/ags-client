@@ -10,7 +10,7 @@ namespace ags_client.Types
 {
     public class CommonAttributes : IRestAttributes
     {
-        public int objectid { get; set; }
+        public int? objectid { get; set; }
         public string globalid { get; set; }
         public string tag { get; set; }
         public int? pin { get; set; }

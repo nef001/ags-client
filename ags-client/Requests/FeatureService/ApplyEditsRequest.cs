@@ -46,23 +46,32 @@ namespace ags_client.Requests.FeatureService
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath, Method.POST);
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-
             if ((adds != null) && (adds.Count > 0))
                 request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
+            else
+                request.AddParameter("adds", null);
+
             if ((updates != null) && (updates.Count > 0))
                 request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
+            else
+                request.AddParameter("updates", null);
+
             if ((deletes != null) && (deletes.Count > 0))
                 request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
+            else
+                request.AddParameter("deletes", null);
 
-            if (!String.IsNullOrEmpty(gdbVersion))
-                request.AddParameter("gdbVersion", gdbVersion);
-            if (rollbackOnFailure.HasValue)
-                request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
-            if (useGlobalIds.HasValue)
-                request.AddParameter("useGlobalIds", useGlobalIds.Value ? "true" : "false");
+            
+            request.AddParameter("gdbVersion", gdbVersion);
+            
+            request.AddParameter("rollbackOnFailure", rollbackOnFailure ?? true);
+            
+            //request.AddParameter("useGlobalIds", useGlobalIds);
+
+            request.AddParameter("f", "pjson");
 
             return request;
         }

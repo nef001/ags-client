@@ -352,7 +352,7 @@ namespace ags_client_test_console
 
     public class VehicleA : IRestAttributes
     {
-        public int objectid { get; set; }
+        public int? objectid { get; set; }
         public int? node_id { get; set; }
 
         [JsonConverter(typeof(DateTimeUnixConverter))]

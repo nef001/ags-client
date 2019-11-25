@@ -10,7 +10,6 @@ using ags_client.Resources;
 using ags_client.Requests;
 
 namespace ags_client
-
 {
     public class AgsClient
     {
@@ -70,9 +69,9 @@ namespace ags_client
         public T Execute<T>(RestRequest request, Method httpMethod) where T : new()
         {
             //request.JsonSerializer = new JsonNetSerializer();
-            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Accept", "text/html, application/xhtml+xml, */*");
 
-            request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
+            //request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
 
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
@@ -101,7 +100,7 @@ namespace ags_client
 
         public async Task<T> ExecuteAsync<T>(RestRequest request, Method httpMethod) where T : new()
         {
-            request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
+            //request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
 
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
@@ -134,7 +133,7 @@ namespace ags_client
             var request = new RestRequest("generateToken"); // { Method = Method.POST };
             request.JsonSerializer = new JsonNetSerializer();
 
-            request.AddParameter("f", "json", ParameterType.QueryString);
+            //request.AddParameter("f", "json", ParameterType.QueryString);
 
             if (!String.IsNullOrWhiteSpace(credentials.username))
                 request.AddParameter("username", credentials.username, ParameterType.GetOrPost);

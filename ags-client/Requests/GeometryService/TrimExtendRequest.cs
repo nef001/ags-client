@@ -52,6 +52,8 @@ namespace ags_client.Requests.GeometryService
             if (extendHow.HasValue)
                 request.AddParameter("extendHow", extendHow);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

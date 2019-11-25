@@ -71,6 +71,9 @@ namespace ags_client.Requests
                 }
             }
             request.AddParameter("expiration", expiration);
+
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

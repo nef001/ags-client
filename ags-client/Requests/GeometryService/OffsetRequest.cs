@@ -68,6 +68,8 @@ namespace ags_client.Requests.GeometryService
             if (simplifyResult.HasValue)
                 request.AddParameter("simplifyResult", simplifyResult.Value ? "true" : "false");
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

@@ -56,6 +56,8 @@ namespace ags_client.Requests.FeatureService
             if (!String.IsNullOrWhiteSpace(gdbVersion))
                 request.AddParameter("gdbVersion", gdbVersion);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

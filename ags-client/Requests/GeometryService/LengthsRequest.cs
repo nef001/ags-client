@@ -56,6 +56,8 @@ namespace ags_client.Requests.GeometryService
             if (!String.IsNullOrWhiteSpace(calculationType))
                 request.AddParameter("calculationType", calculationType);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

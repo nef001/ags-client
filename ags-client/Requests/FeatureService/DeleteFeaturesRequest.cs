@@ -68,6 +68,8 @@ namespace ags_client.Requests.FeatureService
             if (rollbackOnFailure.HasValue)
                 request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

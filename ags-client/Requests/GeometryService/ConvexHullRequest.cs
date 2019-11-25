@@ -46,6 +46,8 @@ namespace ags_client.Requests.GeometryService
             if (sr != null)
                 request.AddParameter("sr", sr.wkid);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

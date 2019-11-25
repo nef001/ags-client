@@ -32,13 +32,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\GNIS4\Services\WindowsServices\NdvFleetService\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\GNIS4\Services\WindowsServices\NdvFleetService\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,6 +60,7 @@
     <Compile Include="BaseResponse.cs" />
     <Compile Include="JsonConverters\ConvexHullResourceConverter.cs" />
     <Compile Include="JsonConverters\CutResourceConverter.cs" />
+    <Compile Include="JsonConverters\DateTimeConvertor.cs" />
     <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
     <Compile Include="JsonConverters\GGeometriesConverter.cs" />
     <Compile Include="JsonConverters\GGeometryConverter.cs" />

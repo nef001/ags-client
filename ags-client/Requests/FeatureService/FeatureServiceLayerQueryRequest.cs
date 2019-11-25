@@ -64,12 +64,12 @@ namespace ags_client.Requests.FeatureService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            return client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.POST);
+            return client.Execute<LayerQueryResource<TF, TG, TA>>(request, Method.GET);//post not work. why?
         }
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };//post not work. why?
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -128,6 +128,8 @@ namespace ags_client.Requests.FeatureService
                 request.AddParameter("returnZ", returnZ.Value ? "true" : "false");
             if (returnM.HasValue)
                 request.AddParameter("returnM", returnM.Value ? "true" : "false");
+
+            request.AddParameter("f", "json");
 
             return request;
         }

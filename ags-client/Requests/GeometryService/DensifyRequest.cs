@@ -55,6 +55,8 @@ namespace ags_client.Requests.GeometryService
             if (lengthUnit.HasValue)
                 request.AddParameter("lengthUnit", lengthUnit);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

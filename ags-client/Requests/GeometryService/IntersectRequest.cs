@@ -50,6 +50,8 @@ namespace ags_client.Requests.GeometryService
             if (sr != null)
                 request.AddParameter("sr", JsonConvert.SerializeObject(sr, jss));
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

@@ -48,6 +48,8 @@ namespace ags_client.Requests.FeatureService
             if (returnUpdates.HasValue)
                 request.AddParameter("returnUpdates", returnUpdates.Value ? "true" : "false", ParameterType.GetOrPost);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

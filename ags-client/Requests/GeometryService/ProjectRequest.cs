@@ -35,12 +35,12 @@ namespace ags_client.Requests.GeometryService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            return client.Execute<ProjectResource<TG>>(request, Method.POST);
+            return client.Execute<ProjectResource<TG>>(request, Method.GET);
         }
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.POST };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -54,6 +54,8 @@ namespace ags_client.Requests.GeometryService
                 request.AddParameter("transformation", JsonConvert.SerializeObject(transformation, jss));
             if (transformForward.HasValue)
                 request.AddParameter("transformForward", transformForward.Value ? "true" : "false");
+
+            request.AddParameter("f", "json");
 
             return request;
         }

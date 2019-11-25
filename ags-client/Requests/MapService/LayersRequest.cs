@@ -44,6 +44,8 @@ namespace ags_client.Requests.MapService
             if ((dynamicLayers != null) && (dynamicLayers.Count > 0))
                 request.AddParameter("dynamicLayers", JsonConvert.SerializeObject(dynamicLayers, jss));
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

@@ -56,6 +56,8 @@ namespace ags_client.Requests.GeometryService
             if (geodesic.HasValue)
                 request.AddParameter("geodesic", geodesic.Value ? "true" : "false");
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

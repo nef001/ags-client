@@ -127,6 +127,8 @@ namespace ags_client.Requests.MapService
             if (returnDistinctValues.HasValue)
                 request.AddParameter("returnDistinctValues", returnDistinctValues.Value ? "true" : "false");
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

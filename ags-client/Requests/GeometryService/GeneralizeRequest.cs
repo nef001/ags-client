@@ -52,6 +52,8 @@ namespace ags_client.Requests.GeometryService
             if (deviationUnit.HasValue)
                 request.AddParameter("deviationUnit", deviationUnit);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

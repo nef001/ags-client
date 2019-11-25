@@ -54,6 +54,8 @@ namespace ags_client.Requests.FeatureService
             if ((features != null) && (features.Count > 0))
                 request.AddParameter("features", JsonConvert.SerializeObject(features, jss));
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

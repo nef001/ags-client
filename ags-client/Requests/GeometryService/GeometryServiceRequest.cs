@@ -41,6 +41,7 @@ namespace ags_client.Requests.GeometryService
         private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath) { Method = Method.GET };
+            request.AddParameter("f", "json");
             return request;
         }
     }

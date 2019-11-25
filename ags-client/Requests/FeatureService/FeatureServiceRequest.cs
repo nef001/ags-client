@@ -54,6 +54,8 @@ namespace ags_client.Requests.FeatureService
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

@@ -58,6 +58,8 @@ namespace ags_client.Requests.GeometryService
             if (!String.IsNullOrWhiteSpace(relationParam))
                 request.AddParameter("relationParam", relationParam);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }

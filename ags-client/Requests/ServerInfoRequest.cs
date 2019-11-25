@@ -37,7 +37,10 @@ namespace ags_client.Requests
 
         private RestRequest createRequest(string resourcePath)
         {
-            return new RestRequest(resourcePath) { Method = Method.GET };
+            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            request.AddParameter("f", "json");
+
+            return request;
         }
     }
 }

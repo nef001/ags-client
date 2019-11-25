@@ -53,6 +53,8 @@ namespace ags_client.Requests.MapService
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
 
+            request.AddParameter("f", "json");
+
             return request;
         }
     }
