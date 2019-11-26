@@ -35,12 +35,12 @@ namespace ags_client.Requests.GeometryService
         public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
-            return client.Execute<ProjectResource<TG>>(request, Method.GET);
+            return client.Execute<ProjectResource<TG>>(request, Method.POST);
         }
 
         private RestRequest createRequest(string resourcePath)
         {
-            var request = new RestRequest(resourcePath) { Method = Method.GET };
+            var request = new RestRequest(resourcePath) { Method = Method.POST };
 
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 

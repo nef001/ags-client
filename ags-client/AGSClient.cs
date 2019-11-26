@@ -71,8 +71,6 @@ namespace ags_client
             //request.JsonSerializer = new JsonNetSerializer();
             request.AddHeader("Accept", "text/html, application/xhtml+xml, */*");
 
-            //request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
-
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
                 checkAndRefreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
@@ -100,8 +98,6 @@ namespace ags_client
 
         public async Task<T> ExecuteAsync<T>(RestRequest request, Method httpMethod) where T : new()
         {
-            //request.AddParameter("f", "json", ParameterType.QueryString); // used on every request
-
             if (useToken && !request.Parameters.Where(p => p.Name.Equals("token")).Any())
             {
                 checkAndRefreshToken(credentials, client_id_type, null, null, token_request_expiration_minutes);
@@ -132,8 +128,6 @@ namespace ags_client
         {
             var request = new RestRequest("generateToken"); // { Method = Method.POST };
             request.JsonSerializer = new JsonNetSerializer();
-
-            //request.AddParameter("f", "json", ParameterType.QueryString);
 
             if (!String.IsNullOrWhiteSpace(credentials.username))
                 request.AddParameter("username", credentials.username, ParameterType.GetOrPost);
