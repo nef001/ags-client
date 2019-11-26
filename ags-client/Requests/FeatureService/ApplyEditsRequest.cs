@@ -17,10 +17,10 @@ namespace ags_client.Requests.FeatureService
     {
         public List<TF> adds { get; set; }
         public List<TF> updates { get; set; }
-        public List<string> deletes { get; set; }
+        public List<int> deletes { get; set; }
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
-        public bool? useGlobalIds { get; set; }
+        //public bool? useGlobalIds { get; set; }
 
         const string resource = "applyEdits";
 
@@ -47,30 +47,16 @@ namespace ags_client.Requests.FeatureService
         private RestRequest createRequest(string resourcePath)
         {
             var request = new RestRequest(resourcePath, Method.POST);
-
-            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-            if ((adds != null) && (adds.Count > 0))
-                request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
-            else
-                request.AddParameter("adds", null);
-
-            if ((updates != null) && (updates.Count > 0))
-                request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
-            else
-                request.AddParameter("updates", null);
-
-            if ((deletes != null) && (deletes.Count > 0))
-                request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
-            else
-                request.AddParameter("deletes", null);
-
-            
-            request.AddParameter("gdbVersion", gdbVersion);
-            
-            request.AddParameter("rollbackOnFailure", rollbackOnFailure ?? true);
-            
-            //request.AddParameter("useGlobalIds", useGlobalIds);
-
+            var jss = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+            };
+            request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
+            request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
+            request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
+            request.AddParameter("gdbVersion", JsonConvert.SerializeObject(gdbVersion, jss));
+            request.AddParameter("rollbackOnFailure", JsonConvert.SerializeObject(rollbackOnFailure, jss));
             request.AddParameter("f", "pjson");
 
             return request;

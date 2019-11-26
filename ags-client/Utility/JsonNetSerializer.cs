@@ -13,14 +13,15 @@ namespace ags_client.Utility
 {
     public class JsonNetSerializer : IRestSerializer
     {
+        private JsonSerializerSettings jss = new JsonSerializerSettings();
         public string Serialize(object obj) =>
-            JsonConvert.SerializeObject(obj, new JsonSerializerSettings());
+            JsonConvert.SerializeObject(obj, jss);
 
         public string Serialize(Parameter parameter) =>
-            JsonConvert.SerializeObject(parameter.Value, new JsonSerializerSettings());
+            JsonConvert.SerializeObject(parameter.Value, jss);
 
         public T Deserialize<T>(IRestResponse response) =>
-            JsonConvert.DeserializeObject<T>(response.Content, new JsonSerializerSettings());
+            JsonConvert.DeserializeObject<T>(response.Content, jss);
 
         public string[] SupportedContentTypes { get; } =
         {

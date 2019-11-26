@@ -52,7 +52,7 @@ namespace ags_client.Requests
             if (outSR != null)
                 request.AddParameter("outSR", outSR.wkid);
 
-            request.AddParameter("f", "json");
+            request.AddParameter("f", "pjson");
 
             return request;
         }

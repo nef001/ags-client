@@ -48,7 +48,7 @@ namespace ags_client
             Uri baseUrl = builder.Uri;
 
             restSharpClient = new RestClient(baseUrl).UseSerializer(() => new JsonNetSerializer());
-            restSharpClient.AddDefaultHeader("Content-Type", "application/json");
+            restSharpClient.AddDefaultHeader("Content-Type", "application/x-www-form-urlencoded");
 
             if (!anonymous) // try to get a token
             {
