@@ -13,6 +13,7 @@ namespace ags_client.Types.Geometry
 
     public static class GeometryHelper
     {
+        public const string NO_GEOMETRY = null;
         public const string POINT_GEOMETRY = "esriGeometryPoint";
         public const string MULTIPOINT_GEOMETRY = "esriGeometryMultipoint";
         public const string POLYLINE_GEOMETRY = "esriGeometryPolyline";

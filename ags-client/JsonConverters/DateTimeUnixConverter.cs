@@ -21,19 +21,29 @@ namespace ags_client.JsonConverters
         }
          
     */
-    public class DateTimeUnixConverter :JsonConverter<DateTime>
+    public class DateTimeUnixConverter :JsonConverter<DateTime?>
     {
         static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1);
-        public override void WriteJson(JsonWriter writer, DateTime value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
         {
-            long unixMilliseconds = (long)value.Subtract(UnixEpoch).TotalMilliseconds;
-            writer.WriteValue(unixMilliseconds);
+            if (value.HasValue)
+            {
+                long unixMilliseconds = (long)(value.Value.Subtract(UnixEpoch).TotalMilliseconds);
+                writer.WriteValue(unixMilliseconds);
+            }
+            else
+                writer.WriteNull();
         }
 
-        public override DateTime ReadJson(JsonReader reader, Type objectType, DateTime existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override DateTime? ReadJson(JsonReader reader, Type objectType, DateTime? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            long unixMilliseconds = (long)reader.Value;
-            return UnixEpoch.AddMilliseconds(unixMilliseconds);
+            if (reader.Value == null)
+                return null;
+            long unixMilliseconds;
+            if (!Int64.TryParse(reader.Value.ToString(), out unixMilliseconds))
+                return null;
+            else
+                return UnixEpoch.AddMilliseconds(unixMilliseconds);
         }
     }
 }

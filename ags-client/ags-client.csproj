@@ -96,6 +96,7 @@
     <Compile Include="Requests\GeometryService\SimplifyRequest.cs" />
     <Compile Include="Requests\GeometryService\TrimExtendRequest.cs" />
     <Compile Include="Requests\GeometryService\UnionRequest.cs" />
+    <Compile Include="Requests\MapService\MapServiceLayerFeatureRequest.cs" />
     <Compile Include="Requests\ServerInfoRequest.cs" />
     <Compile Include="Resources\GenerateTokenResource.cs" />
     <Compile Include="Resources\GeometryService\DifferenceResource.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Types\Geometry\GGeometry.cs" />
     <Compile Include="Types\Geometry\IRestGeometry.cs" />
     <Compile Include="Types\Geometry\MultiPoint.cs" />
+    <Compile Include="Types\Geometry\NoGeom.cs" />
     <Compile Include="Types\Geometry\Point.cs" />
     <Compile Include="Types\Geometry\PointArray.cs" />
     <Compile Include="Types\Geometry\Polygon.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Types\Table.cs" />
     <Compile Include="Types\Template.cs" />
     <Compile Include="Types\TimeInfo.cs" />
+    <Compile Include="Types\UniqueValueInfo.cs" />
     <Compile Include="Utility\HttpUtil.cs" />
     <Compile Include="Utility\JsonNetSerializer.cs" />
     <Compile Include="Utility\Pager.cs" />

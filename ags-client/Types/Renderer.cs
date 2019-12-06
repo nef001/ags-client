@@ -14,5 +14,6 @@ namespace ags_client.Types
         public string description { get; set; }
         public string rotationType { get; set; }
         public string rotationExpression { get; set; }
+        public List<UniqueValueInfo> uniqueValueInfos { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace ags_client.Resources.MapService
         public string type { get; set; }
         public string geometryType { get; set; }
         public List<Field> fields { get; set; }
+        public DrawingInfo drawinginfo { get; set; }
 
     }
 }

@@ -13,9 +13,6 @@ namespace ags_client.Resources.Common
         public string objectIdFieldName { get; set; }
         public string globalIdFieldName { get; set; }
         public string displayFieldName { get; set; }
-
-        //public Dictionary<string, string> fieldAliases { get; set; }  Deprecated
-
         public List<Field> fields { get; set; }
         public string geometryType { get; set; }
         public SpatialReference spatialReference { get; set; }

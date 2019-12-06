@@ -20,7 +20,6 @@ namespace ags_client.Requests.FeatureService
         public List<int> deletes { get; set; }
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
-        //public bool? useGlobalIds { get; set; }
 
         const string resource = "applyEdits";
 
