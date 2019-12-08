@@ -13,15 +13,13 @@ namespace ags_client.Types.Geometry
 
     public class Polygon : IRestGeometry
     {
-        //public Polygon() { geometryType = "esriGeometryPolygon"; }
-        //public string geometryType { get; set; }
-        //public SpatialReference spatialReference { get; set; }
+        public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("rings")]
         private double[][][] _ringsArray;
 
         [JsonIgnore]
-        public List<PointArray> Rings { get; set; }
+        public List<Path> Rings { get; set; }
 
         public double[][][] ToArray()
         {
@@ -42,15 +40,33 @@ namespace ags_client.Types.Geometry
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
-            Rings = new List<PointArray>();
+            Rings = new List<Path>();
             foreach (var currentRingPointList in _ringsArray.Select(
                 ring => ring.Select(
                     point => new Coordinate { x = point[0], y = point[1] }).ToList()))
             {
-                Rings.Add(new PointArray { Points = currentRingPointList });
+                Rings.Add(new Path { Coordinates = currentRingPointList });
             }
 
             if (Rings.Any(x => x == null)) { throw new InvalidOperationException("The collection may not contain a null ring."); }
+        }
+
+        public override string ToString()
+        {
+            return ToWkt();
+        }
+
+        public string ToWkt()
+        {
+            if ((Rings == null) || (Rings.Count == 0))
+                return "POLYGON EMPTY";
+            var sb = new StringBuilder();
+
+            sb.Append("POLYGON (");
+            sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText())));
+            sb.Append(")");
+
+            return sb.ToString();
         }
     }
 }

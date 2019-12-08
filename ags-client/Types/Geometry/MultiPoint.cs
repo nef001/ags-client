@@ -9,11 +9,9 @@ using Newtonsoft.Json;
 
 namespace ags_client.Types.Geometry
 {
-    public class MultiPoint : PointArray, IRestGeometry
+    public class MultiPoint : Path, IRestGeometry
     {
-        //public MultiPoint() { geometryType = "esriGeometryMultipoint"; }
-        //public string geometryType { get; set; }
-        //public SpatialReference spatialReference { get; set; }
+        public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("points")]
         private double[][] _pointsArray;
@@ -27,13 +25,23 @@ namespace ags_client.Types.Geometry
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
-            Points = new List<Coordinate>();
-            foreach (var currentPoint in _pointsArray.Select(point => new Coordinate { x = point[0], y = point[1] }))
+            Coordinates = new List<Coordinate>();
+            foreach (var currentCoord in _pointsArray.Select(coord => new Coordinate { x = coord[0], y = coord[1] }))
             {
-                Points.Add(currentPoint);
+                Coordinates.Add(currentCoord);
             }
 
-            if (Points.Any(x => x == null)) { throw new InvalidOperationException("The collection may not contain a null point."); }
+            if (Coordinates.Any(x => x == null)) { throw new InvalidOperationException("The collection may not contain a null point."); }
+        }
+
+        public string ToWkt()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

@@ -160,7 +160,7 @@
     <Compile Include="Types\Geometry\MultiPoint.cs" />
     <Compile Include="Types\Geometry\NoGeom.cs" />
     <Compile Include="Types\Geometry\Point.cs" />
-    <Compile Include="Types\Geometry\PointArray.cs" />
+    <Compile Include="Types\Geometry\Path.cs" />
     <Compile Include="Types\Geometry\Polygon.cs" />
     <Compile Include="Types\Geometry\Polyline.cs" />
     <Compile Include="Types\Geometry\SpatialReference.cs" />

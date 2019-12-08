@@ -8,7 +8,7 @@ namespace ags_client.Types.Geometry
 {
     public interface IRestGeometry
     {
-        //string geometryType { get; set; }
-        //SpatialReference spatialReference { get; set; }
+        SpatialReference spatialReference { get; set; }
+        string ToWkt();
     }
 }

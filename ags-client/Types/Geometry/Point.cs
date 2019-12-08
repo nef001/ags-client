@@ -4,10 +4,16 @@ namespace ags_client.Types.Geometry
 {
     public class Point : Coordinate, IRestGeometry
     {
-        //public Point() { geometryType = "esriGeometryPoint"; }
-        //public string geometryType { get; set; }
         public SpatialReference spatialReference { get; set; }
 
-        
+        public string ToWkt()
+        {
+            return $"POINT({base.ToString()})";
+        }
+
+        public override string ToString()
+        {
+            return ToWkt();
+        }
     }
 }

@@ -13,6 +13,10 @@ namespace ags_client.Types
             return new double[] { x, y };
         }
 
+        public override string ToString()
+        {
+            return $"{x} {y}";
+        }
         
     }
 }

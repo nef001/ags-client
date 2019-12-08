@@ -20,8 +20,52 @@ namespace ags_client_test_console
 {
     class Program
     {
+
         static async Task Main(string[] args)
         {
+
+            double? x = null;
+            object o = null;
+            var c0 = new Coordinate { x = 5, y = 7 };
+            Console.WriteLine($"value = {c0}");
+
+            var c1 = new Coordinate { x = 1, y = -2 };
+            var path0 = new Path { Coordinates = new List<Coordinate> { c0, c1 } };
+            var emptyPath = new Path();
+            var emptyPath2 = new Path { Coordinates = new List<Coordinate>() };
+            Console.WriteLine($"value = {path0}");
+
+           
+            var emptypolyline = new Polyline();
+
+            Console.WriteLine($"emptypolyline = {emptypolyline}");
+
+            var emptypolyline2 = new Polyline { Paths = new List<Path>() };
+            Console.WriteLine($"emptypolyline2 = {emptypolyline2}");
+
+            var polylinebasic = new Polyline { Paths = new List<Path> { path0 } };
+            Console.WriteLine($"polylinebasic = {polylinebasic}");
+
+            var polyline1 = new Polyline { Paths = new List<Path> { path0, emptyPath, emptyPath2 } };
+            Console.WriteLine($"polyline1 = {polyline1}");
+
+            var polyline2 = new Polyline { Paths = new List<Path> { path0, emptyPath, path0 } };
+            Console.WriteLine($"polyline2 = {polyline2}");
+
+            var p0 = new Point { x = 5, y = 7 };
+            var p1 = new Point { x = 1, y = -2 };
+
+            Console.WriteLine($"value = {p0}");
+            
+            
+            
+            
+
+
+
+
+
+
             Ssl.EnableTrustedHosts();
 
             var client = new AgsClient("agatstgis1.int.atco.com.au", "arcgis", 6443, true, "agm_test", "agm_test123");

@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 
 
 namespace ags_client.Types.Geometry
@@ -10,5 +10,10 @@ namespace ags_client.Types.Geometry
         public double? xMax { get; set; }
         public double? yMax { get; set; }
         public SpatialReference spatialReference { get; set; }
+
+        public string ToWkt()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
