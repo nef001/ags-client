@@ -56,14 +56,59 @@ namespace ags_client_test_console
             var p1 = new Point { x = 1, y = -2 };
 
             Console.WriteLine($"value = {p0}");
-            
-            
-            
-            
 
+            //"POLYGON((-122.358 47.653, -122.348 47.649, -122.348 47.658, -122.358 47.658, -122.358 47.653))",
 
+            var polygon = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = -122.348, y = 47.649 },
+                            new Coordinate { x = -122.348, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.653 },
+                        }
+                    },
+                }
+            };
+            Console.WriteLine($"polygon = {polygon}");
 
+            //"MULTILINESTRING((-122.358 47.653, -122.348 47.649, -122.348 47.658), (-122.357 47.654, -122.357 47.657, -122.349 47.657, -122.349 47.650))",
 
+            var polyline = new Polyline
+            {
+                Paths = new List<Path>
+                {
+                    new Path(),
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = -122.348, y = 47.649 },
+                            new Coordinate { x = -122.348, y = 47.658 },
+                            
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = -122.357, y = 47.654 },
+                            new Coordinate { x = -122.357, y = 47.657 },
+                            new Coordinate { x = -122.349, y = 47.657 },
+                            new Coordinate { x = -122.349, y = 47.650 },
+                        }
+                    }
+                }
+            };
+
+            Console.WriteLine($"polyline = {polyline}");
 
 
             Ssl.EnableTrustedHosts();
