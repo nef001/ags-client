@@ -39,8 +39,14 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            if ((Paths == null) || (Paths.Count == 0))
+            if (Paths == null)
                 return "LINESTRING EMPTY";
+
+            Paths.RemoveAll(x => x == null);
+
+            if (Paths.Count == 0)
+                return "LINESTRING EMPTY";
+
             if (Paths.Count == 1)
                 return Paths[0].ToString();
 

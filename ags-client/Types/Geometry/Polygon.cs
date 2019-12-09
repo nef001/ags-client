@@ -56,10 +56,19 @@ namespace ags_client.Types.Geometry
             return ToWkt();
         }
 
-        public string ToWkt()
+        public string ToWkt() //only correct for empty or single Ring polygon or a polygon with outer and inner ring
         {
-            if ((Rings == null) || (Rings.Count == 0))
+            if (Rings == null)
                 return "POLYGON EMPTY";
+
+            Rings.RemoveAll(x => x == null);
+
+            if (Rings.Count == 0)
+                return "POLYGON EMPTY";
+
+            if (Rings.Count > 2)
+                return "MULTIPOLYGON EMPTY"; // multipolygons not supported
+
             var sb = new StringBuilder();
 
             sb.Append("POLYGON (");
@@ -68,5 +77,57 @@ namespace ags_client.Types.Geometry
 
             return sb.ToString();
         }
+
+
+/*
+        private void FindOrientationSimple(Polygon PolyToCheck)
+        {
+            foreach (var part in PolyToCheck.Parts)
+            {
+                // construct a list of ordered coordinate pairs
+                List<Coordinate> ringCoordinates = new List<Coordinate>(PolyToCheck.PointCount);
+
+                foreach (var segment in part)
+                {
+                    ringCoordinates.Add(segment.StartCoordinate);
+                    ringCoordinates.Add(segment.EndCoordinate);
+                }
+
+                // this is not the true area of the part
+                // a negative number indicates an outer ring and a positive number represents an inner ring
+                // (this is the opposite from the ArcGIS.Core.Geometry understanding)
+                double signedArea = 0;
+
+                // for all coordinates pairs compute the area
+                // the last coordinate needs to reach back to the starting coordinate to complete
+                for (int cIndex = 0; cIndex < ringCoordinates.Count - 1; cIndex++)
+                {
+                    double x1 = ringCoordinates[cIndex].X;
+                    double y1 = ringCoordinates[cIndex].Y;
+
+                    double x2, y2;
+
+                    if (cIndex == ringCoordinates.Count - 2)
+                    {
+                        x2 = ringCoordinates[0].X;
+                        y2 = ringCoordinates[0].Y;
+                    }
+                    else
+                    {
+                        x2 = ringCoordinates[cIndex + 1].X;
+                        y2 = ringCoordinates[cIndex + 1].Y;
+                    }
+
+                    signedArea += ((x1 * y2) - (x2 * y1));
+                }
+
+                // if signedArea is a negative number => indicates an outer ring 
+                // if signedArea is a positive number => indicates an inner ring
+                // (this is the opposite from the ArcGIS.Core.Geometry understanding)
+
+            }
+        }*/
+
+
     }
 }

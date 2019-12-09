@@ -30,10 +30,10 @@ namespace ags_client_test_console
             Console.WriteLine($"value = {c0}");
 
             var c1 = new Coordinate { x = 1, y = -2 };
-            var path0 = new Path { Coordinates = new List<Coordinate> { c0, c1 } };
+            var path0 = new Path { Coordinates = new List<Coordinate> { c0, c1, null } };
             var emptyPath = new Path();
             var emptyPath2 = new Path { Coordinates = new List<Coordinate>() };
-            Console.WriteLine($"value = {path0}");
+            Console.WriteLine($"path0 = {path0}");
 
            
             var emptypolyline = new Polyline();
@@ -109,6 +109,36 @@ namespace ags_client_test_console
             };
 
             Console.WriteLine($"polyline = {polyline}");
+
+            var polygon2 = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = -122.348, y = 47.649 },
+                            new Coordinate { x = -122.348, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.653 },
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = -122.348, y = 47.649 },
+                            new Coordinate { x = -122.348, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.658 },
+                            new Coordinate { x = -122.358, y = 47.653 },
+                        }
+                    },
+                }
+            };
+            Console.WriteLine($"polygon2 = {polygon2}");
 
 
             Ssl.EnableTrustedHosts();

@@ -45,14 +45,20 @@ namespace ags_client.Types.Geometry
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Returns the bracketed coordinate list or EMPTY
+        /// </summary>
+        /// <returns></returns>
         public string CoordinatesText()
         {
-            if ((Coordinates == null) || (Coordinates.Count == 0))
+            if (Coordinates == null)
                 return "EMPTY";
-            if (Coordinates.Any(x => x == null))
-            {
-                throw new NullReferenceException("Geometry Path contains null coordinate(s).");
-            }
+
+            Coordinates.RemoveAll(x => x == null);
+
+            if (Coordinates.Count == 0)
+                return "EMPTY";
+
             string commaSeparatedCoords = String.Join(",", Coordinates.Select(x => x.ToString()).ToArray());
             return $"({commaSeparatedCoords})";
         }
