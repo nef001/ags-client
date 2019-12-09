@@ -39,9 +39,8 @@ namespace ags_client.Types.Geometry
             if ((Coordinates == null) || (Coordinates.Count == 0))
                 return "LINESTRING EMPTY";
 
-            var sb = new StringBuilder("LINESTRING(");
-            sb.Append(String.Join(",", Coordinates.Select(x => x.ToString()).ToArray()));
-            sb.Append(")");
+            var sb = new StringBuilder("LINESTRING ");
+            sb.Append(CoordinatesText());
 
             return sb.ToString();
         }
