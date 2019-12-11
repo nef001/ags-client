@@ -48,8 +48,9 @@ namespace ags_client.Types.Geometry
         /// <summary>
         /// Returns the bracketed coordinate list or EMPTY
         /// </summary>
+        /// <param name="reverse">use to reverse the orientation of rings in polygons</param>
         /// <returns></returns>
-        public string CoordinatesText()
+        public string CoordinatesText(bool reverse = false)
         {
             if (Coordinates == null)
                 return "EMPTY";
@@ -59,7 +60,13 @@ namespace ags_client.Types.Geometry
             if (Coordinates.Count == 0)
                 return "EMPTY";
 
-            string commaSeparatedCoords = String.Join(",", Coordinates.Select(x => x.ToString()).ToArray());
+            string[] coords;
+            if (reverse)
+                coords = Coordinates.Select(x => x.ToString()).Reverse().ToArray();
+            else
+                coords = Coordinates.Select(x => x.ToString()).ToArray();
+
+            string commaSeparatedCoords = String.Join(",", coords);
             return $"({commaSeparatedCoords})";
         }
     }

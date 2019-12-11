@@ -53,10 +53,17 @@ namespace ags_client.Types.Geometry
 
         public override string ToString()
         {
-            return ToWkt();
+            try
+            {
+                return ToWkt();
+            }
+            catch(Exception e)
+            {
+                return "Polygon invalid. " + e.Message;
+            }
         }
 
-        public string ToWkt() //only correct for empty or single Ring polygon or a polygon with outer and inner ring
+        public string ToWkt()
         {
             if (Rings == null)
                 return "POLYGON EMPTY";
@@ -66,67 +73,114 @@ namespace ags_client.Types.Geometry
             if (Rings.Count == 0)
                 return "POLYGON EMPTY";
 
-            if (Rings.Count > 2)
-                return "MULTIPOLYGON EMPTY"; // multipolygons not supported
-
             var sb = new StringBuilder();
 
-            sb.Append("POLYGON (");
-            sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText())));
-            sb.Append(")");
+            if (Rings.Count == 1) //simple case - 1 outer ring, no inner rings.
+            {
+                sb.Append("POLYGON (");
+                sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText(true))));
+                sb.Append(")");
+                return sb.ToString();
+            }
 
-            return sb.ToString();
+            sb.Append("MULTIPOLYGON (");
+
+            List<Path> polygon = null;
+            int polygonIndex = -1;
+            foreach (var currentRing in Rings)
+            {
+                if (isEmptyRing(currentRing))
+                    //do not support empty rings - 
+                    continue;
+
+                //assumes the esri convention - a clockwise ring is an exterior ring, 
+                //wkt and geojson have the opposite convention so before writing the string, coordinate lists are reversed
+                //interior rings are ignored until the first exterior ring is detected.
+                if (isClockwise(currentRing)) 
+                {
+                    if ((polygon != null) && (polygonIndex >= 0))
+                    {
+                        sb.Append("(");
+                        sb.Append(String.Join(",", polygon.Select(x => x.CoordinatesText(true))));
+                        sb.Append("),");
+                    }
+                    polygonIndex++;
+
+                    //start a new polygon and add the ring
+                    polygon = new List<Path> { currentRing };
+                }
+                else //add the inner ring
+                {
+                    if (polygon != null)
+                        polygon.Add(currentRing);
+                }
+
+            }
+            if (polygon != null)
+            {
+                sb.Append("(");
+                sb.Append(String.Join(",", polygon.Select(x => x.CoordinatesText(true))));
+                sb.Append("),");
+            }
+            var result = sb.ToString();
+            result = result.TrimEnd(',');
+            result += (")");
+
+            return result;
+
+            
+        }
+
+        private bool isEmptyRing(Path ring)
+        {
+            if (ring == null)
+                return true;
+            if (ring.Coordinates == null)
+                return true;
+            ring.Coordinates.RemoveAll(x => x == null);
+            if (ring.Coordinates.Count == 0)
+                return true;
+
+            return false;
+        }
+
+        private bool isClockwise(Path ring)
+        {
+            if (ring == null)
+                throw new ArgumentNullException("ring");
+
+            List<Coordinate> coords = ring.Coordinates;
+            if (coords == null)
+                throw new InvalidOperationException("ring is empty");
+
+            // a negative number indicates clockwise
+            // esri convention is clockwise is an exterior ring, interior counter-clockwise. Geojson, wkt convention is opposite 
+            double signedArea = 0;
+
+            for (int i = 0; i < coords.Count - 1; i++)
+            {
+                double x1 = coords[i].x;
+                double y1 = coords[i].y;
+
+                double x2, y2;
+
+                if (i == coords.Count - 2)
+                {
+                    x2 = coords[0].x;
+                    y2 = coords[0].y;
+                }
+                else
+                {
+                    x2 = coords[i + 1].x;
+                    y2 = coords[i + 1].y;
+                }
+
+                signedArea += ((x1 * y2) - (x2 * y1));
+            }
+            return signedArea < 0;
         }
 
 
-/*
-        private void FindOrientationSimple(Polygon PolyToCheck)
-        {
-            foreach (var part in PolyToCheck.Parts)
-            {
-                // construct a list of ordered coordinate pairs
-                List<Coordinate> ringCoordinates = new List<Coordinate>(PolyToCheck.PointCount);
-
-                foreach (var segment in part)
-                {
-                    ringCoordinates.Add(segment.StartCoordinate);
-                    ringCoordinates.Add(segment.EndCoordinate);
-                }
-
-                // this is not the true area of the part
-                // a negative number indicates an outer ring and a positive number represents an inner ring
-                // (this is the opposite from the ArcGIS.Core.Geometry understanding)
-                double signedArea = 0;
-
-                // for all coordinates pairs compute the area
-                // the last coordinate needs to reach back to the starting coordinate to complete
-                for (int cIndex = 0; cIndex < ringCoordinates.Count - 1; cIndex++)
-                {
-                    double x1 = ringCoordinates[cIndex].X;
-                    double y1 = ringCoordinates[cIndex].Y;
-
-                    double x2, y2;
-
-                    if (cIndex == ringCoordinates.Count - 2)
-                    {
-                        x2 = ringCoordinates[0].X;
-                        y2 = ringCoordinates[0].Y;
-                    }
-                    else
-                    {
-                        x2 = ringCoordinates[cIndex + 1].X;
-                        y2 = ringCoordinates[cIndex + 1].Y;
-                    }
-
-                    signedArea += ((x1 * y2) - (x2 * y1));
-                }
-
-                // if signedArea is a negative number => indicates an outer ring 
-                // if signedArea is a positive number => indicates an inner ring
-                // (this is the opposite from the ArcGIS.Core.Geometry understanding)
-
-            }
-        }*/
 
 
     }

@@ -118,24 +118,35 @@ namespace ags_client_test_console
                     {
                         Coordinates = new List<Coordinate>
                         {
-                            new Coordinate { x = -122.358, y = 47.653 },
-                            new Coordinate { x = -122.348, y = 47.649 },
-                            new Coordinate { x = -122.348, y = 47.658 },
-                            new Coordinate { x = -122.358, y = 47.658 },
-                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = 40, y = 40 },
+                            new Coordinate { x = 45, y = 30 },
+                            new Coordinate { x = 20, y = 45 },
+                            new Coordinate { x = 40, y = 40 },
+                            
                         }
                     },
                     new Path
                     {
                         Coordinates = new List<Coordinate>
                         {
-                            new Coordinate { x = -122.358, y = 47.653 },
-                            new Coordinate { x = -122.348, y = 47.649 },
-                            new Coordinate { x = -122.348, y = 47.658 },
-                            new Coordinate { x = -122.358, y = 47.658 },
-                            new Coordinate { x = -122.358, y = 47.653 },
+                            new Coordinate { x = 20, y = 35 },
+                            new Coordinate { x = 45, y = 20 },
+                            new Coordinate { x = 30, y = 5 },
+                            new Coordinate { x = 10, y = 10 },
+                            new Coordinate { x = 10, y = 30 },
+                            new Coordinate { x = 20, y = 35 },
                         }
                     },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 30, y = 20 },
+                            new Coordinate { x = 20, y = 25 },
+                            new Coordinate { x = 20, y = 15 },
+                            new Coordinate { x = 30, y = 20 },
+                        }
+                    }
                 }
             };
             Console.WriteLine($"polygon2 = {polygon2}");
