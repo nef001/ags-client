@@ -78,7 +78,7 @@ namespace ags_client.Types.Geometry
             if (Rings.Count == 1) //simple case - 1 outer ring, no inner rings.
             {
                 sb.Append("POLYGON (");
-                sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText(true))));
+                sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText(true)))); //assumption we need to reverse esri orientation
                 sb.Append(")");
                 return sb.ToString();
             }
@@ -90,12 +90,13 @@ namespace ags_client.Types.Geometry
             foreach (var currentRing in Rings)
             {
                 if (isEmptyRing(currentRing))
-                    //do not support empty rings - 
+                    //skip empty rings because we can't determine if they are interior or exterior
+                    //    - still an open question if this is the way to go
                     continue;
 
                 //assumes the esri convention - a clockwise ring is an exterior ring, 
                 //wkt and geojson have the opposite convention so before writing the string, coordinate lists are reversed
-                //interior rings are ignored until the first exterior ring is detected.
+                //Any interior rings are ignored until the first exterior ring is detected.
                 if (isClockwise(currentRing)) 
                 {
                     if ((polygon != null) && (polygonIndex >= 0))
@@ -155,7 +156,7 @@ namespace ags_client.Types.Geometry
 
             // a negative number indicates clockwise
             // esri convention is clockwise is an exterior ring, interior counter-clockwise. Geojson, wkt convention is opposite 
-            double signedArea = 0;
+            double sum = 0;
 
             for (int i = 0; i < coords.Count - 1; i++)
             {
@@ -175,9 +176,9 @@ namespace ags_client.Types.Geometry
                     y2 = coords[i + 1].y;
                 }
 
-                signedArea += ((x1 * y2) - (x2 * y1));
+                sum += ((x1 * y2) - (x2 * y1));
             }
-            return signedArea < 0;
+            return sum < 0;
         }
 
 

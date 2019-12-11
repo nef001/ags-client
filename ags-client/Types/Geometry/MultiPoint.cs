@@ -36,12 +36,24 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            throw new NotImplementedException();
+            if (Coordinates == null)
+                return "MULTIPOINT EMPTY";
+
+            Coordinates.RemoveAll(x => x == null);
+
+            if (Coordinates.Count == 0) 
+                return "MULTIPOINT EMPTY";
+
+            var sb = new StringBuilder("MULTIPOINT(");
+            sb.Append(CoordinatesText());
+            sb.Append(")");
+
+            return sb.ToString();
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return ToWkt();
         }
     }
 }

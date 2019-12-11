@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace ags_client.Types.Geometry
 {
@@ -13,7 +13,27 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            throw new NotImplementedException();
+            if ((!xMin.HasValue) || (!xMax.HasValue) || (!yMin.HasValue) || (!yMax.HasValue))
+                return "POLYGON EMPTY";
+
+            return new Polygon
+            {
+                spatialReference = this.spatialReference,
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = xMin.Value, y = yMin.Value },
+                            new Coordinate { x = xMax.Value, y = yMin.Value },
+                            new Coordinate { x = xMax.Value, y = yMax.Value },
+                            new Coordinate { x = xMin.Value, y = yMax.Value },
+                            new Coordinate { x = xMin.Value, y = yMin.Value },
+                        }
+                    }
+                }
+            }.ToWkt();
         }
     }
 }
