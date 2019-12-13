@@ -27,6 +27,8 @@ namespace ags_client.Types.Geometry
                 return null;
 
             Paths.RemoveAll(x => x == null);
+            Paths.RemoveAll(x => x.Coordinates == null);
+            Paths.RemoveAll(x => x.Coordinates.Count == 0);
 
             if (Paths.Count == 0)
                 return null;
@@ -46,18 +48,25 @@ namespace ags_client.Types.Geometry
                 return "LINESTRING EMPTY";
 
             Paths.RemoveAll(x => x == null);
+            //Paths.RemoveAll(x => x.Coordinates == null);
+            //Paths.RemoveAll(x => x.Coordinates.Count == 0);
 
             if (Paths.Count == 0)
                 return "LINESTRING EMPTY";
 
             var sb = new StringBuilder();
             if (Paths.Count == 1)
-                sb.Append("LINESTRING");
+            {
+                sb.Append("LINESTRING ");
+                sb.Append(this);
+            }
             else
-                sb.Append("MULTILINESTRING");
+            {
+                sb.Append("MULTILINESTRING (");
+                sb.Append(this);
+                sb.Append(")");
+            }
             
-            sb.Append(this);
-
             return sb.ToString();
         }
 
@@ -67,13 +76,15 @@ namespace ags_client.Types.Geometry
                 return "EMPTY";
 
             Paths.RemoveAll(x => x == null);
+            //Paths.RemoveAll(x => x.Coordinates == null);
+            //Paths.RemoveAll(x => x.Coordinates.Count == 0);
 
             if (Paths.Count == 0)
                 return "EMPTY";
 
-            var sb = new StringBuilder("(");
+            var sb = new StringBuilder();
             sb.Append(String.Join(",", Paths.Select(x => x.ToString())));
-            sb.Append(")");
+            //sb.Append(")");
             return sb.ToString();
         }
 

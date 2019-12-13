@@ -6,14 +6,11 @@ namespace ags_client.Types.Geometry
     {
         public SpatialReference spatialReference { get; set; }
 
+        
+
         public string ToWkt()
         {
-            return $"POINT({this})";
+            return $"POINT ({this})";
         }
-
-        //public override string ToString()
-        //{
-        //    return ToWkt();
-        //}
     }
 }

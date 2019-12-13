@@ -13,6 +13,8 @@ namespace ags_client.Types.Geometry
 
     public class Polygon : IRestGeometry
     {
+        private bool reversed = false;
+
         public SpatialReference spatialReference { get; set; }
 
         [JsonProperty("rings")]
@@ -51,17 +53,7 @@ namespace ags_client.Types.Geometry
             if (Rings.Any(x => x == null)) { throw new InvalidOperationException("The collection may not contain a null ring."); }
         }
 
-        public override string ToString()
-        {
-            try
-            {
-                return ToWkt();
-            }
-            catch(Exception e)
-            {
-                return "Polygon invalid. " + e.Message;
-            }
-        }
+
 
         public string ToWkt()
         {
@@ -73,15 +65,26 @@ namespace ags_client.Types.Geometry
             if (Rings.Count == 0)
                 return "POLYGON EMPTY";
 
+            //assumes the esri convention - a clockwise ring is an exterior ring, 
+            //wkt and geojson have the opposite convention so before writing the string, coordinate lists are reversed
+
+            if (!reversed)
+            {
+                foreach (var path in Rings)
+                    path.Reverse();
+                reversed = true;
+            }
+
             var sb = new StringBuilder();
 
-            if (Rings.Count == 1) //simple case - 1 outer ring, no inner rings.
-            {
-                if (isClockwise(Rings[0]))
-                    Rings[0].Reverse();
+            //rings are reversed from esri convention so now anti-clockwise rings are exterior
+            //count the number of exterior (anti-clockwise) rings
+            // if more than 1 then its a multipolygon
 
+            if (Rings.Where(x => isAntiClockwise(x)).Count() == 1) //simple case - 1 outer ring
+            {                
                 sb.Append("POLYGON (");
-                sb.Append(String.Join(",", Rings.Select(x => x.ToString()))); //assumption we need to reverse esri orientation
+                sb.Append(String.Join(",", Rings.Select(x => x.ToString()))); 
                 sb.Append(")");
                 return sb.ToString();
             }
@@ -97,12 +100,10 @@ namespace ags_client.Types.Geometry
                     //    - still an open question if this is the way to go
                     continue;
 
-                //assumes the esri convention - a clockwise ring is an exterior ring, 
-                //wkt and geojson have the opposite convention so before writing the string, coordinate lists are reversed
+                
                 //Any interior rings are ignored until the first exterior ring is detected.
-                if (isClockwise(currentRing)) 
+                if (isAntiClockwise(currentRing)) 
                 {
-                    currentRing.Reverse();
                     if ((polygon != null) && (polygonIndex >= 0))
                     {
                         sb.Append("(");
@@ -149,7 +150,7 @@ namespace ags_client.Types.Geometry
             return false;
         }
 
-        private bool isClockwise(Path ring)
+        private bool isAntiClockwise(Path ring)
         {
             if (ring == null)
                 throw new ArgumentNullException("ring");
@@ -182,7 +183,7 @@ namespace ags_client.Types.Geometry
 
                 sum += ((x1 * y2) - (x2 * y1));
             }
-            return sum < 0;
+            return sum >= 0;
         }
 
 

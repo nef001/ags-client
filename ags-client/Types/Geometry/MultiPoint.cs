@@ -44,7 +44,7 @@ namespace ags_client.Types.Geometry
             if (Coordinates.Count == 0) 
                 return "MULTIPOINT EMPTY";
 
-            var sb = new StringBuilder("MULTIPOINT(");
+            var sb = new StringBuilder("MULTIPOINT (");
             sb.Append(this);
             sb.Append(")");
 
