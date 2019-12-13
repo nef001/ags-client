@@ -45,15 +45,12 @@ namespace ags_client.Types.Geometry
                 return "MULTIPOINT EMPTY";
 
             var sb = new StringBuilder("MULTIPOINT(");
-            sb.Append(CoordinatesText());
+            sb.Append(this);
             sb.Append(")");
 
             return sb.ToString();
         }
 
-        public override string ToString()
-        {
-            return ToWkt();
-        }
+        
     }
 }

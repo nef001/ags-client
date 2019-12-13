@@ -77,8 +77,11 @@ namespace ags_client.Types.Geometry
 
             if (Rings.Count == 1) //simple case - 1 outer ring, no inner rings.
             {
+                if (isClockwise(Rings[0]))
+                    Rings[0].Reverse();
+
                 sb.Append("POLYGON (");
-                sb.Append(String.Join(",", Rings.Select(x => x.CoordinatesText(true)))); //assumption we need to reverse esri orientation
+                sb.Append(String.Join(",", Rings.Select(x => x.ToString()))); //assumption we need to reverse esri orientation
                 sb.Append(")");
                 return sb.ToString();
             }
@@ -99,10 +102,11 @@ namespace ags_client.Types.Geometry
                 //Any interior rings are ignored until the first exterior ring is detected.
                 if (isClockwise(currentRing)) 
                 {
+                    currentRing.Reverse();
                     if ((polygon != null) && (polygonIndex >= 0))
                     {
                         sb.Append("(");
-                        sb.Append(String.Join(",", polygon.Select(x => x.CoordinatesText(true))));
+                        sb.Append(String.Join(",", polygon.Select(x => x.ToString())));
                         sb.Append("),");
                     }
                     polygonIndex++;
@@ -120,7 +124,7 @@ namespace ags_client.Types.Geometry
             if (polygon != null)
             {
                 sb.Append("(");
-                sb.Append(String.Join(",", polygon.Select(x => x.CoordinatesText(true))));
+                sb.Append(String.Join(",", polygon.Select(x => x.ToString())));
                 sb.Append("),");
             }
             var result = sb.ToString();

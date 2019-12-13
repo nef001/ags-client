@@ -55,7 +55,12 @@ namespace ags_client_test_console
             var p0 = new Point { x = 5, y = 7 };
             var p1 = new Point { x = 1, y = -2 };
 
-            Console.WriteLine($"value = {p0}");
+            Console.WriteLine($"Point p0 = {p0}");
+
+            var multipoint = new MultiPoint { Coordinates = new List<Coordinate> { p0, p1 } };
+            Console.WriteLine($"multipoint = {multipoint}");
+
+            
 
             //"POLYGON((-122.358 47.653, -122.348 47.649, -122.348 47.658, -122.358 47.658, -122.358 47.653))",
 

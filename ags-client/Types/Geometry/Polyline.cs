@@ -25,6 +25,9 @@ namespace ags_client.Types.Geometry
         {
             if (Paths == null)
                 return null;
+
+            Paths.RemoveAll(x => x == null);
+
             if (Paths.Count == 0)
                 return null;
 
@@ -47,18 +50,31 @@ namespace ags_client.Types.Geometry
             if (Paths.Count == 0)
                 return "LINESTRING EMPTY";
 
+            var sb = new StringBuilder();
             if (Paths.Count == 1)
-                return Paths[0].ToString();
+                sb.Append("LINESTRING");
+            else
+                sb.Append("MULTILINESTRING");
+            
+            sb.Append(this);
 
-            var sb = new StringBuilder("MULTILINESTRING(");
-            sb.Append(String.Join(",", Paths.Select(x => x.CoordinatesText())));
-            sb.Append(")");
             return sb.ToString();
         }
 
         public override string ToString()
         {
-            return ToWkt();
+            if (Paths == null)
+                return "EMPTY";
+
+            Paths.RemoveAll(x => x == null);
+
+            if (Paths.Count == 0)
+                return "EMPTY";
+
+            var sb = new StringBuilder("(");
+            sb.Append(String.Join(",", Paths.Select(x => x.ToString())));
+            sb.Append(")");
+            return sb.ToString();
         }
 
 

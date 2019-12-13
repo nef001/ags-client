@@ -23,6 +23,9 @@ namespace ags_client.Types.Geometry
         {
             if (Coordinates == null)
                 return null;
+
+            Coordinates.RemoveAll(x => x == null);
+
             if (Coordinates.Count == 0)
                 return null;
 
@@ -34,23 +37,39 @@ namespace ags_client.Types.Geometry
             return result;
         }
 
-        public override string ToString()
+        //public string ToWkt()
+        //{
+        //    if (Coordinates == null)
+        //        return "LINESTRING EMPTY";
+
+        //    Coordinates.RemoveAll(x => x == null);
+
+        //    if  (Coordinates.Count == 0)
+        //        return "LINESTRING EMPTY";
+
+        //    var sb = new StringBuilder("LINESTRING ");
+        //    sb.Append(this);
+
+        //    return sb.ToString();
+        //}
+
+        public void Reverse()
         {
-            if ((Coordinates == null) || (Coordinates.Count == 0))
-                return "LINESTRING EMPTY";
+            if (Coordinates == null)
+                return;
 
-            var sb = new StringBuilder("LINESTRING ");
-            sb.Append(CoordinatesText());
+            Coordinates.RemoveAll(x => x == null);
 
-            return sb.ToString();
+            if (Coordinates.Count < 2)
+                return;
+
+            Coordinates.Reverse();
         }
 
         /// <summary>
         /// Returns the bracketed coordinate list or EMPTY
         /// </summary>
-        /// <param name="reverse">use to reverse the orientation of rings in polygons</param>
-        /// <returns></returns>
-        public string CoordinatesText(bool reverse = false)
+        public override string ToString()
         {
             if (Coordinates == null)
                 return "EMPTY";
@@ -60,14 +79,11 @@ namespace ags_client.Types.Geometry
             if (Coordinates.Count == 0)
                 return "EMPTY";
 
-            string[] coords;
-            if (reverse)
-                coords = Coordinates.Select(x => x.ToString()).Reverse().ToArray();
-            else
-                coords = Coordinates.Select(x => x.ToString()).ToArray();
+            string[] coords = Coordinates.Select(x => x.ToString()).ToArray();
 
             string commaSeparatedCoords = String.Join(",", coords);
             return $"({commaSeparatedCoords})";
         }
+
     }
 }

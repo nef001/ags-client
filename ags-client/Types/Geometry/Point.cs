@@ -8,12 +8,12 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            return $"POINT({base.ToString()})";
+            return $"POINT({this})";
         }
 
-        public override string ToString()
-        {
-            return ToWkt();
-        }
+        //public override string ToString()
+        //{
+        //    return ToWkt();
+        //}
     }
 }
