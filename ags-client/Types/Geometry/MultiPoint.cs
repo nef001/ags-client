@@ -36,19 +36,24 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            if (Coordinates == null)
-                return "MULTIPOINT EMPTY";
+            /*
+            < multipoint tagged text> ::= multipoint < multipoint text >
+            */
 
-            Coordinates.RemoveAll(x => x == null);
+            return $"MULTIPOINT {multipointText()}";
+        }
 
-            if (Coordinates.Count == 0) 
-                return "MULTIPOINT EMPTY";
+        private string multipointText()
+        {
+            /*
+            < multipoint text > ::= < empty set > | 
+            < left paren > < point text > {< comma > < point text >}* < right paren >
 
-            var sb = new StringBuilder("MULTIPOINT (");
-            sb.Append(this);
-            sb.Append(")");
+            i.e. same as a linestring
 
-            return sb.ToString();
+            */
+
+            return this.LineStringText(false);
         }
 
         

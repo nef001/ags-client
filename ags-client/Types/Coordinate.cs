@@ -13,9 +13,33 @@ namespace ags_client.Types
             return new double[] { x, y };
         }
 
+        public string PointString()
+        {
+            /*
+             <point> ::= <x> <y>
+             */
+
+            return $"{x} {y}";
+        }
+
+        public string PointText()
+        {
+            /*
+             <point text> ::= <empty set> | <left paren> <point> <right paren>
+             */
+            if (double.IsNaN(x) || double.IsNaN(y) || double.IsInfinity(x) || double.IsInfinity(y))
+                return "EMPTY";
+
+            return $"({PointString()})";
+        }
+
+        
+
+            
+
         public override string ToString()
         {
-            return $"{x} {y}";
+            return PointString();
         }
         
     }

@@ -24,8 +24,6 @@ namespace ags_client.Types.Geometry
             if (Coordinates == null)
                 return null;
 
-            Coordinates.RemoveAll(x => x == null);
-
             if (Coordinates.Count == 0)
                 return null;
 
@@ -37,53 +35,66 @@ namespace ags_client.Types.Geometry
             return result;
         }
 
-        //public string ToWkt()
-        //{
-        //    if (Coordinates == null)
-        //        return "LINESTRING EMPTY";
+        
 
-        //    Coordinates.RemoveAll(x => x == null);
+        public string LineStringText(bool reversed)
+        {
+            /*
+            < linestring text > ::= < empty set > | < left paren > 
+                                    < point > 
+                                    {< comma > < point >}* 
+                                    < right paren >
+            */
 
-        //    if  (Coordinates.Count == 0)
-        //        return "LINESTRING EMPTY";
+            List<Coordinate> coords = Coordinates;
+            if (reversed) coords = reverseCoordinates();
+            if (coords == null)
+                return "EMPTY";
+            coords.RemoveAll(x => x == null);
+            if (coords.Count == 0)
+                return "EMPTY";
+            
+            return $"({String.Join(",", coords.Select(x => x.PointString()).ToArray())})";
+        }
 
-        //    var sb = new StringBuilder("LINESTRING ");
-        //    sb.Append(this);
+        public string LineStringTaggedText(bool reversed)
+        {
+            /*
+             <linestring tagged text> ::= linestring <linestring text>
+             */
 
-        //    return sb.ToString();
-        //}
+            return $"LINESTRING {LineStringText(reversed)}";
+        }
 
-        public void Reverse()
+        private List<Coordinate> reverseCoordinates()
         {
             if (Coordinates == null)
-                return;
-
-            Coordinates.RemoveAll(x => x == null);
+                return null;
 
             if (Coordinates.Count < 2)
-                return;
+                return Coordinates;
 
-            Coordinates.Reverse();
+            return Coordinates.AsEnumerable().Reverse().ToList();
         }
 
         /// <summary>
         /// Returns the bracketed coordinate list or EMPTY
         /// </summary>
-        public override string ToString()
-        {
-            if (Coordinates == null)
-                return "EMPTY";
+        //public override string ToString()
+        //{
+        //    if (Coordinates == null)
+        //        return "EMPTY";
 
-            Coordinates.RemoveAll(x => x == null);
+        //    Coordinates.RemoveAll(x => x == null);
 
-            if (Coordinates.Count == 0)
-                return "EMPTY";
+        //    if (Coordinates.Count == 0)
+        //        return "EMPTY";
 
-            string[] coords = Coordinates.Select(x => x.ToString()).ToArray();
+        //    string[] coords = Coordinates.Select(x => x.ToString()).ToArray();
 
-            string commaSeparatedCoords = String.Join(",", coords);
-            return $"({commaSeparatedCoords})";
-        }
+        //    string commaSeparatedCoords = String.Join(",", coords);
+        //    return $"({commaSeparatedCoords})";
+        //}
 
     }
 }
