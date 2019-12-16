@@ -121,6 +121,7 @@ namespace ags_client.Types.Geometry
 
         //Orders coordinates by the angle from the "mean" coord.
         //Null coordinates removed.
+        //Duplicates other than start and end are removed
         public List<Coordinate> OrientPath()
         {
             if (Coordinates == null)
