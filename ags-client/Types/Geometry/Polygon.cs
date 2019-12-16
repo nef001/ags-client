@@ -70,7 +70,7 @@ namespace ags_client.Types.Geometry
                 return "POLYGON EMPTY";
 
             var sb = new StringBuilder();
-            if (exteriorRings.Count == 1) // treat as POLYGON and assume Ring[0} is exterior.
+            if (exteriorRings.Count == 1) // treat as POLYGON and assume Ring[0] is exterior.
             {
                 sb.Append("POLYGON ");
                 sb.Append(polygonText(Rings));
@@ -83,13 +83,7 @@ namespace ags_client.Types.Geometry
             List<Path> rings = null;
             foreach (var currentRing in Rings)
             {
-                //if (isEmptyRing(currentRing))
-                //    //skip empty rings because we can't determine if they are interior or exterior
-                //    //    - still an open question if this is the way to go
-                //    continue;
-
-
-                //Any interior rings are ignored until the first exterior ring is detected.
+                //Any interior or empty rings are ignored until the first exterior ring is detected.
                 if (currentRing.SignedArea() < 0) 
                 {
                     if (rings != null)
@@ -101,7 +95,7 @@ namespace ags_client.Types.Geometry
                     //start a new set of rings and add the current ring
                     rings = new List<Path> { currentRing };
                 }
-                else //add the inner ring to the current ring set
+                else //add the inner (or empty) ring to the current ring set
                 {
                     if (rings != null)
                         rings.Add(currentRing);
@@ -135,14 +129,14 @@ namespace ags_client.Types.Geometry
             return $"({String.Join(",", rings.Select(x => x.LineStringText(true)).ToArray())})";
         }
 
-        private string multipolygontext()
-        {
-            /*
-            < multipolygon text > ::=  < empty set > | 
-                            < left paren > < polygon text > {< comma > < polygon text >}* < right paren >
-            */
-            return "";
-        }
+        //private string multipolygontext()
+        //{
+        //    /*
+        //    < multipolygon text > ::=  < empty set > | 
+        //                    < left paren > < polygon text > {< comma > < polygon text >}* < right paren >
+        //    */
+        //    return "";
+        //}
 
         private bool isEmptyRing(Path ring)
         {
@@ -161,50 +155,6 @@ namespace ags_client.Types.Geometry
             return false;
         }
 
-        /// <summary>
-        /// A negative number indicates clockwise ring. 0 indicates empty? Positive indicates anti-clockwise.
-        /// Esri convention is clockwise is an exterior ring, interior counter-clockwise. Geojson, wkt convention is opposite 
-        /// </summary>
-        /// <param name="ring"></param>
-        /// <returns></returns>
-        //private double signedArea(Path ring)
-        //{
-        //    if (ring == null)
-        //        return 0;
-
-        //    List<Coordinate> coords = ring.Coordinates;
-        //    if (coords == null)
-        //        return 0;
-
-        //    double sum = 0;
-
-        //    for (int i = 0; i < coords.Count - 1; i++)
-        //    {
-        //        double x1 = coords[i].x;
-        //        double y1 = coords[i].y;
-
-        //        double x2, y2;
-
-        //        if (i == coords.Count - 2)
-        //        {
-        //            x2 = coords[0].x;
-        //            y2 = coords[0].y;
-        //        }
-        //        else
-        //        {
-        //            x2 = coords[i + 1].x;
-        //            y2 = coords[i + 1].y;
-        //        }
-
-        //        sum += ((x1 * y2) - (x2 * y1));
-        //    }
-        //    return sum;
-        //}
-
-
-        
-
-        
 
     }
 }
