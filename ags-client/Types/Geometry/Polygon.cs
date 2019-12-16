@@ -64,7 +64,7 @@ namespace ags_client.Types.Geometry
 
             // Count the clockwise non-empty rings (esri exterior)
             var nonEmptyRings = Rings.Where(x => isEmptyRing(x) == false);
-            var exteriorRings = nonEmptyRings.Where(x => signedArea(x) < 0).ToList();
+            var exteriorRings = nonEmptyRings.Where(x => x.SignedArea() < 0).ToList();
 
             if (exteriorRings.Count == 0)
                 return "POLYGON EMPTY";
@@ -90,7 +90,7 @@ namespace ags_client.Types.Geometry
 
 
                 //Any interior rings are ignored until the first exterior ring is detected.
-                if (signedArea(currentRing) < 0) 
+                if (currentRing.SignedArea() < 0) 
                 {
                     if (rings != null)
                     {
@@ -155,7 +155,7 @@ namespace ags_client.Types.Geometry
             if (ring.Coordinates.Count == 0)
                 return true;
 
-            if (Math.Abs(signedArea(ring)) < double.Epsilon)
+            if (Math.Abs(ring.SignedArea()) < double.Epsilon)
                 return true;
 
             return false;
@@ -167,39 +167,39 @@ namespace ags_client.Types.Geometry
         /// </summary>
         /// <param name="ring"></param>
         /// <returns></returns>
-        private double signedArea(Path ring)
-        {
-            if (ring == null)
-                return 0;
+        //private double signedArea(Path ring)
+        //{
+        //    if (ring == null)
+        //        return 0;
 
-            List<Coordinate> coords = ring.Coordinates;
-            if (coords == null)
-                return 0;
+        //    List<Coordinate> coords = ring.Coordinates;
+        //    if (coords == null)
+        //        return 0;
 
-            double sum = 0;
+        //    double sum = 0;
 
-            for (int i = 0; i < coords.Count - 1; i++)
-            {
-                double x1 = coords[i].x;
-                double y1 = coords[i].y;
+        //    for (int i = 0; i < coords.Count - 1; i++)
+        //    {
+        //        double x1 = coords[i].x;
+        //        double y1 = coords[i].y;
 
-                double x2, y2;
+        //        double x2, y2;
 
-                if (i == coords.Count - 2)
-                {
-                    x2 = coords[0].x;
-                    y2 = coords[0].y;
-                }
-                else
-                {
-                    x2 = coords[i + 1].x;
-                    y2 = coords[i + 1].y;
-                }
+        //        if (i == coords.Count - 2)
+        //        {
+        //            x2 = coords[0].x;
+        //            y2 = coords[0].y;
+        //        }
+        //        else
+        //        {
+        //            x2 = coords[i + 1].x;
+        //            y2 = coords[i + 1].y;
+        //        }
 
-                sum += ((x1 * y2) - (x2 * y1));
-            }
-            return sum;
-        }
+        //        sum += ((x1 * y2) - (x2 * y1));
+        //    }
+        //    return sum;
+        //}
 
 
         

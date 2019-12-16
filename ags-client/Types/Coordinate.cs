@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 
 namespace ags_client.Types
 {
@@ -41,6 +41,43 @@ namespace ags_client.Types
         {
             return PointString();
         }
-        
+
+        public override bool Equals(object obj)
+        {
+            // check for self comparison
+            if (this == obj)
+                return true;
+
+            Coordinate other = obj as Coordinate;
+            if (other == null)
+                return false;
+
+            return this.x.Equals(other.x) && this.y.Equals(other.y);
+        }
+
+        public override int GetHashCode()
+        {
+            int seed = 23;
+            int result = hashdouble(seed, this.x);
+            result = hashdouble(result, this.y);
+            return result;
+        }
+
+        private int hashlong(int seed, long n)
+        {
+            return firstTerm(seed) + (int)(n ^ (n >> 32));
+        }
+
+        private int hashdouble(int seed, double d)
+        {
+            return hashlong(seed, BitConverter.DoubleToInt64Bits(d));
+        }
+
+        private int firstTerm(int seed)
+        {
+            int odd_prime = 37;
+            return odd_prime * seed;
+        }
+
     }
 }

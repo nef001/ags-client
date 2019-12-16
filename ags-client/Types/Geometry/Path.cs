@@ -77,24 +77,70 @@ namespace ags_client.Types.Geometry
             return Coordinates.AsEnumerable().Reverse().ToList();
         }
 
-        /// <summary>
-        /// Returns the bracketed coordinate list or EMPTY
-        /// </summary>
-        //public override string ToString()
-        //{
-        //    if (Coordinates == null)
-        //        return "EMPTY";
+        public double SignedArea() // assumes a ring - a closed path where first and last coordinates are the same
+        {
+            if (Coordinates == null)
+                return 0;
 
-        //    Coordinates.RemoveAll(x => x == null);
+            var nonNullCoords = (Coordinates.Where(x => x != null)).ToList();
 
-        //    if (Coordinates.Count == 0)
-        //        return "EMPTY";
+            if (nonNullCoords.Count < 2)
+                throw new InvalidOperationException("Path is not a closed ring");
 
-        //    string[] coords = Coordinates.Select(x => x.ToString()).ToArray();
+            if (nonNullCoords[0].Equals(nonNullCoords.Last()) == false)
+                throw new InvalidOperationException("Path is not a closed ring");
 
-        //    string commaSeparatedCoords = String.Join(",", coords);
-        //    return $"({commaSeparatedCoords})";
-        //}
+            //need 4 coords for a non-empty ring
+            if (nonNullCoords.Count < 4)
+                return 0;
+
+            double sum = 0;
+
+            for (int i = 0; i < Coordinates.Count - 1; i++)
+            {
+                double x1 = Coordinates[i].x;
+                double y1 = Coordinates[i].y;
+
+                double x2, y2;
+
+                if (i == Coordinates.Count - 2)
+                {
+                    x2 = Coordinates[0].x;
+                    y2 = Coordinates[0].y;
+                }
+                else
+                {
+                    x2 = Coordinates[i + 1].x;
+                    y2 = Coordinates[i + 1].y;
+                }
+
+                sum += ((x1 * y2) - (x2 * y1));
+            }
+            return sum;
+        }
+
+        //Orders coordinates by the angle from the "mean" coord.
+        //Null coordinates removed.
+        public List<Coordinate> OrientPath()
+        {
+            if (Coordinates == null)
+                return null;
+
+            var nonNullCoords = (Coordinates.Where(x => x != null)).ToList();
+
+            if (nonNullCoords.Count < 2)
+                return nonNullCoords;
+
+            //mean x, y
+            var cx = nonNullCoords.Sum(c => c.x) / nonNullCoords.Count;
+            var cy = nonNullCoords.Sum(c => c.y) / nonNullCoords.Count;
+
+            var ordered = nonNullCoords.OrderBy(c => Math.Atan2(c.y - cy, c.x - cx)).ToList();
+
+            //TODO fix issue where a closed path has duplicate coord 
+
+            return ordered;
+        }
 
     }
 }

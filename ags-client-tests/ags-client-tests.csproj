@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PathTests.cs" />
     <Compile Include="WktTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
