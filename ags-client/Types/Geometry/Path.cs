@@ -126,18 +126,36 @@ namespace ags_client.Types.Geometry
             if (Coordinates == null)
                 return null;
 
-            var nonNullCoords = (Coordinates.Where(x => x != null)).ToList();
+            var nonNullCoords = (Coordinates.Where(c => c != null));
+            var nonUnique = new List<Coordinate>();
+            var unique = new HashSet<Coordinate>();
 
-            if (nonNullCoords.Count < 2)
-                return nonNullCoords;
+            foreach (var c in nonNullCoords)
+                if (!unique.Add(c)) nonUnique.Add(c);
 
-            //mean x, y
-            var cx = nonNullCoords.Sum(c => c.x) / nonNullCoords.Count;
-            var cy = nonNullCoords.Sum(c => c.y) / nonNullCoords.Count;
+            if (unique.Count == 0) // don't bother
+                return nonNullCoords.ToList();
 
-            var ordered = nonNullCoords.OrderBy(c => Math.Atan2(c.y - cy, c.x - cx)).ToList();
+            var cx = unique.Average(c => c.x);
+            var cy = unique.Average(c => c.y);
 
-            //TODO fix issue where a closed path has duplicate coord 
+            var ordered = unique.OrderBy(c => Math.Atan2(c.y - cy, c.x - cx)).ToList();
+
+            //re-arrange to put the start point first and last
+            var arranged = new List<Coordinate>();
+            if (nonUnique.Count > 0)
+            {
+                int startIndex = ordered.IndexOf(nonUnique[0]);
+
+                var startRange = ordered.Skip(startIndex);
+                var endRange = ordered.Take(startIndex);
+
+                arranged.AddRange(startRange);
+                arranged.AddRange(endRange);
+                arranged.Add(nonUnique[0]);
+
+                return arranged;
+            }
 
             return ordered;
         }
