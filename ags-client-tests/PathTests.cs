@@ -28,6 +28,7 @@ namespace ags_client_tests
             string expected = "(2 1,6 2,5 4,3 3,2 1)";
             string actual = ordered.LineStringText(false);
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(ordered.SignedArea() > 0);
         }
 
         [TestMethod]
@@ -48,6 +49,7 @@ namespace ags_client_tests
             string expected = "(2 1,6 2,5 4,3 3,2 1)";
             string actual = ordered.LineStringText(false);
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(ordered.SignedArea() > 0);
         }
 
         [TestMethod]
@@ -68,6 +70,7 @@ namespace ags_client_tests
             string expected = "(2 1,6 2,5 4,3 3,2 1)";
             string actual = ordered.LineStringText(false);
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(ordered.SignedArea() > 0);
         }
 
         [TestMethod]
@@ -88,6 +91,7 @@ namespace ags_client_tests
             string expected = "(0 0,2 1,0 0)";
             string actual = ordered.LineStringText(false);
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(ordered.SignedArea() == 0);
         }
     }
 }

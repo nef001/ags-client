@@ -77,7 +77,12 @@ namespace ags_client.Types.Geometry
             return Coordinates.AsEnumerable().Reverse().ToList();
         }
 
-        public double SignedArea() // assumes a ring - a closed path where first and last coordinates are the same
+        /// <summary>
+        /// Determines ring direction - an InvalidOperation exception is thrown if the path is not a closed ring
+        /// where the first and last coordinates are equal.
+        /// </summary>
+        /// <returns>0 if the ring is empty, >0 if the ring is anti-clockwise, <0 if the ring is clockwise.</returns>
+        public double SignedArea()
         {
             if (Coordinates == null)
                 return 0;
@@ -119,9 +124,13 @@ namespace ags_client.Types.Geometry
             return sum;
         }
 
-        //Orders coordinates by the angle from the "mean" coord.
-        //Null coordinates removed.
-        //Duplicates other than start and end are removed
+
+        /// <summary>
+        /// Orders coordinates by the angle around an "average" point. Any null coordinates are removed
+        /// and any duplicates other than start and end point are removed.
+        /// For a closed ring, this will order the ring in an anti-clockwise direction.
+        /// </summary>
+        /// <returns>A new list of ordered coordinates</returns>
         public List<Coordinate> OrientPath()
         {
             if (Coordinates == null)
