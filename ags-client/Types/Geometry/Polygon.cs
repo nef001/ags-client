@@ -115,6 +115,88 @@ namespace ags_client.Types.Geometry
 
         }
 
+        private List<Polygon> multiPolygonToList()
+        {
+            var result = new List<Polygon>();
+
+            if ((Rings == null) || (Rings.Count == 0))
+                return result;          
+
+            var closedPolygonRings = Rings.Select(ring => ring.NonEmptyCoordinates())
+                .Where(ring => ring.Coordinates.Count > 3)
+                .Where(ring => ring.Coordinates[0].Equals(ring.Coordinates.Last()));
+
+            List<Path> rings = null;
+            foreach (var ring in closedPolygonRings)
+            {
+                if (ring.SignedArea() < 0 ) //esri outer ring
+                {
+                    if (rings != null)
+                    {
+                        result.Add(new Polygon { Rings = rings });
+                    }
+                    rings = new List<Path> { ring };
+                }
+                else //add the inner (or empty) ring to the current ring set
+                {
+                    if (rings != null)
+                        rings.Add(ring);
+                }
+            }
+            if (rings != null)
+            {
+                //finally add the last ring set polygon 
+                result.Add(new Polygon { Rings = rings });
+            }
+
+
+
+            return result;
+        }
+
+
+        public bool PointInPoly(Coordinate p)
+        {
+            var multipolygon = multiPolygonToList();
+            if ((multipolygon == null) || (multipolygon.Count == 0))
+                return false;
+
+            bool inCurrent = false;
+            foreach (var polygon in multipolygon)
+            {
+                if ((polygon.Rings == null) || (polygon.Rings.Count == 0))
+                {
+                    inCurrent = false;
+                }
+                else
+                {
+                    if (polygon.Rings[0].ContainsPoint(p) != 0) // 1 = inside, -1 = on the boundary
+                    {
+                        inCurrent = true;
+                        if (polygon.Rings.Count > 1)
+                        {
+                            for (int i = 1; i < polygon.Rings.Count; i++)
+                            {
+                                if (polygon.Rings[i].ContainsPoint(p) == 1)
+                                {
+                                    inCurrent = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        inCurrent = false;
+                    }
+                }
+                if (inCurrent)
+                    return true;
+            }
+            return false;
+        }
+
+
         private string polygonText(List<Path> rings)
         {
             /*

@@ -33,13 +33,16 @@ namespace ags_client.Types
             return $"({PointString()})";
         }
 
-        
 
-            
 
         public override string ToString()
         {
             return PointString();
+        }
+
+        public bool IsEmpty()
+        {
+            return (double.IsNaN(x) || double.IsNaN(y) || double.IsInfinity(x) || double.IsInfinity(y));
         }
 
         public override bool Equals(object obj)

@@ -130,7 +130,7 @@ namespace ags_client.Types.Geometry
 
 
         /// <summary>
-        /// Orders coordinates by the angle around an "average" point. Any null coordinates are removed
+        /// Orders coordinates by the angle around an "averaged" point. Any null coordinates are removed
         /// and any duplicates other than start and end point are removed.
         /// For a closed ring, this will order the ring in an anti-clockwise direction.
         /// </summary>
@@ -172,6 +172,85 @@ namespace ags_client.Types.Geometry
             }
 
             return ordered;
+        }
+
+        public Path NonEmptyCoordinates()
+        {
+            if ((Coordinates == null) || (Coordinates.Count == 0))
+                return new Path { Coordinates = new List<Coordinate>() };
+            return 
+                new Path { Coordinates = Coordinates.Where(c => c.IsEmpty() == false).ToList() };
+        }
+
+        public int ContainsPoint(Coordinate p)
+        {
+            int k = 0;
+            
+            for (int i = 0; i < Coordinates.Count - 1; i++)
+            {
+                var c1 = Coordinates[i];
+                var c2 = Coordinates[i + 1];
+                double v1 = c1.y - p.y;
+                double v2 = c2.y - p.y;
+                if ((v1 < 0 && v2 < 0) || (v1 > 0 && v2 > 0))   // Case 11 or 26 
+                {
+                    continue;
+                }
+                double u1 = c1.x - p.x;
+                double u2 = c2.x - p.x;
+                double f = (u1 * v2) - (u2 * v1); // BRACKETS??
+                if ((v2 > 0) && (v1 <= 0)) // Case 3, 9, 16, 21, 13, or 24 
+                {
+                    if (f > 0) // Case 3 or 9 
+                    {
+                        k++; // Handle Case 3 or 9 
+                    }
+                    else if (f == 0) // Case 16 or 21.The rest are Case 13 or 24 
+                    {
+                        return -1; // Handle Case 16 or 21 
+                    }
+                }
+                else if ((v1 > 0) && (v2 <= 0)) // Case 4, 10, 19, 20, 12, or 25 
+                {
+                    if (f < 0) //Case 4 or 10
+                    {
+                        k++; // Handle Case 4 or 10
+                    }
+                    else if (f == 0) // Case 19 or 20.The rest are Case 12 or 25  
+                    {
+                        return -1; // Handle Case 19 or 20 
+                    }
+                }
+                else if ((v2 == 0) && (v1< 0)) // Case 7, 14, or 17 
+                {
+                    if (f == 0)
+                    {
+                        return -1; // Case 17.The rest are Case 7 or 14 
+                    }
+                }
+                else if ((v1 == 0) && (v2 < 0)) // Case 8, 15, or 18
+                {
+                    if (f == 0)
+                    {
+                        return -1; // Case 18.The rest are Case 8 or 15 
+                    }
+                }
+                else if ((v1 == 0) && (v2 == 0)) // Case 1, 2, 5, 6, 22, or 23
+                {
+                    if ((u2 <= 0) && (u1 >= 0)) // Case 1
+                    {
+                        return -1; // Handle Case 1 
+                    }
+                    else if ((u1 <= 0) && (u2 >= 0)) // Case 2.The rest are Case 5, 6, 22, or 23 
+                    {
+                        return -1; // Handle Case 2 
+                    }
+                }
+            }
+            if (k % 2 == 0)
+                return 0;
+            else
+                return 1;
         }
 
     }
