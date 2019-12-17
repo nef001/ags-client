@@ -184,6 +184,22 @@ namespace ags_client.Types.Geometry
 
         public int ContainsPoint(Coordinate p)
         {
+            /*
+             * Algorithm 1 from https://www.mdpi.com/2073-8994/10/10/477
+             * 
+             * Optimal Reliable Point-in-Polygon Test and Differential Coding Boolean Operations on Polygons
+             * Jianqiang Hao, Jianzhi Sun, Yi Chen, Qiang Cai and Li Tan 
+             * Symmetry 2018, 10(10), 477; https://doi.org/10.3390/sym10100477 
+             * 
+             * © 2018 by the authors. 
+             * Licensee MDPI, Basel, Switzerland. 
+             * 
+             * This article is an open access article distributed under the 
+             * terms and conditions of the Creative Commons Attribution
+             * (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+             */
+
+
             int k = 0;
             
             for (int i = 0; i < Coordinates.Count - 1; i++)
@@ -198,7 +214,7 @@ namespace ags_client.Types.Geometry
                 }
                 double u1 = c1.x - p.x;
                 double u2 = c2.x - p.x;
-                double f = (u1 * v2) - (u2 * v1); // BRACKETS??
+                double f = (u1 * v2) - (u2 * v1);
                 if ((v2 > 0) && (v1 <= 0)) // Case 3, 9, 16, 21, 13, or 24 
                 {
                     if (f > 0) // Case 3 or 9 
