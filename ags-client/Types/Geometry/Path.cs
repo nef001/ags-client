@@ -35,7 +35,18 @@ namespace ags_client.Types.Geometry
             return result;
         }
 
-        
+        /// <summary>
+        /// A closed ring has at least 2 coordinates where the first equals the last
+        /// </summary>
+        /// <returns></returns>
+        public bool IsClosedRing()
+        {
+            if ((Coordinates == null) || (Coordinates.Count < 2))
+                return false;
+            return Coordinates.First().Equals(Coordinates.Last());
+        }
+
+
 
         public string LineStringText(bool reversed)
         {
@@ -182,6 +193,14 @@ namespace ags_client.Types.Geometry
                 new Path { Coordinates = Coordinates.Where(c => c.IsEmpty() == false).ToList() };
         }
 
+        
+
+        /// <summary>
+        /// Determinas if the supplied coordinate is inside, outside or on the boundary
+        /// of the path.
+        /// </summary>
+        /// <param name="p">The coordinate to test</param>
+        /// <returns>1 = inside, -1 = on the boundary, 0 = outside</returns>
         public int ContainsPoint(Coordinate p)
         {
             /*
