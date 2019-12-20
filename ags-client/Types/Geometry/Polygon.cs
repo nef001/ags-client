@@ -63,17 +63,17 @@ namespace ags_client.Types.Geometry
                 return "POLYGON EMPTY";
 
             // Count the clockwise non-empty rings (esri exterior)
-            var nonEmptyRings = Rings.Where(x => x.IsEmptyRing() == false);
+            var nonEmptyRings = Rings.Where(x => x.IsEmptyRing() == false).ToList();
             var exteriorRings = nonEmptyRings.Where(x => x.SignedArea() < 0).ToList();
 
             if (exteriorRings.Count == 0)
                 return "POLYGON EMPTY";
 
             var sb = new StringBuilder();
-            if (exteriorRings.Count == 1) // treat as POLYGON and assume Ring[0] is exterior.
+            if (exteriorRings.Count == 1) // treat as POLYGON
             {
                 sb.Append("POLYGON ");
-                sb.Append(polygonText(Rings));
+                sb.Append(polygonText(nonEmptyRings));
                 return sb.ToString();
             }
 
@@ -203,9 +203,7 @@ namespace ags_client.Types.Geometry
             < polygon text > ::= < empty set > | 
                             < left paren > < linestring text > {< comma > < linestring text >}* < right paren >
             */
-            if (rings == null)
-                return "EMPTY";
-            if (rings.Count == 0)
+            if ((rings == null) || (rings.Count == 0))
                 return "EMPTY";
 
             return $"({String.Join(",", rings.Select(x => x.LineStringText(true)).ToArray())})";

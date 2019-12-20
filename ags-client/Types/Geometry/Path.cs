@@ -37,12 +37,12 @@ namespace ags_client.Types.Geometry
 
         public bool IsEmptyPath()
         {
-            return nonEmptyCoordinates().Count > 0;
+            return nonEmptyCoordinates().Count == 0;
         }
 
         public bool IsEmptyRing()
         {
-            return nonEmptyCoordinates().Count > 1;
+            return nonEmptyCoordinates().Count < 2;
         }
 
         /// <summary>
