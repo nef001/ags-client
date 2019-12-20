@@ -63,7 +63,7 @@ namespace ags_client.Types.Geometry
                 return "POLYGON EMPTY";
 
             // Count the clockwise non-empty rings (esri exterior)
-            var nonEmptyRings = Rings.Where(x => isEmptyRing(x) == false);
+            var nonEmptyRings = Rings.Where(x => x.IsEmptyRing() == false);
             var exteriorRings = nonEmptyRings.Where(x => x.SignedArea() < 0).ToList();
 
             if (exteriorRings.Count == 0)
@@ -161,7 +161,7 @@ namespace ags_client.Types.Geometry
             if ((multipolygon == null) || (multipolygon.Count == 0))
                 return false;
 
-            bool inCurrent = false;
+            bool inCurrent; 
             foreach (var polygon in multipolygon)
             {
                 if ((polygon.Rings == null) || (polygon.Rings.Count == 0))
@@ -170,7 +170,7 @@ namespace ags_client.Types.Geometry
                 }
                 else
                 {
-                    if (polygon.Rings[0].ContainsPoint(p) != 0) // 1 = inside, -1 = on the boundary
+                    if (polygon.Rings[0].ContainsPoint(p) != 0) // 1 = inside, -1 = on the boundary, 0 outside
                     {
                         inCurrent = true;
                         if (polygon.Rings.Count > 1)
@@ -220,22 +220,7 @@ namespace ags_client.Types.Geometry
         //    return "";
         //}
 
-        private bool isEmptyRing(Path ring)
-        {
-            if (ring == null)
-                return true;
-            if (ring.Coordinates == null)
-                return true;
-            if (ring.Coordinates.Where(x => x == null).Any())
-                return true;
-            if (ring.Coordinates.Count == 0)
-                return true;
-
-            if (Math.Abs(ring.SignedArea()) < double.Epsilon)
-                return true;
-
-            return false;
-        }
+        
 
 
     }

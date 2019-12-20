@@ -35,15 +35,24 @@ namespace ags_client.Types.Geometry
             return result;
         }
 
+        public bool IsEmptyPath()
+        {
+            return nonEmptyCoordinates().Count > 0;
+        }
+
+        public bool IsEmptyRing()
+        {
+            return nonEmptyCoordinates().Count > 1;
+        }
+
         /// <summary>
-        /// A closed ring has at least 2 coordinates where the first equals the last
+        /// A closed ring has at least 2 non null coordinates where the first equals the last
         /// </summary>
         /// <returns></returns>
         public bool IsClosedRing()
         {
-            if ((Coordinates == null) || (Coordinates.Count < 2))
-                return false;
-            return Coordinates.First().Equals(Coordinates.Last());
+            var nonEmpty = nonEmptyCoordinates();
+            return (nonEmpty.Count > 1) && nonEmpty.First().Equals(nonEmpty.Last());
         }
 
 
@@ -89,49 +98,38 @@ namespace ags_client.Types.Geometry
         }
 
         /// <summary>
-        /// Determines ring direction - an InvalidOperation exception is thrown if the path is not a closed ring
-        /// where the first and last coordinates are equal.
+        /// Determines ring direction of the non empty coordinates
         /// </summary>
         /// <remarks>
         /// The Esri convention is that clockwise is an exterior ring, and interior counter-clockwise. 
         /// OGC wkt convention is the opposite.
         /// </remarks>
-        /// <returns>0 if the ring is empty, >0 if the ring is anti-clockwise, <0 if the ring is clockwise.</returns>
+        /// <returns>0 if the ring is empty or not a closed ring, >0 if the ring is anti-clockwise, <0 if the ring is clockwise.</returns>
         public double SignedArea()
         {
-            if (Coordinates == null)
+            if (IsClosedRing() == false)
                 return 0;
 
-            var nonNullCoords = (Coordinates.Where(x => x != null)).ToList();
-
-            if (nonNullCoords.Count < 2)
-                throw new InvalidOperationException("Path is not a closed ring");
-
-            if (nonNullCoords[0].Equals(nonNullCoords.Last()) == false)
-                throw new InvalidOperationException("Path is not a closed ring");
-
-            //need 4 coords for a non-empty ring
-            if (nonNullCoords.Count < 4)
-                return 0;
+            var nonEmptyCoords = nonEmptyCoordinates();
 
             double sum = 0;
 
-            for (int i = 0; i < Coordinates.Count - 1; i++)
+            for (int i = 0; i < nonEmptyCoords.Count - 1; i++)
             {
-                double x1 = Coordinates[i].x;
-                double y1 = Coordinates[i].y;
+                double x1 = nonEmptyCoords[i].x;
+                double y1 = nonEmptyCoords[i].y;
 
                 double x2, y2;
 
-                if (i == Coordinates.Count - 2)
+                if (i == nonEmptyCoords.Count - 2)
                 {
-                    x2 = Coordinates[0].x;
-                    y2 = Coordinates[0].y;
+                    x2 = nonEmptyCoords[0].x;
+                    y2 = nonEmptyCoords[0].y;
                 }
                 else
                 {
-                    x2 = Coordinates[i + 1].x;
-                    y2 = Coordinates[i + 1].y;
+                    x2 = nonEmptyCoords[i + 1].x;
+                    y2 = nonEmptyCoords[i + 1].y;
                 }
 
                 sum += ((x1 * y2) - (x2 * y1));
@@ -187,10 +185,15 @@ namespace ags_client.Types.Geometry
 
         public Path NonEmptyCoordinates()
         {
+            return new Path { Coordinates = nonEmptyCoordinates() };
+        }
+
+        private List<Coordinate> nonEmptyCoordinates()
+        {
             if ((Coordinates == null) || (Coordinates.Count == 0))
-                return new Path { Coordinates = new List<Coordinate>() };
-            return 
-                new Path { Coordinates = Coordinates.Where(c => c.IsEmpty() == false).ToList() };
+                return new List<Coordinate>();
+            return
+                Coordinates.Where(c => c.IsEmpty() == false).ToList();
         }
 
         
