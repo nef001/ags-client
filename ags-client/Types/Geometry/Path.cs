@@ -138,50 +138,7 @@ namespace ags_client.Types.Geometry
         }
 
 
-        /// <summary>
-        /// Orders coordinates by the angle around an "averaged" point. Any null coordinates are removed
-        /// and any duplicates other than start and end point are removed.
-        /// For a closed ring, this will order the ring in an anti-clockwise direction.
-        /// </summary>
-        /// <returns>A new list of ordered coordinates or null if Coordinates is null</returns>
-        public List<Coordinate> OrientPath()
-        {
-            if (Coordinates == null)
-                return null;
-
-            var nonNullCoords = (Coordinates.Where(c => c != null));
-            var nonUnique = new List<Coordinate>();
-            var unique = new HashSet<Coordinate>();
-
-            foreach (var c in nonNullCoords)
-                if (!unique.Add(c)) nonUnique.Add(c);
-
-            if (unique.Count == 0) // don't bother
-                return nonNullCoords.ToList();
-
-            var cx = unique.Average(c => c.x);
-            var cy = unique.Average(c => c.y);
-
-            var ordered = unique.OrderBy(c => Math.Atan2(c.y - cy, c.x - cx)).ToList();
-
-            //re-arrange to put the start point first and last
-            var arranged = new List<Coordinate>();
-            if (nonUnique.Count > 0)
-            {
-                int startIndex = ordered.IndexOf(nonUnique[0]);
-
-                var startRange = ordered.Skip(startIndex);
-                var endRange = ordered.Take(startIndex);
-
-                arranged.AddRange(startRange);
-                arranged.AddRange(endRange);
-                arranged.Add(nonUnique[0]);
-
-                return arranged;
-            }
-
-            return ordered;
-        }
+        
 
         public Path NonEmptyCoordinates()
         {
