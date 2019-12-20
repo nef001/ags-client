@@ -142,5 +142,80 @@ namespace ags_client_tests
             actual = g.PointInPoly(new Coordinate { x = -4.5, y = 10.5 });
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        //interior
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 1, y = 1 },
+                            new Coordinate { x = 4, y = 2 },
+                            new Coordinate { x = 2, y = 5 },
+                            new Coordinate { x = 1, y = 1 },
+                        }
+                    },
+                    new Path
+                    {
+                        //interior
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    }
+                }
+            };
+            var c = new Coordinate { x = 2, y = 3 };
+            bool expected = false;
+            bool actual = g.PointInPoly(c);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        //interior
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 1, y = 1 },
+                            new Coordinate { x = 4, y = 2 },
+                            new Coordinate { x = 2, y = 5 },
+                            new Coordinate { x = 1, y = 1 },
+                        }
+                    },
+                    new Path
+                    {
+                        //interior
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    }
+                }
+            };
+
+            var c = new Coordinate { x = 2.5, y = 2.25 };
+            bool expected = false;
+            bool actual = g.PointInPoly(c);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

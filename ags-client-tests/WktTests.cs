@@ -141,7 +141,7 @@ namespace ags_client_tests
         }
 
         [TestMethod]
-        public void TestPolygon_1Ring()
+        public void TestPolygon_1ExteriorRing()
         {
             var g = new Polygon
             {
@@ -165,7 +165,31 @@ namespace ags_client_tests
         }
 
         [TestMethod]
-        public void TestPolygon_1Ring_1Exterior_1Interior_Path()
+        public void TestPolygon_1InteriorRing()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    }
+                }
+            };
+            string expected = "POLYGON ((2 2,3 3,3 2,2 2))";
+            string actual = g.ToWkt();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestPolygon_1Exterior_1Interior_Rings()
         {
             var g = new Polygon
             {
@@ -195,9 +219,140 @@ namespace ags_client_tests
             };
             string expected = "POLYGON ((1 1,4 2,2 5,1 1),(2 2,3 3,3 2,2 2))";
             string actual = g.ToWkt();
-            string actual2 = g.ToWkt();
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(expected, actual2);
+        }
+
+        [TestMethod]
+        public void TestPolygon_1Exterior_2Interior_1Empty_Rings()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 1, y = 1 },
+                            new Coordinate { x = 2, y = 5 },
+                            new Coordinate { x = 4, y = 2 },
+                            new Coordinate { x = 1, y = 1 },
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                    new Path{Coordinates = new List<Coordinate>()},
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                }
+            };
+            string expected = "POLYGON ((1 1,4 2,2 5,1 1),(2 2,3 3,3 2,2 2),EMPTY,(2 2,3 3,3 2,2 2))";
+            string actual = g.ToWkt();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestPolygon_1Empty_1Exterior_2Interior_1Empty_Rings()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path{Coordinates = new List<Coordinate>()},
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 1, y = 1 },
+                            new Coordinate { x = 2, y = 5 },
+                            new Coordinate { x = 4, y = 2 },
+                            new Coordinate { x = 1, y = 1 },
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                    new Path{Coordinates = new List<Coordinate>()},
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                }
+            };
+            string expected = "MULTIPOLYGON ((EMPTY),((1 1,4 2,2 5,1 1),(2 2,3 3,3 2,2 2),EMPTY,(2 2,3 3,3 2,2 2)))";
+            string actual = g.ToWkt();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestPolygon_3Interior_Rings()
+        {
+            var g = new Polygon
+            {
+                Rings = new List<Path>
+                {
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    },
+                    new Path
+                    {
+                        Coordinates = new List<Coordinate>
+                        {
+                            new Coordinate { x = 2, y = 2 },
+                            new Coordinate { x = 3, y = 2 },
+                            new Coordinate { x = 3, y = 3 },
+                            new Coordinate { x = 2, y = 2 },
+                        }
+                    }
+                }
+            };
+            string expected = "MULTIPOLYGON (((2 2,2 2)),((2 2,3 3,3 2,2 2)),((2 2,3 3,3 2,2 2)))";
+            string actual = g.ToWkt();
+            Assert.AreEqual(expected, actual);
         }
 
     }

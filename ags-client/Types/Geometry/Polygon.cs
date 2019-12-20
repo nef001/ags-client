@@ -40,7 +40,7 @@ namespace ags_client.Types.Geometry
 
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
-        {
+        {                                    
             Rings = new List<Path>();
             foreach (var currentRingPointList in _ringsArray.Select(
                 ring => ring.Select(
@@ -76,9 +76,6 @@ namespace ags_client.Types.Geometry
         }
 
 
-        
-
-
         public bool PointInPoly(Coordinate p)
         {
             var multipolygon = multiPolygonToList();
@@ -94,6 +91,10 @@ namespace ags_client.Types.Geometry
                 }
                 else
                 {
+                    //if Rings[0] is interior or empty, skip the polygon
+                    if (polygon.Rings[0].SignedArea() >= 0)
+                        continue;
+
                     if (polygon.Rings[0].ContainsPoint(p) != 0) // 1 = inside, -1 = on the boundary, 0 outside
                     {
                         inCurrent = true;
@@ -120,15 +121,7 @@ namespace ags_client.Types.Geometry
             return false;
         }
 
-        // converts this to a list of polgons each with a single exterior ring and 0 or more interior rings
-        // the exterior ring will be the first path in each polygon's "Rings" path list
-        // returned polygon.Rings is never null
-        // assumes esri ordering and maintains it
-        // excludes any unclosed rings and empty exterior rings
-        // will include empty interior rings that are found after the first valid exterior
-        // 
-        // Needs improved handling of empty rings
-        //
+        
         private List<Polygon> multiPolygonToList()
         {
             var result = new List<Polygon>();
@@ -136,33 +129,54 @@ namespace ags_client.Types.Geometry
             if ((Rings == null) || (Rings.Count == 0))
                 return result;
 
-            var closedPolygonRings = Rings.Where(ring => ring.IsClosedRing());
+            //get the indices of exterior rings
+            var exteriorRingIndices = new List<int>();
+            for (int i = 0; i < Rings.Count; i++)
+                if (Rings[i].SignedArea() < 0)
+                    exteriorRingIndices.Add(i);
 
-            List<Path> rings = null;
-            foreach (var ring in closedPolygonRings)
+            if (exteriorRingIndices.Count == 0) // no exterior rings -return a new single ring polygon for each interior or empty ring
             {
-                if (ring.SignedArea() < 0) //esri outer ring
+                foreach (var ring in Rings)
+                    result.Add(new Polygon { Rings = new List<Path> { ring } });
+                return result;
+            }
+
+            //every interior before the first exterior becomes a new polygon
+            if (exteriorRingIndices[0] > 0)
+            {
+                for (int i=0; i<exteriorRingIndices[0]; i++)
                 {
-                    if (rings != null)
-                    {
-                        result.Add(new Polygon { Rings = rings });
-                    }
-                    rings = new List<Path> { ring };
-                }
-                else //add the inner (or empty) ring to the current ring set
-                {
-                    if (rings != null)
-                        rings.Add(ring);
+                    result.Add(new Polygon { Rings = new List<Path> { Rings[i] } });
                 }
             }
-            if (rings != null)
+
+            //now each new Exterior starts a new polygon that includes subsequent interior or empty rings
+            for (int i = 0; i < exteriorRingIndices.Count; i++)
             {
-                //finally add the last ring set polygon 
-                result.Add(new Polygon { Rings = rings });
+                int exteriorIndx = exteriorRingIndices[i];
+
+                var polygon = new Polygon { Rings = new List<Path> { this.Rings[exteriorIndx] } };
+                if (this.Rings.Count > (exteriorIndx + 1))
+                {
+                    int takenum;
+                    if ((i + 1) < exteriorRingIndices.Count)
+                    {
+                        takenum = exteriorRingIndices[i + 1] - exteriorRingIndices[i];
+                    }
+                    else //take aany remaining
+                        takenum = Rings.Count - (exteriorIndx + 1);
+
+                    var interiorRings = Rings.Skip(exteriorIndx + 1).Take(takenum);
+                    polygon.Rings.AddRange(interiorRings);
+                }
+                result.Add(polygon);
             }
 
             return result;
         }
+
+        
 
 
         private string polygonText(List<Path> rings)
