@@ -56,103 +56,27 @@ namespace ags_client.Types.Geometry
 
         public string ToWkt()
         {
-            if (Rings == null)
-                return "POLYGON EMPTY";
+            var multiList = multiPolygonToList();
 
-            if (Rings.Count == 0)
-                return "POLYGON EMPTY";
-
-            // Count the clockwise non-empty rings (esri exterior)
-            var nonEmptyRings = Rings.Where(x => x.IsEmptyRing() == false).ToList();
-            var exteriorRings = nonEmptyRings.Where(x => x.SignedArea() < 0).ToList();
-
-            if (exteriorRings.Count == 0)
+            if (multiList.Count == 0)
                 return "POLYGON EMPTY";
 
             var sb = new StringBuilder();
-            if (exteriorRings.Count == 1) // treat as POLYGON
+            if (multiList.Count == 1)  // treat as POLYGON
             {
                 sb.Append("POLYGON ");
-                sb.Append(polygonText(nonEmptyRings));
-                return sb.ToString();
+                sb.Append(polygonText(multiList[0].Rings));
             }
-
-            sb.Append("MULTIPOLYGON ");
-
-            List<string> polygonStrings = new List<string>();
-            List<Path> rings = null;
-            foreach (var currentRing in Rings)
+            else
             {
-                //Any interior or empty rings are ignored until the first exterior ring is detected.
-                if (currentRing.SignedArea() < 0) 
-                {
-                    if (rings != null)
-                    {
-                        polygonStrings.Add(polygonText(rings));
-                    }
-                    
-
-                    //start a new set of rings and add the current ring
-                    rings = new List<Path> { currentRing };
-                }
-                else //add the inner (or empty) ring to the current ring set
-                {
-                    if (rings != null)
-                        rings.Add(currentRing);
-                }
-
+                sb.Append("MULTIPOLYGON "); // treat as MULTIPOLYGON
+                sb.Append($"({String.Join(",", multiList.Select(polygon => polygonText(polygon.Rings)))})");
             }
-            if (rings != null)
-            {
-                //finally add the last ring set polygon strings
-                polygonStrings.Add(polygonText(rings));
-            }
-
-            //join up the text
-            sb.Append($"({String.Join(",", polygonStrings)})");
-
             return sb.ToString();
-
         }
 
-        private List<Polygon> multiPolygonToList()
-        {
-            var result = new List<Polygon>();
 
-            if ((Rings == null) || (Rings.Count == 0))
-                return result;          
-
-            var closedPolygonRings = Rings.Select(ring => ring.NonEmptyCoordinates())
-                .Where(ring => ring.Coordinates.Count > 3)
-                .Where(ring => ring.Coordinates[0].Equals(ring.Coordinates.Last()));
-
-            List<Path> rings = null;
-            foreach (var ring in closedPolygonRings)
-            {
-                if (ring.SignedArea() < 0 ) //esri outer ring
-                {
-                    if (rings != null)
-                    {
-                        result.Add(new Polygon { Rings = rings });
-                    }
-                    rings = new List<Path> { ring };
-                }
-                else //add the inner (or empty) ring to the current ring set
-                {
-                    if (rings != null)
-                        rings.Add(ring);
-                }
-            }
-            if (rings != null)
-            {
-                //finally add the last ring set polygon 
-                result.Add(new Polygon { Rings = rings });
-            }
-
-
-
-            return result;
-        }
+        
 
 
         public bool PointInPoly(Coordinate p)
@@ -196,6 +120,50 @@ namespace ags_client.Types.Geometry
             return false;
         }
 
+        // converts this to a list of polgons each with a single exterior ring and 0 or more interior rings
+        // the exterior ring will be the first path in each polygon's "Rings" path list
+        // returned polygon.Rings is never null
+        // assumes esri ordering and maintains it
+        // excludes any unclosed rings and empty exterior rings
+        // will include empty interior rings that are found after the first valid exterior
+        // 
+        // Needs improved handling of empty rings
+        //
+        private List<Polygon> multiPolygonToList()
+        {
+            var result = new List<Polygon>();
+
+            if ((Rings == null) || (Rings.Count == 0))
+                return result;
+
+            var closedPolygonRings = Rings.Where(ring => ring.IsClosedRing());
+
+            List<Path> rings = null;
+            foreach (var ring in closedPolygonRings)
+            {
+                if (ring.SignedArea() < 0) //esri outer ring
+                {
+                    if (rings != null)
+                    {
+                        result.Add(new Polygon { Rings = rings });
+                    }
+                    rings = new List<Path> { ring };
+                }
+                else //add the inner (or empty) ring to the current ring set
+                {
+                    if (rings != null)
+                        rings.Add(ring);
+                }
+            }
+            if (rings != null)
+            {
+                //finally add the last ring set polygon 
+                result.Add(new Polygon { Rings = rings });
+            }
+
+            return result;
+        }
+
 
         private string polygonText(List<Path> rings)
         {
@@ -206,17 +174,10 @@ namespace ags_client.Types.Geometry
             if ((rings == null) || (rings.Count == 0))
                 return "EMPTY";
 
-            return $"({String.Join(",", rings.Select(x => x.LineStringText(true)).ToArray())})";
+            return $"({String.Join(",", rings.Select(x => x.LineStringText(true)))})";
         }
 
-        //private string multipolygontext()
-        //{
-        //    /*
-        //    < multipolygon text > ::=  < empty set > | 
-        //                    < left paren > < polygon text > {< comma > < polygon text >}* < right paren >
-        //    */
-        //    return "";
-        //}
+
 
         
 
