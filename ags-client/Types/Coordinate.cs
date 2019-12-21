@@ -3,10 +3,20 @@
 namespace ags_client.Types
 {
 
-    public class Coordinate // this is not a geometry point
+    public class Coordinate : IComparable<Coordinate> // this is not a geometry point
     {
         public double x { get; set; }
         public double y { get; set; }
+
+        public int CompareTo(Coordinate other)
+        {
+            int result = Math.Sign(x - other.x);
+            if (result == 0)
+            {
+                result = Math.Sign(y - other.y);
+            }
+            return result;
+        }
 
         public double[] ToArray()
         {

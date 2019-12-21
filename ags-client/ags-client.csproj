@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <HintPath>..\packages\C5.2.5.3\lib\net45\C5.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\..\..\GNIS4\Services\WindowsServices\NdvFleetService\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -54,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgsClient.cs" />
+    <Compile Include="Algorithms\ShamosHoey.cs" />
     <Compile Include="BaseResponse.cs" />
     <Compile Include="JsonConverters\ConvexHullResourceConverter.cs" />
     <Compile Include="JsonConverters\CutResourceConverter.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Resources\MapService\LayersResource.cs" />
     <Compile Include="Resources\MapService\MapServiceResource.cs" />
     <Compile Include="Resources\ServerInfoResource.cs" />
+    <Compile Include="Algorithms\Event.cs" />
     <Compile Include="Types\AccessToken.cs" />
     <Compile Include="Types\AuthInfo.cs" />
     <Compile Include="Types\CodedValue.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="Types\Geometry\Path.cs" />
     <Compile Include="Types\Geometry\Polygon.cs" />
     <Compile Include="Types\Geometry\Polyline.cs" />
+    <Compile Include="Types\Geometry\Segment.cs" />
     <Compile Include="Types\Geometry\SpatialReference.cs" />
     <Compile Include="Types\Geometry\Transformation.cs" />
     <Compile Include="Types\IRestAttributes.cs" />

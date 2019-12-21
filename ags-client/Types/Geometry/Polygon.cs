@@ -67,9 +67,9 @@ namespace ags_client.Types.Geometry
                 sb.Append("POLYGON ");
                 sb.Append(polygonText(multiList[0].Rings));
             }
-            else
+            else // treat as MULTIPOLYGON
             {
-                sb.Append("MULTIPOLYGON "); // treat as MULTIPOLYGON
+                sb.Append("MULTIPOLYGON "); 
                 sb.Append($"({String.Join(",", multiList.Select(polygon => polygonText(polygon.Rings)))})");
             }
             return sb.ToString();

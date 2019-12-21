@@ -19,6 +19,22 @@ namespace ags_client.Types.Geometry
             get; set;
         }
 
+        [JsonIgnore]
+        public List<Segment> Segments
+        {
+            get
+            {
+                var result = new List<Segment>();
+                if ((Coordinates == null) || (Coordinates.Count == 0))
+                    return result;
+
+                for (int i = 0; i < Coordinates.Count - 1; i++)
+                    result.Add(new Segment(Coordinates[i], Coordinates[i + 1]));
+
+                return result;
+            }
+        }
+
         public double[][] ToArray()
         {
             if (Coordinates == null)
