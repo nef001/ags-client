@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Runtime.Serialization;
-
 using Newtonsoft.Json;
+
+using ags_client.Algorithms;
 
 namespace ags_client.Types.Geometry
 {
@@ -60,6 +57,45 @@ namespace ags_client.Types.Geometry
         {
             return nonEmptyCoordinates().Count < 2;
         }
+
+        public bool IsSimple()
+        {
+            if (IsEmptyPath())
+                return true;
+            var segments = Segments;
+            if (segments.Count <= 1)
+                return true;
+            var sh = new ShamosHoey(segments);
+            if (sh.HasIntersections())
+                return false;
+            return true;
+        }
+
+        public bool IsSimpleRing()
+        {
+            if (!IsClosedRing())
+                return false;
+            if (SignedArea() == 0)
+                return false;
+            return IsSimple();
+
+        }
+
+        public bool IsInteriorTo(Path other)
+        {
+            if (other == null)
+                return false;
+            if (!other.IsSimpleRing())
+                return false;
+
+            foreach (var p in Coordinates)
+            {
+                if (other.ContainsPoint(p) != 1)
+                    return false;
+            }
+            return true;
+        }
+
 
         /// <summary>
         /// A closed ring has at least 2 non null coordinates where the first equals the last
