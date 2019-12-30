@@ -208,7 +208,7 @@ namespace ags_client.Types.Geometry
         
 
         /// <summary>
-        /// Determinas if the supplied coordinate is inside, outside or on the boundary
+        /// Determinas if the supplied coordinate is inside (1), outside (0) or on the boundary (-1)
         /// of the path.
         /// </summary>
         /// <param name="p">The coordinate to test</param>
