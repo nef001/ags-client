@@ -48,7 +48,7 @@ namespace ags_client.Requests.FeatureService
             var request = new RestRequest(resourcePath, Method.POST);
             var jss = new JsonSerializerSettings()
             {
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Include,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
             };
             request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
