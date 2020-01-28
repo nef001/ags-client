@@ -53,7 +53,8 @@ namespace ags_client.Requests.FeatureService
             };
             request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
             request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
-            request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
+            //request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
+            request.AddParameter("deletes", deletes == null ? "" : String.Join(",",deletes));
             request.AddParameter("gdbVersion", JsonConvert.SerializeObject(gdbVersion, jss));
             request.AddParameter("rollbackOnFailure", JsonConvert.SerializeObject(rollbackOnFailure, jss));
             request.AddParameter("f", "pjson");
