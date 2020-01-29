@@ -104,7 +104,7 @@ namespace ags_client
                 request.AddParameter("token", token.token, ParameterType.QueryString);
             }
 
-            var restResponse = await restSharpClient.ExecuteTaskAsync<T>(request, httpMethod);
+            var restResponse = await restSharpClient.ExecuteAsync<T>(request, httpMethod);
 
             if (restResponse != null)
             {
