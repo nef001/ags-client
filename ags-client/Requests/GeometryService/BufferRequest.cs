@@ -59,7 +59,7 @@ namespace ags_client.Requests.GeometryService
             if (bufferSR != null)
                 request.AddParameter("bufferSR", bufferSR.wkid);
             if ((distances != null) && (distances.Count > 0))
-                request.AddParameter("distances", String.Join(",", distances.Select(n => n.ToString()).ToArray()));
+                request.AddParameter("distances", String.Join(",", distances));
             if (unit.HasValue)
                 request.AddParameter("unit", unit);
             if (unionResults.HasValue)
