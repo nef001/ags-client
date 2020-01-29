@@ -28,5 +28,24 @@ namespace ags_client_tests
             }
             
         }
+
+        [TestMethod]
+        public void SampleServerCatalogTest()
+        {
+            string host = "sampleserver1.arcgisonline.com";
+            string instance = "arcgis";
+
+            try
+            {
+                AgsClient agsClient = new AgsClient(host, instance, null, false, null, null);
+                var resp = new CatalogRequest(null).Execute(agsClient);
+                Assert.IsNull(resp.error);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+        }
     }
 }
