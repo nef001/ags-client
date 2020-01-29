@@ -41,7 +41,7 @@ namespace ags_client
             {
                 Scheme = useSSL ? "https" : "http",
                 Host = host,
-                Port = port ?? port.Value,
+                Port = port ?? 80,
                 Path = instance,
             };
 
