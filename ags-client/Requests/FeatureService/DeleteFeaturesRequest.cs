@@ -52,7 +52,7 @@ namespace ags_client.Requests.FeatureService
             var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
             if ((objectIds != null) && (objectIds.Count > 0))
-                request.AddParameter("objectIds", String.Join(",", objectIds.Select(n => n.ToString()).ToArray()));
+                request.AddParameter("objectIds", String.Join(",", objectIds));
             if (!String.IsNullOrEmpty(where))
                 request.AddParameter("where", where);
             if (geometry != null)
