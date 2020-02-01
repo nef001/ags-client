@@ -47,5 +47,29 @@ namespace ags_client_tests
             }
 
         }
+
+        [TestMethod]
+        public void SampleServerFolderCatalogsTest()
+        {
+            string host = "sampleserver1.arcgisonline.com";
+            string instance = "arcgis";
+
+            try
+            {
+                AgsClient agsClient = new AgsClient(host, instance, null, false, null, null);
+                var resp = new CatalogRequest(null).Execute(agsClient);
+                Assert.IsNull(resp.error);
+                foreach (var folder in resp.folders)
+                {
+                    var folderCatalog = new CatalogRequest(folder).Execute(agsClient);
+                    Assert.IsNull(folderCatalog.error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+        }
     }
 }
