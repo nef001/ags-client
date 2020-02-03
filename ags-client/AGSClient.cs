@@ -17,8 +17,8 @@ namespace ags_client
 
         private Credentials credentials { get; set; }
         private GenerateTokenResource token;
-        bool useToken = false;
-        string tokenServiceUrl;
+        readonly bool useToken = false;
+        readonly string tokenServiceUrl;
         readonly string client_id_type = "requestip";
         readonly int token_request_expiration_minutes = 60;
 
@@ -81,8 +81,7 @@ namespace ags_client
 
             if (restResponse != null)
             {
-                var br = restResponse.Data as BaseResponse;
-                if (br != null)
+                if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
             }
             
@@ -108,8 +107,7 @@ namespace ags_client
 
             if (restResponse != null)
             {
-                var br = restResponse.Data as BaseResponse;
-                if (br != null)
+                if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
             }
 
@@ -126,8 +124,10 @@ namespace ags_client
         
         private void refreshToken(Credentials credentials, string client_type, string referer, string ip, int expiration)
         {
-            var request = new RestRequest("generateToken"); // { Method = Method.POST };
-            request.JsonSerializer = new JsonNetSerializer();
+            var request = new RestRequest("generateToken")
+            {
+                JsonSerializer = new JsonNetSerializer()
+            };
 
             if (!String.IsNullOrWhiteSpace(credentials.username))
                 request.AddParameter("username", credentials.username, ParameterType.GetOrPost);

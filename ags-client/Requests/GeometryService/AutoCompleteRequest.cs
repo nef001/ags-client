@@ -19,13 +19,13 @@ namespace ags_client.Requests.GeometryService
 
         public AutoCompleteResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (AutoCompleteResource)Execute(client, resourcePath);
         }
 
         public async Task<AutoCompleteResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<AutoCompleteResource>(request, Method.POST);

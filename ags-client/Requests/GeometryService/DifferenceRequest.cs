@@ -19,13 +19,13 @@ namespace ags_client.Requests.GeometryService
 
         public DifferenceResource<TG1> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (DifferenceResource<TG1>)Execute(client, resourcePath);
         }
 
         public async Task<DifferenceResource<TG1>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<DifferenceResource<TG1>>(request, Method.POST);

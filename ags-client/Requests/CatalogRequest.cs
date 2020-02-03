@@ -11,7 +11,7 @@ namespace ags_client.Requests
         public string option { get; set; }
         public SpatialReference outSR { get; set; }
 
-        private string _folder;
+        private readonly string _folder;
 
         public CatalogRequest(string folder)
         {
@@ -22,7 +22,7 @@ namespace ags_client.Requests
         {
             string resourcePath = "rest/services";
             if (!String.IsNullOrWhiteSpace(_folder))
-                resourcePath = String.Format("{0}/{1}", resourcePath, _folder);
+                resourcePath = $"{resourcePath}/{_folder}";
             return (CatalogResource)Execute(client, resourcePath);
         }
 
@@ -30,7 +30,7 @@ namespace ags_client.Requests
         {
             string resourcePath = "rest/services";
             if (!String.IsNullOrWhiteSpace(_folder))
-                resourcePath = String.Format("{0}/{1}", resourcePath, _folder);
+                resourcePath = $"{resourcePath}/{_folder}";
             RestRequest request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<CatalogResource>(request, Method.GET);

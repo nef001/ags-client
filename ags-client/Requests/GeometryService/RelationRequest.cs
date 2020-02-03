@@ -23,13 +23,13 @@ namespace ags_client.Requests.GeometryService
 
         public RelationResource Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (RelationResource)Execute(client, resourcePath);
         }
 
         public async Task<RelationResource> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<RelationResource>(request, Method.POST);

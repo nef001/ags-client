@@ -17,13 +17,13 @@ namespace ags_client.Requests.GeometryService
 
         public SimplifyResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (SimplifyResource<TG>)Execute(client, resourcePath);
         }
 
         public async Task<SimplifyResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<SimplifyResource<TG>>(request, Method.POST);

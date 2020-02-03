@@ -25,13 +25,13 @@ namespace ags_client.Requests.FeatureService
 
         public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (EditFeaturesResource)Execute(client, resourcePath);
         }
 
         public async Task<EditFeaturesResource> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<EditFeaturesResource>(request, Method.POST);
@@ -53,7 +53,6 @@ namespace ags_client.Requests.FeatureService
             };
             request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
             request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
-            //request.AddParameter("deletes", JsonConvert.SerializeObject(deletes, jss));
             request.AddParameter("deletes", deletes == null ? "" : String.Join(",",deletes));
             request.AddParameter("gdbVersion", JsonConvert.SerializeObject(gdbVersion, jss));
             request.AddParameter("rollbackOnFailure", JsonConvert.SerializeObject(rollbackOnFailure, jss));

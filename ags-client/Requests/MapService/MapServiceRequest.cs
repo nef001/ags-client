@@ -9,7 +9,7 @@ namespace ags_client.Requests.MapService
 {
     public class MapServiceRequest : BaseRequest
     {
-        private string _serviceName;
+        private readonly string _serviceName;
 
         public bool? returnUpdates { get; set; }
         public string option { get; set; }
@@ -24,13 +24,13 @@ namespace ags_client.Requests.MapService
 
         public MapServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             return (MapServiceResource)Execute(client, resourcePath);
         }
 
         public async Task<MapServiceResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<MapServiceResource>(request, Method.GET);

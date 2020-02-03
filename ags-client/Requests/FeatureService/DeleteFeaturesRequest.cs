@@ -27,13 +27,13 @@ namespace ags_client.Requests.FeatureService
 
         public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (EditFeaturesResource)Execute(client, resourcePath);
         }
 
         public async Task<EditFeaturesResource> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<EditFeaturesResource>(request, Method.POST);

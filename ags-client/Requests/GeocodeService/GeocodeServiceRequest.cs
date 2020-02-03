@@ -13,7 +13,7 @@ namespace ags_client.Requests.GeocodeService
 {
     public class GeocodeServiceRequest : BaseRequest
     {
-        private string _serviceName;
+        private readonly string _serviceName;
 
         const string resource = "GeocodeServer";
 

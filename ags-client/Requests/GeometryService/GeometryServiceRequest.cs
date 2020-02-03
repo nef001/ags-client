@@ -9,7 +9,7 @@ namespace ags_client.Requests.GeometryService
 {
     public class GeometryServiceRequest : BaseRequest
     {
-        private string _serviceName;
+        private readonly string _serviceName;
 
         const string resource = "GeometryServer";
 
@@ -20,13 +20,13 @@ namespace ags_client.Requests.GeometryService
 
         public GeometryServiceResource Execute(AgsClient client, CatalogResource parent) //parent is typically the Utilities folder
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             return (GeometryServiceResource)Execute(client, resourcePath);
         }
 
         public async Task<GeometryServiceResource> ExecuteAsync(AgsClient client, CatalogResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<GeometryServiceResource>(request, Method.GET);

@@ -13,7 +13,7 @@ namespace ags_client.Requests.FeatureService
 {
     public class FeatureServiceRequest : BaseRequest
     {
-        private string _serviceName;
+        private readonly string _serviceName;
 
         public string option { get; set; }
         public SpatialReference outSR { get; set; }
@@ -27,13 +27,13 @@ namespace ags_client.Requests.FeatureService
 
         public FeatureServiceResource Execute(AgsClient client, CatalogResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             return (FeatureServiceResource)Execute(client, resourcePath);
         }
 
         public async Task<FeatureServiceResource> ExecuteAsync(AgsClient client, CatalogResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}/{2}", parent.resourcePath, _serviceName, resource);
+            string resourcePath = $"{parent.resourcePath}/{_serviceName}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<FeatureServiceResource>(request, Method.POST);

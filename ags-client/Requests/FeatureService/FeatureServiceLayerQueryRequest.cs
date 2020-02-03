@@ -49,13 +49,13 @@ namespace ags_client.Requests.FeatureService
 
         public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (LayerQueryResource < TF, TG, TA > )Execute(client, resourcePath);
         }
 
         public async Task<LayerQueryResource<TF, TG, TA>> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<LayerQueryResource<TF, TG, TA>>(request, Method.POST);

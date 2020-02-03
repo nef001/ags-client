@@ -16,13 +16,13 @@ namespace ags_client.Requests.MapService
 
         public LayersResource Execute(AgsClient client, MapServiceResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (LayersResource)Execute(client, resourcePath);
         }
 
         public async Task<LayersResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<LayersResource>(request, Method.POST);

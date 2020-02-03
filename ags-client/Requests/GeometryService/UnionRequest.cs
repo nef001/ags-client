@@ -18,13 +18,13 @@ namespace ags_client.Requests.GeometryService
 
         public UnionResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (UnionResource<TG>)Execute(client, resourcePath);
         }
 
         public async Task<UnionResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<UnionResource<TG>>(request, Method.POST);

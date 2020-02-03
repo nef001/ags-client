@@ -17,7 +17,7 @@ namespace ags_client.Requests.MapService
         where TG : IRestGeometry
         where TA : IRestAttributes
     {
-        private int _objectId;
+        private readonly int _objectId;
 
         public bool? returnZ { get; set; }
         public bool? returnM { get; set; }
@@ -30,13 +30,13 @@ namespace ags_client.Requests.MapService
 
         public FeatureResource<TF, TG, TA> Execute(AgsClient client, LayerOrTableResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _objectId);
+            string resourcePath = $"{parent.resourcePath}/{_objectId}";
             return (FeatureResource<TF, TG, TA>)Execute(client, resourcePath);
         }
 
         public async Task<FeatureResource<TF, TG, TA>> ExecuteAsync(AgsClient client, LayerOrTableResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _objectId);
+            string resourcePath = $"{parent.resourcePath}/{_objectId}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<FeatureResource<TF, TG, TA>>(request, Method.POST);

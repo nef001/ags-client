@@ -26,13 +26,13 @@ namespace ags_client.Requests.GeometryService
 
         public BufferResource<Polygon> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (BufferResource<Polygon>)Execute(client, resourcePath);
         }
 
         public async Task<BufferResource<Polygon>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<BufferResource<Polygon>>(request, Method.POST);

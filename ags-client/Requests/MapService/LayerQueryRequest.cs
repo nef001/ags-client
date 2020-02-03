@@ -46,14 +46,14 @@ namespace ags_client.Requests.MapService
 
         public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, LayerOrTableResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (LayerQueryResource<TF, TG, TA>)Execute(client, resourcePath);
 
         }
 
         public async Task<LayerQueryResource<TF, TG, TA>> ExecuteAsync(AgsClient client, LayerOrTableResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<LayerQueryResource<TF, TG, TA>>(request, Method.POST);

@@ -23,13 +23,13 @@ namespace ags_client.Requests.GeometryService
 
         public OffsetResource<TG> Execute(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             return (OffsetResource<TG>)Execute(client, resourcePath);
         }
 
         public async Task<OffsetResource<TG>> ExecuteAsync(AgsClient client, GeometryServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, resource);
+            string resourcePath = $"{parent.resourcePath}/{resource}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<OffsetResource<TG>>(request, Method.POST);

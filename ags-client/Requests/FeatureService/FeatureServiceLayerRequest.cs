@@ -13,7 +13,7 @@ namespace ags_client.Requests.FeatureService
     public class FeatureServiceLayerRequest<TA> : BaseRequest
         where TA : IRestAttributes
     {
-        private int _layerId;
+        private readonly int _layerId;
         public bool? returnUpdates { get; set; }
 
         public FeatureServiceLayerRequest(int layerId)
@@ -23,13 +23,13 @@ namespace ags_client.Requests.FeatureService
 
         public FeatureServiceLayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerId);
+            string resourcePath = $"{parent.resourcePath}/{_layerId}";
             return (FeatureServiceLayerResource < TA > )Execute(client, resourcePath);
         }
 
         public async Task<FeatureServiceLayerResource<TA>> ExecuteAsync(AgsClient client, FeatureServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerId);
+            string resourcePath = $"{parent.resourcePath}/{_layerId}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<FeatureServiceLayerResource<TA>>(request, Method.POST);

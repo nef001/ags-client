@@ -7,7 +7,7 @@ namespace ags_client.Requests.MapService
 {
     public class LayerOrTableRequest : BaseRequest
     {
-        private int _layerOrTableId;
+        private readonly int _layerOrTableId;
 
         public bool? returnUpdates { get; set; }
 
@@ -18,13 +18,13 @@ namespace ags_client.Requests.MapService
 
         public LayerOrTableResource Execute(AgsClient client, MapServiceResource parent) //parent may be the root catalog or a folder catalog
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerOrTableId);
+            string resourcePath = $"{parent.resourcePath}/{_layerOrTableId}";
             return (LayerOrTableResource)Execute(client, resourcePath);
         }
 
         public async Task<LayerOrTableResource> ExecuteAsync(AgsClient client, MapServiceResource parent)
         {
-            string resourcePath = String.Format("{0}/{1}", parent.resourcePath, _layerOrTableId);
+            string resourcePath = $"{parent.resourcePath}/{_layerOrTableId}";
             var request = createRequest(resourcePath);
 
             return await client.ExecuteAsync<LayerOrTableResource>(request, Method.GET);
