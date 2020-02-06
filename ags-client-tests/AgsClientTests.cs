@@ -8,6 +8,8 @@ using ags_client.Requests;
 using ags_client.Requests.MapService;
 using ags_client.Resources;
 
+using ags_client_tests.Models;
+
 namespace ags_client_tests
 {
     [TestClass]
@@ -95,7 +97,7 @@ namespace ags_client_tests
                 int layerId = mapService.LayerIdByName(layerName);
                 var layer = new LayerOrTableRequest(layerId).Execute(agsClient, mapService);
                 Assert.IsNull(layer.error);
-                var queryResult = new LayerQueryRequest<LandUseF, Polygon, LandUseA>()
+                var queryResult = new LayerQueryRequest<LandUse, Polygon, LandUseA>()
                 {
                     outFields = "*",
                     where = whereClause
@@ -114,17 +116,5 @@ namespace ags_client_tests
 
     }
 
-    public class LandUseF : IRestFeature<Polygon, LandUseA>
-    {
-        public Polygon geometry { get; set; }
-        public LandUseA attributes { get; set; }
-    }
-
-    public class LandUseA : IRestAttributes
-    {
-        public int? objectid { get; set; }
-        public int landuse_code { get; set; }
-        public string landuse_name { get; set; }
-
-    }
+    
 }
