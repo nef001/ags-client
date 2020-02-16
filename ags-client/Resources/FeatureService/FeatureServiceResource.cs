@@ -32,6 +32,46 @@ namespace ags_client.Resources.FeatureService
         public List<Table> tables { get; set; }
         public bool? enableZDefaults { get; set; }
         public double? zDefault { get; set; }
+
+        public int GetLayerIdByName(string layerName)
+        {
+            if (String.IsNullOrWhiteSpace(resourcePath))
+                throw new Exception("Uninitialized resource.");
+
+            if (this.error != null)
+                throw new Exception($"Invalid resource ({error.message}) at {resourcePath}");
+
+            if ((layers == null) || (layers.Count == 0))
+                throw new Exception($"Resource at {resourcePath} has no layers.");
+
+            var comparison = StringComparison.CurrentCultureIgnoreCase;
+            var layer = layers.Where(x => x.name.Equals(layerName, comparison)).FirstOrDefault();
+
+            if (layer == null)
+                throw new Exception($"Layer [{layerName}] was not found at {resourcePath}");
+
+            return layer.id;
+        }
+
+        public int GetTableIdByName(string tableName)
+        {
+            if (String.IsNullOrWhiteSpace(resourcePath))
+                throw new Exception("Uninitialized resource.");
+
+            if (this.error != null)
+                throw new Exception($"Invalid resource ({error.message}) at {resourcePath}");
+
+            if ((tables == null) || (tables.Count == 0))
+                throw new Exception($"Resource at {resourcePath} has no tables.");
+
+            var comparison = StringComparison.CurrentCultureIgnoreCase;
+            var table = tables.Where(x => x.name.Equals(tableName, comparison)).FirstOrDefault();
+
+            if (table == null)
+                throw new Exception($"Table [{tableName}] was not found at {resourcePath}");
+
+            return table.id;
+        }
     }
 }
 
