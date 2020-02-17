@@ -92,8 +92,12 @@ namespace ags_client
                 throw ex;
             }
 
+            if (restResponse.Data == null)
+                throw new Exception("Response has no data.");
+
             return restResponse.Data;
         }
+
 
         public async Task<T> ExecuteAsync<T>(RestRequest request, Method httpMethod) where T : new()
         {

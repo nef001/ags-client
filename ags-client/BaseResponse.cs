@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using ags_client.Types;
 
 namespace ags_client
@@ -11,6 +11,15 @@ namespace ags_client
     {
         public string resourcePath { get; set; }
         public ErrorDetail error { get; set; }
+
+        public void CheckAndThrowOnError()
+        {
+            string resource = resourcePath ?? String.Empty;
+            if (error != null)
+            {
+                throw new Exception($"{error} at {resource}");
+            }
+        }
 
     }
 }
