@@ -15,6 +15,26 @@ namespace ags_client.Resources.FeatureService
         public List<EditResult> addResults { get; set; }
         public List<EditResult> deleteResults { get; set; }
 
+        public bool ContainsErrors()
+        {
+            if (updateResults != null)
+            {
+                if (updateResults.Where(x => x.error != null).Any())
+                    return true;
+            }
+            if (addResults != null)
+            {
+                if (addResults.Where(x => x.error != null).Any())
+                    return true;
+            }
+            if (deleteResults != null)
+            {
+                if (deleteResults.Where(x => x.error != null).Any())
+                    return true;
+            }
+            return false;
+        }
+
         
     }
 }
