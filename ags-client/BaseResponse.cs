@@ -17,7 +17,7 @@ namespace ags_client
             string resource = resourcePath ?? String.Empty;
             if (error != null)
             {
-                throw new Exception($"{error} at {resource}");
+                throw new ResponseErrorException($"{error} at {resource}");
             }
         }
 

@@ -137,6 +137,7 @@
     <Compile Include="Resources\MapService\MapServiceResource.cs" />
     <Compile Include="Resources\ServerInfoResource.cs" />
     <Compile Include="Algorithms\Event.cs" />
+    <Compile Include="ResponseErrorException.cs" />
     <Compile Include="Types\AccessToken.cs" />
     <Compile Include="Types\AuthInfo.cs" />
     <Compile Include="Types\CodedValue.cs" />
