@@ -1,10 +1,9 @@
 ﻿
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using ags_client.Algorithms;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Algorithms;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace ags_client_tests
 {
@@ -21,7 +20,7 @@ namespace ags_client_tests
         [TestMethod()]
         public void SegmentConstructorSwapsTest()
         {
-            var s1 = new Segment(new Coordinate { x = 2, y = 3 }, new Coordinate { x = 0, y = 1 }); 
+            var s1 = new Segment(new Coordinate { x = 2, y = 3 }, new Coordinate { x = 0, y = 1 });
             Assert.AreEqual("(0 1)->(2 3)", s1.ToString());
         }
 
@@ -42,8 +41,8 @@ namespace ags_client_tests
         [TestMethod()]
         public void Segment_CompareToTest()
         {
-            var s1 = new Segment(new Coordinate { x = 0, y = 0 }, new Coordinate { x = 2, y = 2 }); 
-            var s2 = new Segment(new Coordinate { x = 0, y = 2 }, new Coordinate { x = 2, y = 4 }); 
+            var s1 = new Segment(new Coordinate { x = 0, y = 0 }, new Coordinate { x = 2, y = 2 });
+            var s2 = new Segment(new Coordinate { x = 0, y = 2 }, new Coordinate { x = 2, y = 4 });
             Assert.IsTrue(s1.CompareTo(s2) < 0);
             Assert.IsTrue(s1.CompareTo(s1) == 0);
             Assert.IsTrue(s2.CompareTo(s1) > 0);

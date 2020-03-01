@@ -13,6 +13,6 @@ namespace ags_client.Types
         public bool? nullable { get; set; }
         public Domain domain { get; set; }
         public bool? required { get; set; }
-        
+
     }
 }

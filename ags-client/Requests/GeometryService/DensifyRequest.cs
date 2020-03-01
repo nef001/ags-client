@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft.Json;
-using ags_client.Resources.GeometryService;
+﻿using ags_client.Resources.GeometryService;
 using ags_client.Types.Geometry;
+using Newtonsoft.Json;
+using RestSharp;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.GeometryService
 {
-    public class DensifyRequest<TG>:BaseRequest
+    public class DensifyRequest<TG> : BaseRequest
         where TG : IRestGeometry
     {
         public Geometries<TG> geometries { get; set; } //polyline or polygon

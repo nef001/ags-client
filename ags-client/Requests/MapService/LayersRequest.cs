@@ -1,10 +1,9 @@
-﻿using System;
+﻿using ags_client.Resources.MapService;
+using ags_client.Types;
+using Newtonsoft.Json;
+using RestSharp;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft.Json;
-using ags_client.Resources.MapService;
-using ags_client.Types;
 
 namespace ags_client.Requests.MapService
 {

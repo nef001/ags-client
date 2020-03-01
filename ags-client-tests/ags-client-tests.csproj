@@ -56,7 +56,6 @@
     <Compile Include="ShamosHoeyTests.cs" />
     <Compile Include="AgsClientTests.cs" />
     <Compile Include="GeocodeServiceTests.cs" />
-    <Compile Include="AdHocTest.cs" />
     <Compile Include="WktTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

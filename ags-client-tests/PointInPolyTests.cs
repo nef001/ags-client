@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using ags_client.Types;
+﻿using ags_client.Types;
 using ags_client.Types.Geometry;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace ags_client_tests
 {
@@ -111,7 +109,7 @@ namespace ags_client_tests
                 }
             };
             bool expected = false;
-            bool actual = g.PointInPoly(new Coordinate { x = 0, y = 0 } );
+            bool actual = g.PointInPoly(new Coordinate { x = 0, y = 0 });
             Assert.AreEqual(expected, actual);
 
             expected = true;

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using RestSharp;
-using ags_client.Resources.FeatureService;
+﻿using ags_client.Resources.FeatureService;
 using ags_client.Types;
+using RestSharp;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.FeatureService
 {
@@ -24,7 +19,7 @@ namespace ags_client.Requests.FeatureService
         public FeatureServiceLayerResource<TA> Execute(AgsClient client, FeatureServiceResource parent)
         {
             string resourcePath = $"{parent.resourcePath}/{_layerId}";
-            return (FeatureServiceLayerResource < TA > )Execute(client, resourcePath);
+            return (FeatureServiceLayerResource<TA>)Execute(client, resourcePath);
         }
 
         public async Task<FeatureServiceLayerResource<TA>> ExecuteAsync(AgsClient client, FeatureServiceResource parent)

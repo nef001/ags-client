@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using RestSharp;
-
-using ags_client.Resources;
+﻿using ags_client.Resources;
 using ags_client.Resources.GeocodeService;
+using RestSharp;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.GeocodeService
 {
@@ -17,7 +11,7 @@ namespace ags_client.Requests.GeocodeService
 
         const string resource = "GeocodeServer";
 
-        public GeocodeServiceRequest(string serviceName) 
+        public GeocodeServiceRequest(string serviceName)
         {
             _serviceName = serviceName;
         }
@@ -37,7 +31,7 @@ namespace ags_client.Requests.GeocodeService
         }
 
         //this overload takes the absolute path - e.g rest/services/Locators/MyLocator/GeocodeServer 
-        public override BaseResponse Execute(AgsClient client, string resourcePath) 
+        public override BaseResponse Execute(AgsClient client, string resourcePath)
         {
             var request = createRequest(resourcePath);
             return client.Execute<GeocodeServiceResource>(request, Method.GET);

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Diagnostics;
-
+﻿using ags_client.Types.Geometry;
 using C5;
-using ags_client.Types;
-using ags_client.Types.Geometry;
+using System.Collections.Generic;
 
 namespace ags_client.Algorithms
 {
@@ -33,7 +25,7 @@ namespace ags_client.Algorithms
             while (!events.IsEmpty)
             {
                 var currentEvent = events.DeleteMin();
-                
+
                 switch (currentEvent.Type)
                 {
                     case EventType.SegmentStart:

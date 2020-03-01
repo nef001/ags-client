@@ -1,18 +1,16 @@
-﻿using System;
+﻿using ags_client.JsonConverters;
+using ags_client.Resources.Common;
+using ags_client.Resources.FeatureService;
+using ags_client.Types;
+using ags_client.Types.Geometry;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using RestSharp;
-using Newtonsoft.Json;
-
-using ags_client.Types;
-using ags_client.Types.Geometry;
-using ags_client.Resources.FeatureService;
-using ags_client.Resources.Common;
-using ags_client.JsonConverters;
-
 namespace ags_client.Requests.FeatureService
-{ 
+{
     public class FeatureServiceLayerQueryRequest<TF, TG, TA> : BaseRequest
         where TF : IRestFeature<TG, TA>
         where TG : IRestGeometry
@@ -50,7 +48,7 @@ namespace ags_client.Requests.FeatureService
         public LayerQueryResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = $"{parent.resourcePath}/{resource}";
-            return (LayerQueryResource < TF, TG, TA > )Execute(client, resourcePath);
+            return (LayerQueryResource<TF, TG, TA>)Execute(client, resourcePath);
         }
 
         public async Task<LayerQueryResource<TF, TG, TA>> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)

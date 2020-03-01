@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using ags_client.Resources;
 using RestSharp;
-using ags_client.Resources;
+using System;
+using System.Threading.Tasks;
 
 
 namespace ags_client.Requests
@@ -27,7 +27,6 @@ namespace ags_client.Requests
 
         public GenerateTokenResource Execute(AgsClient client)
         {
-            // https://agatstgis1.int.atco.com.au/arcgis/tokens/generateToken
             string resourcePath = "tokens/generateToken";
             return (GenerateTokenResource)Execute(client, resourcePath);
         }

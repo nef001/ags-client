@@ -1,7 +1,5 @@
-﻿using System;
+﻿using ags_client.Types;
 using System.Collections.Generic;
-
-using ags_client.Types;
 
 namespace ags_client.Resources.MapService
 {

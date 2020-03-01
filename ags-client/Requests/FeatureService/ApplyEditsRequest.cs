@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using RestSharp;
-using Newtonsoft.Json;
-using ags_client.Resources.FeatureService;
+﻿using ags_client.Resources.FeatureService;
 using ags_client.Types;
 using ags_client.Types.Geometry;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.FeatureService
 {
@@ -53,7 +52,7 @@ namespace ags_client.Requests.FeatureService
             };
             request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
             request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));
-            request.AddParameter("deletes", deletes == null ? "" : String.Join(",",deletes));
+            request.AddParameter("deletes", deletes == null ? "" : String.Join(",", deletes));
             request.AddParameter("gdbVersion", JsonConvert.SerializeObject(gdbVersion, jss));
             request.AddParameter("rollbackOnFailure", JsonConvert.SerializeObject(rollbackOnFailure, jss));
             request.AddParameter("f", "pjson");

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using ags_client.Algorithms;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-
-using ags_client.Algorithms;
 
 namespace ags_client.Types.Geometry
 {
@@ -125,7 +124,7 @@ namespace ags_client.Types.Geometry
             coords.RemoveAll(x => x == null);
             if (coords.Count == 0)
                 return "EMPTY";
-            
+
             return $"({String.Join(",", coords.Select(x => x.PointString()).ToArray())})";
         }
 
@@ -190,7 +189,7 @@ namespace ags_client.Types.Geometry
         }
 
 
-        
+
 
         public Path NonEmptyCoordinates()
         {
@@ -205,7 +204,7 @@ namespace ags_client.Types.Geometry
                 Coordinates.Where(c => c.IsEmpty() == false).ToList();
         }
 
-        
+
 
         /// <summary>
         /// Determinas if the supplied coordinate is inside (1), outside (0) or on the boundary (-1)
@@ -232,7 +231,7 @@ namespace ags_client.Types.Geometry
 
 
             int k = 0;
-            
+
             for (int i = 0; i < Coordinates.Count - 1; i++)
             {
                 var c1 = Coordinates[i];
@@ -268,7 +267,7 @@ namespace ags_client.Types.Geometry
                         return -1; // Handle Case 19 or 20 
                     }
                 }
-                else if ((v2 == 0) && (v1< 0)) // Case 7, 14, or 17 
+                else if ((v2 == 0) && (v1 < 0)) // Case 7, 14, or 17 
                 {
                     if (f == 0)
                     {

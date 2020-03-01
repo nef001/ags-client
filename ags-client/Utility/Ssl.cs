@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Security;
 
@@ -10,11 +6,7 @@ namespace ags_client.Utility
 {
     public static class Ssl
     {
-        private static readonly string[] TrustedHosts = new[] {
-          "agadevgis1.int.atco.com.au",
-          "agatstgis1.int.atco.com.au",
-          "agaprdags1.int.atco.com.au"
-        };
+        private static readonly string[] TrustedHosts = new[] { "localhost" };
 
         public static void EnableTrustedHosts()
         {
