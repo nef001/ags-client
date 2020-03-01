@@ -7,7 +7,7 @@ namespace ags_client.Utility
 {
     public class JsonNetSerializer : IRestSerializer
     {
-        private JsonSerializerSettings jss = new JsonSerializerSettings();
+        private readonly JsonSerializerSettings jss = new JsonSerializerSettings();
         public string Serialize(object obj) =>
             JsonConvert.SerializeObject(obj, jss);
 

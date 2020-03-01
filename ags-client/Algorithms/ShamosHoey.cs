@@ -6,8 +6,8 @@ namespace ags_client.Algorithms
 {
     public class ShamosHoey
     {
-        private IPriorityQueue<Event> events;
-        private TreeSet<Segment> sweepline;
+        private readonly IPriorityQueue<Event> events;
+        private readonly TreeSet<Segment> sweepline;
 
         public ShamosHoey(List<Segment> segments)
         {

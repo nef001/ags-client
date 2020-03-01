@@ -39,8 +39,7 @@ namespace ags_client.JsonConverters
         {
             if (reader.Value == null)
                 return null;
-            long unixMilliseconds;
-            if (!Int64.TryParse(reader.Value.ToString(), out unixMilliseconds))
+            if (!Int64.TryParse(reader.Value.ToString(), out long unixMilliseconds))
                 return null;
             else
                 return UnixEpoch.AddMilliseconds(unixMilliseconds);
