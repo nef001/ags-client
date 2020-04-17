@@ -21,6 +21,9 @@ namespace ags_client.Requests.FeatureService
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
 
+        public NullValueHandling NullValueHandling { get; set; }
+        public MissingMemberHandling MissingMemberHandling { get; set; }
+
         const string resource = "applyEdits";
 
         public EditFeaturesResource Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
@@ -48,8 +51,8 @@ namespace ags_client.Requests.FeatureService
             var request = new RestRequest(resourcePath, Method.POST);
             var jss = new JsonSerializerSettings()
             {
-                NullValueHandling = NullValueHandling.Include,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = this.NullValueHandling,
+                MissingMemberHandling = this.MissingMemberHandling,
             };
             request.AddParameter("adds", JsonConvert.SerializeObject(adds, jss));
             request.AddParameter("updates", JsonConvert.SerializeObject(updates, jss));

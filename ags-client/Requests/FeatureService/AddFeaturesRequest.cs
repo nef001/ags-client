@@ -18,6 +18,8 @@ namespace ags_client.Requests.FeatureService
         public List<TF> features { get; set; }
         public string gdbVersion { get; set; }
         public bool? rollbackOnFailure { get; set; }
+        public NullValueHandling NullValueHandling { get; set; }
+        public MissingMemberHandling MissingMemberHandling { get; set; }
 
         const string resource = "addFeatures";
 
@@ -45,7 +47,11 @@ namespace ags_client.Requests.FeatureService
         {
             var request = new RestRequest(resourcePath) { Method = Method.POST };
 
-            var jss = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var jss = new JsonSerializerSettings()
+            {
+                NullValueHandling = this.NullValueHandling,
+                MissingMemberHandling = this.MissingMemberHandling,
+            };
 
             if (rollbackOnFailure.HasValue)
                 request.AddParameter("rollbackOnFailure", rollbackOnFailure.Value ? "true" : "false");
