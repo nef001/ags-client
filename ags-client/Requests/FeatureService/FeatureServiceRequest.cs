@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using RestSharp;
-using ags_client.Resources;
+﻿using ags_client.Resources;
 using ags_client.Resources.FeatureService;
 using ags_client.Types.Geometry;
+using RestSharp;
+using System;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.FeatureService
 {

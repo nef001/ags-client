@@ -1,14 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using ags_client;
-using ags_client.Types;
-using ags_client.Types.Geometry;
+﻿using ags_client;
 using ags_client.Requests;
 using ags_client.Requests.MapService;
-using ags_client.Resources;
-
+using ags_client.Types.Geometry;
 using ags_client_tests.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace ags_client_tests
 {
@@ -27,11 +23,11 @@ namespace ags_client_tests
                 var resp = new ServerInfoRequest().Execute(agsClient);
                 Assert.IsNull(resp.error);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
             }
-            
+
         }
 
         [TestMethod]
@@ -111,10 +107,10 @@ namespace ags_client_tests
 
         }
 
-        
+
 
 
     }
 
-    
+
 }

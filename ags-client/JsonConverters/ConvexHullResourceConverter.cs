@@ -1,11 +1,9 @@
-﻿using System;
-
+﻿using ags_client.Resources.GeometryService;
 using ags_client.Types;
 using ags_client.Types.Geometry;
-using ags_client.Resources.GeometryService;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace ags_client.JsonConverters
 {

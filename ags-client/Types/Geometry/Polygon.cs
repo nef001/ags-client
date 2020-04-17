@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Runtime.Serialization;
-
-using Newtonsoft.Json;
+using System.Text;
 
 namespace ags_client.Types.Geometry
 {
@@ -40,7 +37,7 @@ namespace ags_client.Types.Geometry
 
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
-        {                                    
+        {
             Rings = new List<Path>();
             foreach (var currentRingPointList in _ringsArray.Select(
                 ring => ring.Select(
@@ -69,7 +66,7 @@ namespace ags_client.Types.Geometry
             }
             else // treat as MULTIPOLYGON
             {
-                sb.Append("MULTIPOLYGON "); 
+                sb.Append("MULTIPOLYGON ");
                 sb.Append($"({String.Join(",", multiList.Select(polygon => polygonText(polygon.Rings)))})");
             }
             return sb.ToString();
@@ -82,7 +79,7 @@ namespace ags_client.Types.Geometry
             if ((multipolygon == null) || (multipolygon.Count == 0))
                 return false;
 
-            bool inCurrent; 
+            bool inCurrent;
             foreach (var polygon in multipolygon)
             {
                 if ((polygon.Rings == null) || (polygon.Rings.Count == 0))
@@ -121,7 +118,7 @@ namespace ags_client.Types.Geometry
             return false;
         }
 
-        
+
         private List<Polygon> multiPolygonToList()
         {
             var result = new List<Polygon>();
@@ -145,7 +142,7 @@ namespace ags_client.Types.Geometry
             //every interior before the first exterior becomes a new polygon
             if (exteriorRingIndices[0] > 0)
             {
-                for (int i=0; i<exteriorRingIndices[0]; i++)
+                for (int i = 0; i < exteriorRingIndices[0]; i++)
                 {
                     result.Add(new Polygon { Rings = new List<Path> { Rings[i] } });
                 }
@@ -176,7 +173,7 @@ namespace ags_client.Types.Geometry
             return result;
         }
 
-        
+
 
 
         private string polygonText(List<Path> rings)
@@ -193,7 +190,7 @@ namespace ags_client.Types.Geometry
 
 
 
-        
+
 
 
     }

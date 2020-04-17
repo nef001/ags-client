@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Diagnostics;
-
+﻿using ags_client.Types.Geometry;
 using C5;
-using ags_client.Types;
-using ags_client.Types.Geometry;
+using System.Collections.Generic;
 
 namespace ags_client.Algorithms
 {
     public class ShamosHoey
     {
-        private IPriorityQueue<Event> events;
-        private TreeSet<Segment> sweepline;
+        private readonly IPriorityQueue<Event> events;
+        private readonly TreeSet<Segment> sweepline;
 
         public ShamosHoey(List<Segment> segments)
         {
@@ -33,7 +25,7 @@ namespace ags_client.Algorithms
             while (!events.IsEmpty)
             {
                 var currentEvent = events.DeleteMin();
-                
+
                 switch (currentEvent.Type)
                 {
                     case EventType.SegmentStart:

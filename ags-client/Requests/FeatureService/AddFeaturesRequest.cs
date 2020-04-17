@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using RestSharp;
-using Newtonsoft.Json;
-using ags_client.Resources.FeatureService;
+﻿using ags_client.Resources.FeatureService;
 using ags_client.Types;
 using ags_client.Types.Geometry;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.FeatureService
 {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using ags_client.Resources;
 using RestSharp;
-using ags_client.Types.Geometry;
-using ags_client.Resources;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests
 {
@@ -15,7 +13,6 @@ namespace ags_client.Requests
 
         public ServerInfoResource Execute(AgsClient client)
         {
-       // http://agatstgis1.int.atco.com.au/arcgis/rest/info
             string resourcePath = "rest/info";
             return (ServerInfoResource)Execute(client, resourcePath);
         }

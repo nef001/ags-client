@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ags_client.Types;
+﻿using ags_client.Types;
 using ags_client.Types.Geometry;
+using System.Collections.Generic;
 
 namespace ags_client.Resources.FeatureService
 {
@@ -20,7 +15,7 @@ namespace ags_client.Resources.FeatureService
         public string description { get; set; }
         public string copyrightText { get; set; }
         public bool? defaultVisibility { get; set; }
-        public EditFieldInfo editFieldInfo { get; set; }        
+        public EditFieldInfo editFieldInfo { get; set; }
         public OwnershipBasedAccessControlForFeatures ownershipBasedAccessControlForFeatures { get; set; }
         public bool? syncCanReturnChanges { get; set; }
         public List<Relationship> relationships { get; set; }

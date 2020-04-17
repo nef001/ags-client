@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ags_client.Types.Geometry
+﻿namespace ags_client.Types.Geometry
 {
     public enum GeometryTypes
     {

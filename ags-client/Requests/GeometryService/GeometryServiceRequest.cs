@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using RestSharp;
-using ags_client.Resources;
+﻿using ags_client.Resources;
 using ags_client.Resources.GeometryService;
+using RestSharp;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.GeometryService
 {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using RestSharp;
-using RestSharp.Authenticators;
-using ags_client.Utility;
-using ags_client.Types;
+﻿using ags_client.Requests;
 using ags_client.Resources;
-using ags_client.Requests;
+using ags_client.Types;
+using ags_client.Utility;
+using RestSharp;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ags_client
 {
@@ -26,13 +24,7 @@ namespace ags_client
 
         public ServerInfoResource ServerInfo { get; private set; }
 
-        //anonymous connection to server using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, null, null)
-        //user connection to server using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, username, pwd)
-        //user connection to server using https ("agatstgis1.int.atco.com.au", "arcgis", 6443, true, username, pwd)
 
-        //anonymous connection via webadaptor http  ("agatstgis1.int.atco.com.au", "arcgis", null, false, null, null)
-        //user connection via webadaptor using http ("agatstgis1.int.atco.com.au", "arcgis", 6080, false, username, pwd)
-        //user connection via webadaptor using https ("agatstgis1.int.atco.com.au", "arcgis", null, true, username, pwd) <-port not specified
         public AgsClient(string host, string instance, int? port, bool useSSL, string username, string password)
         {
             bool anonymous = String.IsNullOrWhiteSpace(username);
@@ -84,7 +76,7 @@ namespace ags_client
                 if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
             }
-            
+
             if (restResponse.ErrorException != null)
             {
                 const string message = "Error retrieving response.  Check inner details for more info.";
@@ -125,7 +117,7 @@ namespace ags_client
             return restResponse.Data;
         }
 
-        
+
         private void refreshToken(Credentials credentials, string client_type, string referer, string ip, int expiration)
         {
             var request = new RestRequest("generateToken")
@@ -189,7 +181,7 @@ namespace ags_client
                 if (ts.TotalSeconds <= 0)
                     refreshToken(credentials, client, referer, ip, expiration);
             }
-           
+
         }
 
     }

@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ags_client.JsonConverters
 {
@@ -21,7 +21,7 @@ namespace ags_client.JsonConverters
         }
          
     */
-    public class DateTimeUnixConverter :JsonConverter<DateTime?>
+    public class DateTimeUnixConverter : JsonConverter<DateTime?>
     {
         static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1);
         public override void WriteJson(JsonWriter writer, DateTime? value, JsonSerializer serializer)
@@ -39,8 +39,7 @@ namespace ags_client.JsonConverters
         {
             if (reader.Value == null)
                 return null;
-            long unixMilliseconds;
-            if (!Int64.TryParse(reader.Value.ToString(), out unixMilliseconds))
+            if (!Int64.TryParse(reader.Value.ToString(), out long unixMilliseconds))
                 return null;
             else
                 return UnixEpoch.AddMilliseconds(unixMilliseconds);

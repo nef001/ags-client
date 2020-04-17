@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using ags_client.Resources.MapService;
 using RestSharp;
-using ags_client.Resources.MapService;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.MapService
 {

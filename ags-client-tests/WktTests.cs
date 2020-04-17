@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using ags_client.Types;
+﻿using ags_client.Types;
 using ags_client.Types.Geometry;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace ags_client_tests
 {
@@ -78,7 +76,7 @@ namespace ags_client_tests
         [TestMethod]
         public void TestPolyline_1CoordPath()
         {
-            var g = new Polyline 
+            var g = new Polyline
             { Paths = new List<Path> { new Path { Coordinates = new List<Coordinate> { new Coordinate(), new Coordinate() } } } };
             string expected = "LINESTRING (0 0,0 0)";
             string actual = g.ToWkt();
@@ -97,11 +95,13 @@ namespace ags_client_tests
         public void TestPolyline_2Paths()
         {
             var g = new Polyline
-            { Paths = new List<Path> 
-            { 
+            {
+                Paths = new List<Path>
+            {
                 new Path { Coordinates = new List<Coordinate> { new Point(), new Point() } },
                 new Path { Coordinates = new List<Coordinate> { new Point(), new Point() } },
-            } };
+            }
+            };
             string expected = "MULTILINESTRING ((0 0,0 0),(0 0,0 0))";
             string actual = g.ToWkt();
             Assert.AreEqual(expected, actual);
@@ -114,7 +114,7 @@ namespace ags_client_tests
                 Paths = new List<Path>
                 {
                     new Path { Coordinates = new List<Coordinate> { new Point(), new Point() } },
-                    new Path () 
+                    new Path ()
                 }
             };
             string expected = "MULTILINESTRING ((0 0,0 0),EMPTY)";

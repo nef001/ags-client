@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using RestSharp;
+﻿using ags_client.Resources.Common;
 using ags_client.Resources.FeatureService;
-using ags_client.Resources.Common;
 using ags_client.Types;
 using ags_client.Types.Geometry;
+using RestSharp;
+using System;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.FeatureService
 {
@@ -28,7 +27,7 @@ namespace ags_client.Requests.FeatureService
         public FeatureResource<TF, TG, TA> Execute(AgsClient client, FeatureServiceLayerResource<TA> parent)
         {
             string resourcePath = $"{parent.resourcePath}/{_objectId}";
-            return (FeatureResource < TF, TG, TA > )Execute(client, resourcePath);
+            return (FeatureResource<TF, TG, TA>)Execute(client, resourcePath);
         }
 
         public async Task<FeatureResource<TF, TG, TA>> ExecuteAsync(AgsClient client, FeatureServiceLayerResource<TA> parent)

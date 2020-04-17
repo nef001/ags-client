@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using RestSharp;
+﻿using ags_client.Resources.Common;
 using ags_client.Resources.MapService;
-using ags_client.Resources.Common;
 using ags_client.Types;
 using ags_client.Types.Geometry;
+using RestSharp;
+using System;
+using System.Threading.Tasks;
 
 namespace ags_client.Requests.MapService
 {

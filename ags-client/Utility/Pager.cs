@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ags_client.Utility
 {
     public class Pager<T>
     {
-        private IEnumerable<T> _data;
-        private int _pageSize;
+        private readonly IEnumerable<T> _data;
+        private readonly int _pageSize;
         private int _page = 0;
-        private int _count = 0;
+        private readonly int _count = 0;
 
         public Pager(IEnumerable<T> data, int pageSize)
         {

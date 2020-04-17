@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using ags_client;
+﻿using ags_client;
 using ags_client.Requests;
 using ags_client.Requests.GeocodeService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace ags_client_tests
 {
@@ -28,7 +27,7 @@ namespace ags_client_tests
                 Assert.IsNull(folderCatalog.error);
                 var geocodeService = new GeocodeServiceRequest(geocodeServiceName).Execute(agsClient, folderCatalog);
                 Assert.IsNull(geocodeService.error);
-                
+
             }
             catch (Exception ex)
             {

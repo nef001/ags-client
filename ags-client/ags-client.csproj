@@ -61,8 +61,6 @@
     <Compile Include="BaseResponse.cs" />
     <Compile Include="JsonConverters\ConvexHullResourceConverter.cs" />
     <Compile Include="JsonConverters\CutResourceConverter.cs" />
-    <Compile Include="JsonConverters\DateTimeConvertor.cs" />
-    <Compile Include="JsonConverters\DensifyResponseConverter.cs" />
     <Compile Include="JsonConverters\GGeometriesConverter.cs" />
     <Compile Include="JsonConverters\GGeometryConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,7 +186,6 @@
     <Compile Include="Types\Template.cs" />
     <Compile Include="Types\TimeInfo.cs" />
     <Compile Include="Types\UniqueValueInfo.cs" />
-    <Compile Include="Utility\HttpUtil.cs" />
     <Compile Include="Utility\JsonNetSerializer.cs" />
     <Compile Include="Utility\Pager.cs" />
     <Compile Include="Utility\Ssl.cs" />

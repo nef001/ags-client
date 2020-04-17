@@ -1,5 +1,5 @@
-﻿using System;
-using ags_client.Types;
+﻿using ags_client.Types;
+using System;
 
 namespace ags_client
 {
