@@ -69,6 +69,8 @@ namespace ags_client
                 request.AddParameter("token", token.token, ParameterType.GetOrPost);
             }
 
+            
+
             var restResponse = restSharpClient.Execute<T>(request, httpMethod);
 
             if (restResponse != null)
