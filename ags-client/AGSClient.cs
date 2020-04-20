@@ -7,10 +7,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using NLog;
+
 namespace ags_client
 {
     public class AgsClient
     {
+        private static readonly Logger _log = LogManager.GetCurrentClassLogger();
+
         readonly IRestClient restSharpClient;
 
         private Credentials credentials { get; set; }
@@ -69,12 +73,14 @@ namespace ags_client
                 request.AddParameter("token", token.token, ParameterType.GetOrPost);
             }
 
-            
+            _log.Trace($"Executing request: {request}");
 
             var restResponse = restSharpClient.Execute<T>(request, httpMethod);
 
             if (restResponse != null)
             {
+                _log.Trace($"Response: {restResponse}");
+
                 if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
             }
