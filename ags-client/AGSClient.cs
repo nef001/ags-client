@@ -73,13 +73,13 @@ namespace ags_client
                 request.AddParameter("token", token.token, ParameterType.GetOrPost);
             }
 
-            _log.Trace($"Executing request: {request}");
+            _log.Trace($"Executing {httpMethod} request: {restSharpClient.BaseUrl}{request.Resource}");
 
             var restResponse = restSharpClient.Execute<T>(request, httpMethod);
 
             if (restResponse != null)
             {
-                _log.Trace($"Response: {restResponse}");
+                _log.Trace($"Response: {restResponse.Content}");
 
                 if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
@@ -107,10 +107,14 @@ namespace ags_client
                 request.AddParameter("token", token.token, ParameterType.QueryString);
             }
 
+            _log.Trace($"Executing {httpMethod} request: {restSharpClient.BaseUrl}{request.Resource}");
+
             var restResponse = await restSharpClient.ExecuteAsync<T>(request, httpMethod);
 
             if (restResponse != null)
             {
+                _log.Trace($"Response: {restResponse.Content}");
+
                 if (restResponse.Data is BaseResponse br)
                     br.resourcePath = request.Resource;
             }
@@ -157,10 +161,14 @@ namespace ags_client
             IRestClient client = new RestClient(tokenServiceUrl).UseSerializer(() => new JsonNetSerializer());
             client.AddDefaultHeader("Content-Type", "application/json");
 
+            _log.Trace($"Executing request: {restSharpClient.BaseUrl}{request.Resource}");
+
             var restResponse = client.Execute<GenerateTokenResource>(request);
 
             if (restResponse != null)
             {
+                _log.Trace($"Response: {restResponse.Content}");
+
                 var br = restResponse.Data as BaseResponse;
                 if (br != null)
                     br.resourcePath = request.Resource;
@@ -191,6 +199,7 @@ namespace ags_client
             }
 
         }
+
 
     }
 }
